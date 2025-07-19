@@ -6,61 +6,129 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-  font-family: Tahoma, sans-serif;
-  background: url("https://i.postimg.cc/KzXYq9Cg/file-000000009a5c61f4aa8bc13e831e0ff5.png") no-repeat center center fixed;
-  background-size: cover;
-  padding: 20px;
-  text-align: center;
-}
+      font-family: Tahoma, sans-serif;
+      background: url("https://i.postimg.cc/KzXYq9Cg/file-000000009a5c61f4aa8bc13e831e0ff5.png") no-repeat center center fixed;
+      background-size: cover;
+      padding: 20px;
+      text-align: center;
+    }
+
     .logo {
       max-width: 140px;
       margin: 0 auto 5px;
       display: block;
     }
+
     table {
-  width: 100%;
-  max-width: 1300px; /* زوّدنا العرض */
-  margin: 0 auto 30px;
-  border-collapse: collapse;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  background-color: rgba(255, 255, 255, 0.95); /* ← الخلفية البيضا شبه شفافة */
-  border-radius: 10px; /* ← اختياري: زوايا ناعمة */
-}
+      width: 100%;
+      max-width: 1300px;
+      margin: 0 auto 30px;
+      border-collapse: collapse;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+    }
+
     th, td {
       border: 1px solid #ccc;
-      padding: 12px 10px; /* قللنا الهوامش شويه */
-      font-size: 14px; /* صغرنا الخط */
+      padding: 12px 10px;
+      font-size: 14px;
     }
+
     th {
       background-color: #0077b6;
       color: white;
       font-size: 14px;
     }
+
     tr:nth-child(even) {
       background-color: #f2f2f2;
     }
+
     a {
       color: #0077b6;
       text-decoration: none;
       font-weight: bold;
     }
+
     a:hover {
       text-decoration: underline;
     }
+
     .footer {
       margin-top: 30px;
       font-size: 14px;
       color: #333;
     }
+
     .whatsapp-img {
       width: 22px;
       vertical-align: middle;
       margin-right: 6px;
     }
-h1 {
-  font-size: 16px;
-  margin-bottom: 20px;
-}
+
+    h1 {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    /* زرار البانل */
+    .open-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      width: 35px; /* ← صغّرنا الزرار فقط */
+      height: 35px;
+      cursor: pointer;
+      z-index: 1000;
+      border-radius: 50%;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      transition: 0.2s ease-in-out;
+    }
+
+    /* البانل */
+    .side-panel {
+      position: fixed;
+      top: 0;
+      right: -100%;; /* ← إزاحة كاملة */
+      width: 300px;
+      height: 100%;
+      background-color: white;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+      transition: right 0.3s ease;
+      z-index: 999;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .side-panel.open {
+      right: 0;
+    }
+
+    .close-btn {
+      font-size: 25px;
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      left: 15px;
+    }
+
+    .panel-image {
+      width: 100%;
+      height: auto; /* ← رجّعناها لحجمها الطبيعي */
+      object-fit: cover;
+      border-radius: 6px;
+      margin-top: 40px;
+    }
+
+    .panel-caption {
+      font-size: 13px;
+      color: #333;
+      margin-top: 15px;
+      text-align: center;
+      line-height: 1.6;
+      padding: 0 5px;
+    }
   </style>
 </head>
 <body>
@@ -70,6 +138,10 @@ h1 {
 
 <h1>Third level students welcome you</h1>
 
+<!-- زرار البانل -->
+<img src="https://i.postimg.cc/9fQssSDN/Picsart-25-07-19-18-05-21-977.jpg" alt="Open Panel" class="open-btn" id="toggleBtn" onclick="openPanel()">
+
+<!-- الجدول -->
 <table>
   <tr>
     <th>Year</th>
@@ -103,11 +175,56 @@ h1 {
   </tr>
 </table>
 
+<!-- البانل الجانبي -->
+<div id="sidePanel" class="side-panel">
+  <span class="close-btn" onclick="closePanel()">×</span>
+  <img src="https://i.postimg.cc/1t6Bdcrj/IMG-20250719-180749.jpg" class="panel-image" alt="Banner">
+
+<div style="padding: 20px; color: #000; font-family: Tahoma, sans-serif; text-align: center; font-weight: bold;">
+  <h2 style="margin-bottom: 10px;">👋 أهلاً بيك في المكان اللي معمول علشانك.</h2>
+  <p style="font-size: 15px; line-height: 1.7;">
+    هنا مش بس هتلاقي كل ملفاتك ومقرراتك…<br>
+    هتلاقي ناس زيك، بيسعوا، بيتعلموا، ورايحين لهدف واضح.
+  </p>
+  <p style="font-size: 15px; margin-top: 15px;">
+    إحنا مش بنقدم روابط… إحنا بنبني طريق.<br>
+    بنشتغل مع بعض، نذاكر مع بعض، وندفع بعض لقدّام.
+  </p>
+  <p style="font-size: 15px; margin-top: 15px;">
+     ماتخليش يومك يعدي من غير خطوة لقدّام.<br>
+    ولو تعبت… افتكر إنك مش لوحدك.<br>
+    إحنا معاك في كل خطوة، لحد ما نوصل سوا.
+  </p>
+  <p style="font-size: 15px; margin-top: 20px;">
+     أنا واحد منكم، ودي كانت البداية.<br>
+    الباقي عليكم… خلّي مجهودنا يوصل للكل، وخلّي النجاح عادة.
+  </p>
+  <h3 style="margin-top: 25px;">
+    إحنا مش مجرد مجموعة<br>
+    إحنا الجيل اللي هيغيّر شكل الهندسة المدنية.
+  </h3>
+</div>
+</div>
+
+<!-- واتساب -->
 <div class="footer">
   <p>If you face any issue, you can contact us via WhatsApp</p>
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="whatsapp-img">
   <a href="https://wa.me/201025442369?text=Hello%20Engineer%20Eslam" target="_blank">Click here</a>
 </div>
+
+<!-- Script -->
+<script>
+  function openPanel() {
+    document.getElementById("sidePanel").classList.add("open");
+    document.getElementById("toggleBtn").style.display = "none";
+  }
+
+  function closePanel() {
+    document.getElementById("sidePanel").classList.remove("open");
+    document.getElementById("toggleBtn").style.display = "block";
+  }
+</script>
 
 </body>
 </html>
