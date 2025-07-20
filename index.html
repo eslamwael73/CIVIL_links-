@@ -11,6 +11,14 @@
       background-size: cover;
       padding: 20px;
       text-align: center;
+      transition: all 0.3s ease; /* لتأثير سلس عند تغيير الوضع */
+    }
+
+    /* Dark Mode للـ body */
+    body.dark-mode {
+      background: url("https://i.postimg.cc/9MXYpY3h/grok-image-xpa73dc.jpg") no-repeat center center fixed; /* ضع لينك صورة الخلفية هنا */
+      background-size: cover;
+      color: #e0e0e0; /* لون النصوص في الدارك مود */
     }
 
     .logo {
@@ -29,10 +37,22 @@
       border-radius: 10px;
     }
 
+    /* Dark Mode للجدول */
+    body.dark-mode table {
+      background-color: rgba(30, 30, 30, 0.95); /* لون الجدول في الدارك مود */
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
     th, td {
       border: 1px solid #ccc;
       padding: 12px 10px;
       font-size: 14px;
+    }
+
+    /* Dark Mode للحدود */
+    body.dark-mode th,
+    body.dark-mode td {
+      border-color: #555;
     }
 
     th {
@@ -41,14 +61,29 @@
       font-size: 14px;
     }
 
+    /* Dark Mode للـ th */
+    body.dark-mode th {
+      background-color: #004466; /* لون داكن للـ th */
+    }
+
     tr:nth-child(even) {
       background-color: #f2f2f2;
+    }
+
+    /* Dark Mode للصفوف */
+    body.dark-mode tr:nth-child(even) {
+      background-color: #2a2a2a;
     }
 
     a {
       color: #0077b6;
       text-decoration: none;
       font-weight: bold;
+    }
+
+    /* Dark Mode للروابط */
+    body.dark-mode a {
+      color: #66b2ff;
     }
 
     a:hover {
@@ -59,6 +94,11 @@
       margin-top: 30px;
       font-size: 14px;
       color: #333;
+    }
+
+    /* Dark Mode للفوتر */
+    body.dark-mode .footer {
+      color: #e0e0e0;
     }
 
     .whatsapp-img {
@@ -72,12 +112,17 @@
       margin-bottom: 20px;
     }
 
+    /* Dark Mode للـ h1 */
+    body.dark-mode h1 {
+      color: #e0e0e0;
+    }
+
     /* زرار البانل */
     .open-btn {
       position: fixed;
       top: 15px;
       right: 15px;
-      width: 35px; /* ← صغّرنا الزرار فقط */
+      width: 35px;
       height: 35px;
       cursor: pointer;
       z-index: 1000;
@@ -90,7 +135,7 @@
     .side-panel {
       position: fixed;
       top: 0;
-      right: -100%;; /* ← إزاحة كاملة */
+      right: -100%;
       width: 300px;
       height: 100%;
       background-color: white;
@@ -99,6 +144,11 @@
       z-index: 999;
       padding: 15px;
       overflow-y: auto;
+    }
+
+    /* Dark Mode للبانل */
+    body.dark-mode .side-panel {
+      background-color: #1e1e1e;
     }
 
     .side-panel.open {
@@ -111,11 +161,17 @@
       position: absolute;
       top: 10px;
       left: 15px;
+      color: #333;
+    }
+
+    /* Dark Mode لزر الإغلاق */
+    body.dark-mode .close-btn {
+      color: #e0e0e0;
     }
 
     .panel-image {
       width: 100%;
-      height: auto; /* ← رجّعناها لحجمها الطبيعي */
+      height: auto;
       object-fit: cover;
       border-radius: 6px;
       margin-top: 40px;
@@ -129,12 +185,32 @@
       line-height: 1.6;
       padding: 0 5px;
     }
+
+    /* Dark Mode للنصوص في البانل */
+    body.dark-mode .panel-caption,
+    body.dark-mode .side-panel h2,
+    body.dark-mode .side-panel p,
+    body.dark-mode .side-panel h3 {
+      color: #e0e0e0;
+    }
+
+    /* زر الدارك مود */
+    .dark-mode-toggle {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      outline: none;
+    }
   </style>
 </head>
 <body>
 
 <!-- لوجو الجزيرة -->
-<img src="https://i.postimg.cc/3xsLWr7W/1752884045690.jpg" alt="Al Jazeera Logo" class="logo">
+<img id="logo" src="https://i.postimg.cc/3xsLWr7W/1752884045690.jpg" alt="Al Jazeera Logo" class="logo">
 
 <h1>Third level students welcome you</h1>
 
@@ -177,33 +253,35 @@
 
 <!-- البانل الجانبي -->
 <div id="sidePanel" class="side-panel">
+  <!-- زر الدارك مود -->
+  <button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
   <span class="close-btn" onclick="closePanel()">×</span>
   <img src="https://i.postimg.cc/1t6Bdcrj/IMG-20250719-180749.jpg" class="panel-image" alt="Banner">
 
-<div style="padding: 20px; color: #000; font-family: Tahoma, sans-serif; text-align: center; font-weight: bold;">
-  <h2 style="margin-bottom: 10px;">👋 أهلاً بيك في المكان اللي معمول علشانك.</h2>
-  <p style="font-size: 15px; line-height: 1.7;">
-    هنا مش بس هتلاقي كل ملفاتك ومقرراتك…<br>
-    هتلاقي ناس زيك، بيسعوا، بيتعلموا، ورايحين لهدف واضح.
-  </p>
-  <p style="font-size: 15px; margin-top: 15px;">
-    إحنا مش بنقدم روابط… إحنا بنبني طريق.<br>
-    بنشتغل مع بعض، نذاكر مع بعض، وندفع بعض لقدّام.
-  </p>
-  <p style="font-size: 15px; margin-top: 15px;">
-     ماتخليش يومك يعدي من غير خطوة لقدّام.<br>
-    ولو تعبت… افتكر إنك مش لوحدك.<br>
-    إحنا معاك في كل خطوة، لحد ما نوصل سوا.
-  </p>
-  <p style="font-size: 15px; margin-top: 20px;">
-     أنا واحد منكم، ودي كانت البداية.<br>
-    الباقي عليكم… خلّي مجهودنا يوصل للكل، وخلّي النجاح عادة.
-  </p>
-  <h3 style="margin-top: 25px;">
-    إحنا مش مجرد مجموعة<br>
-    إحنا الجيل اللي هيغيّر شكل الهندسة المدنية.
-  </h3>
-</div>
+  <div style="padding: 20px; color: #000; font-family: Tahoma, sans-serif; text-align: center; font-weight: bold;">
+    <h2 style="margin-bottom: 10px;">👋 أهلاً بيك في المكان اللي معمول علشانك.</h2>
+    <p style="font-size: 15px; line-height: 1.7;">
+      هنا مش بس هتلاقي كل ملفاتك ومقرراتك…<br>
+      هتلاقي ناس زيك، بيسعوا، بيتعلموا، ورايحين لهدف واضح.
+    </p>
+    <p style="font-size: 15px; margin-top: 15px;">
+      إحنا مش بنقدم روابط… إحنا بنبني طريق.<br>
+      بنشتغل مع بعض، نذاكر مع بعض، وندفع بعض لقدّام.
+    </p>
+    <p style="font-size: 15px; margin-top: 15px;">
+      ماتخليش يومك يعدي من غير خطوة لقدّام.<br>
+      ولو تعبت… افتكر إنك مش لوحدك.<br>
+      إحنا معاك في كل خطوة، لحد ما نوصل سوا.
+    </p>
+    <p style="font-size: 15px; margin-top: 20px;">
+      أنا واحد منكم، ودي كانت البداية.<br>
+      الباقي عليكم… خلّي مجهودنا يوصل للكل، وخلّي النجاح عادة.
+    </p>
+    <h3 style="margin-top: 25px;">
+      إحنا مش مجرد مجموعة<br>
+      إحنا الجيل اللي هيغيّر شكل الهندسة المدنية.
+    </h3>
+  </div>
 </div>
 
 <!-- واتساب -->
@@ -224,6 +302,53 @@
     document.getElementById("sidePanel").classList.remove("open");
     document.getElementById("toggleBtn").style.display = "block";
   }
+
+  function toggleDarkMode() {
+    const body = document.body;
+    const toggleBtn = document.getElementById("darkModeToggle");
+    const logo = document.getElementById("logo");
+
+    body.classList.toggle("dark-mode");
+
+    if (body.classList.contains("dark-mode")) {
+      toggleBtn.textContent = "☀️";
+      logo.src = "https://i.postimg.cc/Y0msQBLV/Picsart-25-07-20-16-04-51-889.png";
+      localStorage.setItem("theme", "dark");
+    } else {
+      toggleBtn.textContent = "🌙";
+      logo.src = "https://i.postimg.cc/3xsLWr7W/1752884045690.jpg";
+      localStorage.setItem("theme", "light");
+    }
+  }
+
+  // ✅ تحميل الوضع عند فتح الصفحة
+  window.onload = function () {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedTheme = localStorage.getItem("theme");
+    const body = document.body;
+    const toggleBtn = document.getElementById("darkModeToggle");
+    const logo = document.getElementById("logo");
+
+    if (savedTheme === "dark") {
+      body.classList.add("dark-mode");
+      toggleBtn.textContent = "☀️";
+      logo.src = "https://i.postimg.cc/Y0msQBLV/Picsart-25-07-20-16-04-51-889.png";
+    } else if (savedTheme === "light") {
+      body.classList.remove("dark-mode");
+      toggleBtn.textContent = "🌙";
+      logo.src = "https://i.postimg.cc/3xsLWr7W/1752884045690.jpg";
+    } else {
+      if (prefersDark) {
+        body.classList.add("dark-mode");
+        toggleBtn.textContent = "☀️";
+        logo.src = "https://i.postimg.cc/Y0msQBLV/Picsart-25-07-20-16-04-51-889.png";
+      } else {
+        body.classList.remove("dark-mode");
+        toggleBtn.textContent = "🌙";
+        logo.src = "https://i.postimg.cc/3xsLWr7W/1752884045690.jpg";
+      }
+    }
+  };
 </script>
 
 </body>
