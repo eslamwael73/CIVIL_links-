@@ -130,6 +130,73 @@
       box-shadow: 0 0 5px rgba(0,0,0,0.3);
       transition: 0.2s ease-in-out;
     }
+    .menu-icon {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  width: 28px;
+  height: 24px;
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.open-btn .bar {
+  width: 20px;
+  height: 3px;
+  background-color: #333;
+  transition: 0.3s;
+}
+
+/* Dark mode للـ 3 شرط */
+body.dark-mode .open-btn {
+  background-color: rgba(30, 30, 30, 0.8);
+}
+
+body.dark-mode .open-btn .bar {
+  background-color: #eee;
+}
+
+.open-btn .bar {
+  width: 20px;
+  height: 3px;
+  background-color: #333;
+  transition: 0.3s;
+}
+
+/* Dark mode للـ 3 شرط */
+body.dark-mode .open-btn {
+  background-color: rgba(30, 30, 30, 0.8);
+}
+
+body.dark-mode .open-btn .bar {
+  background-color: #eee;
+}
+
+.menu-icon span {
+  display: block;
+  height: 2px;         /* صغرنا السُمك */
+  width: 20px;         /* طول الشَرطة */
+  background-color: #333;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  margin: 3px auto;     /* علشان تكون في النص */
+}
+
+/* الوضع الداكن */
+body.dark-mode .menu-icon {
+  background-color: rgba(30, 30, 30, 0.8);
+}
+
+body.dark-mode .menu-icon span {
+  background-color: #eee;
+}
 
     /* البانل */
     .side-panel {
@@ -214,8 +281,12 @@
 
 <h1>Third level students welcome you</h1>
 
-<!-- زرار البانل -->
-<img src="https://i.postimg.cc/9fQssSDN/Picsart-25-07-19-18-05-21-977.jpg" alt="Open Panel" class="open-btn" id="toggleBtn" onclick="openPanel()">
+<!-- زرار البانل الجديد (قائمة 3 شرط) -->
+<div class="menu-icon" id="toggleBtn" onclick="openPanel()">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
 
 <!-- الجدول -->
 <table>
@@ -295,12 +366,12 @@
 <script>
   function openPanel() {
     document.getElementById("sidePanel").classList.add("open");
-    document.getElementById("toggleBtn").style.display = "none";
+    document.querySelector(".menu-icon").style.display = "none"; // إخفاء زر التلت شرط
   }
 
   function closePanel() {
     document.getElementById("sidePanel").classList.remove("open");
-    document.getElementById("toggleBtn").style.display = "block";
+    document.querySelector(".menu-icon").style.display = "flex"; // إظهار زر التلت شرط
   }
 
   function toggleDarkMode() {
