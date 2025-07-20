@@ -313,40 +313,26 @@
     if (body.classList.contains("dark-mode")) {
       toggleBtn.textContent = "☀️";
       logo.src = "https://i.postimg.cc/Y0msQBLV/Picsart-25-07-20-16-04-51-889.png";
-      localStorage.setItem("theme", "dark");
     } else {
       toggleBtn.textContent = "🌙";
       logo.src = "https://i.postimg.cc/3xsLWr7W/1752884045690.jpg";
-      localStorage.setItem("theme", "light");
     }
   }
 
-  // ✅ تحميل الوضع عند فتح الصفحة
   window.onload = function () {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const savedTheme = localStorage.getItem("theme");
     const body = document.body;
     const toggleBtn = document.getElementById("darkModeToggle");
     const logo = document.getElementById("logo");
 
-    if (savedTheme === "dark") {
+    if (prefersDark) {
       body.classList.add("dark-mode");
       toggleBtn.textContent = "☀️";
       logo.src = "https://i.postimg.cc/Y0msQBLV/Picsart-25-07-20-16-04-51-889.png";
-    } else if (savedTheme === "light") {
+    } else {
       body.classList.remove("dark-mode");
       toggleBtn.textContent = "🌙";
       logo.src = "https://i.postimg.cc/3xsLWr7W/1752884045690.jpg";
-    } else {
-      if (prefersDark) {
-        body.classList.add("dark-mode");
-        toggleBtn.textContent = "☀️";
-        logo.src = "https://i.postimg.cc/Y0msQBLV/Picsart-25-07-20-16-04-51-889.png";
-      } else {
-        body.classList.remove("dark-mode");
-        toggleBtn.textContent = "🌙";
-        logo.src = "https://i.postimg.cc/3xsLWr7W/1752884045690.jpg";
-      }
     }
   };
 </script>
