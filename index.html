@@ -5,41 +5,126 @@
   <title>Civil Engineering Drive Links</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    /* General Styles */
     body {
       font-family: Tahoma, sans-serif;
       background: url("https://i.postimg.cc/KzXYq9Cg/file-000000009a5c61f4aa8bc13e831e0ff5.png") no-repeat center center fixed;
       background-size: cover;
       padding: 20px;
       text-align: center;
-      transition: all 0.3s ease; /* لتأثير سلس عند تغيير الوضع */
+      transition: all 0.3s ease;
+      margin: 0;
     }
 
-    /* Dark Mode للـ body */
     body.dark-mode {
-      background: url("https://i.postimg.cc/9MXYpY3h/grok-image-xpa73dc.jpg") no-repeat center center fixed; /* ضع لينك صورة الخلفية هنا */
+      background: url("https://i.postimg.cc/9MXYpY3h/grok-image-xpa73dc.jpg") no-repeat center center fixed;
       background-size: cover;
-      color: #e0e0e0; /* لون النصوص في الدارك مود */
+      color: #e0e0e0;
     }
 
+    /* Welcome Modal */
+    .welcome-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      display: none; /* مخفي افتراضيًا */
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .welcome-modal.active {
+      display: flex; /* يظهر فقط لما يتفعل */
+    }
+
+    .welcome-modal.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      width: 85%;
+      max-width: 320px;
+      min-height: 300px;
+      margin: 0 15px;
+      font-family: Tahoma, sans-serif;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-content h2 {
+      margin-bottom: 15px;
+      font-size: 18px;
+      color: #0077b6;
+    }
+
+    .modal-content ul {
+      text-align: left;
+      margin: 15px 0;
+      padding-left: 20px;
+      font-size: 14px;
+    }
+
+    .modal-content button {
+      background-color: #0077b6;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: background-color 0.2s ease;
+    }
+
+    .modal-content button:hover {
+      background-color: #005f8f;
+    }
+
+    body.dark-mode .modal-content {
+      background-color: #222;
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .modal-content h2 {
+      color: #66b2ff;
+    }
+
+    body.dark-mode .modal-content button {
+      background-color: #66b2ff;
+      color: black;
+    }
+
+    /* Logo */
     .logo {
       max-width: 140px;
       margin: 0 auto 5px;
       display: block;
     }
 
+    /* Table */
     table {
       width: 100%;
       max-width: 1300px;
       margin: 0 auto 30px;
       border-collapse: collapse;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       background-color: rgba(255, 255, 255, 0.95);
       border-radius: 10px;
     }
 
-    /* Dark Mode للجدول */
     body.dark-mode table {
-      background-color: rgba(30, 30, 30, 0.95); /* لون الجدول في الدارك مود */
+      background-color: rgba(30, 30, 30, 0.95);
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     }
 
@@ -49,7 +134,6 @@
       font-size: 14px;
     }
 
-    /* Dark Mode للحدود */
     body.dark-mode th,
     body.dark-mode td {
       border-color: #555;
@@ -61,16 +145,14 @@
       font-size: 14px;
     }
 
-    /* Dark Mode للـ th */
     body.dark-mode th {
-      background-color: #004466; /* لون داكن للـ th */
+      background-color: #004466;
     }
 
     tr:nth-child(even) {
       background-color: #f2f2f2;
     }
 
-    /* Dark Mode للصفوف */
     body.dark-mode tr:nth-child(even) {
       background-color: #2a2a2a;
     }
@@ -81,7 +163,6 @@
       font-weight: bold;
     }
 
-    /* Dark Mode للروابط */
     body.dark-mode a {
       color: #66b2ff;
     }
@@ -90,13 +171,13 @@
       text-decoration: underline;
     }
 
+    /* Footer */
     .footer {
       margin-top: 30px;
       font-size: 14px;
       color: #333;
     }
 
-    /* Dark Mode للفوتر */
     body.dark-mode .footer {
       color: #e0e0e0;
     }
@@ -112,93 +193,47 @@
       margin-bottom: 20px;
     }
 
-    /* Dark Mode للـ h1 */
     body.dark-mode h1 {
       color: #e0e0e0;
     }
 
-    /* زرار البانل */
-    .open-btn {
+    /* Menu Icon */
+    .menu-icon {
       position: fixed;
       top: 15px;
       right: 15px;
-      width: 35px;
-      height: 35px;
+      width: 28px;
+      height: 24px;
       cursor: pointer;
       z-index: 1000;
-      border-radius: 50%;
-      box-shadow: 0 0 5px rgba(0,0,0,0.3);
-      transition: 0.2s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 4px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     }
-    .menu-icon {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  width: 28px;
-  height: 24px;
-  cursor: pointer;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 4px;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 6px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
 
-.open-btn .bar {
-  width: 20px;
-  height: 3px;
-  background-color: #333;
-  transition: 0.3s;
-}
+    .menu-icon span {
+      display: block;
+      height: 2px;
+      width: 20px;
+      background-color: #333;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      margin: 3px auto;
+    }
 
-/* Dark mode للـ 3 شرط */
-body.dark-mode .open-btn {
-  background-color: rgba(30, 30, 30, 0.8);
-}
+    body.dark-mode .menu-icon {
+      background-color: rgba(30, 30, 30, 0.8);
+    }
 
-body.dark-mode .open-btn .bar {
-  background-color: #eee;
-}
+    body.dark-mode .menu-icon span {
+      background-color: #eee;
+    }
 
-.open-btn .bar {
-  width: 20px;
-  height: 3px;
-  background-color: #333;
-  transition: 0.3s;
-}
-
-/* Dark mode للـ 3 شرط */
-body.dark-mode .open-btn {
-  background-color: rgba(30, 30, 30, 0.8);
-}
-
-body.dark-mode .open-btn .bar {
-  background-color: #eee;
-}
-
-.menu-icon span {
-  display: block;
-  height: 2px;         /* صغرنا السُمك */
-  width: 20px;         /* طول الشَرطة */
-  background-color: #333;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-  margin: 3px auto;     /* علشان تكون في النص */
-}
-
-/* الوضع الداكن */
-body.dark-mode .menu-icon {
-  background-color: rgba(30, 30, 30, 0.8);
-}
-
-body.dark-mode .menu-icon span {
-  background-color: #eee;
-}
-
-    /* البانل */
+    /* Side Panel */
     .side-panel {
       position: fixed;
       top: 0;
@@ -206,14 +241,13 @@ body.dark-mode .menu-icon span {
       width: 300px;
       height: 100%;
       background-color: white;
-      box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
       transition: right 0.3s ease;
       z-index: 999;
       padding: 15px;
       overflow-y: auto;
     }
 
-    /* Dark Mode للبانل */
     body.dark-mode .side-panel {
       background-color: #1e1e1e;
     }
@@ -231,7 +265,6 @@ body.dark-mode .menu-icon span {
       color: #333;
     }
 
-    /* Dark Mode لزر الإغلاق */
     body.dark-mode .close-btn {
       color: #e0e0e0;
     }
@@ -253,7 +286,6 @@ body.dark-mode .menu-icon span {
       padding: 0 5px;
     }
 
-    /* Dark Mode للنصوص في البانل */
     body.dark-mode .panel-caption,
     body.dark-mode .side-panel h2,
     body.dark-mode .side-panel p,
@@ -261,7 +293,6 @@ body.dark-mode .menu-icon span {
       color: #e0e0e0;
     }
 
-    /* زر الدارك مود */
     .dark-mode-toggle {
       position: absolute;
       top: 10px;
@@ -275,138 +306,175 @@ body.dark-mode .menu-icon span {
   </style>
 </head>
 <body>
-
-<!-- لوجو الجزيرة -->
-<img id="logo" src="https://i.postimg.cc/3xsLWr7W/1752884045690.jpg" alt="Al Jazeera Logo" class="logo">
-
-<h1>Third level students welcome you</h1>
-
-<!-- زرار البانل الجديد (قائمة 3 شرط) -->
-<div class="menu-icon" id="toggleBtn" onclick="openPanel()">
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
-
-<!-- الجدول -->
-<table>
-  <tr>
-    <th>Year</th>
-    <th>Description</th>
-    <th>Link</th>
-  </tr>
-  <tr>
-    <td>---</td>
-    <td>Our Telegram channel</td>
-    <td><a href="https://t.me/Civilengineersgroup6" target="_blank">Open</a></td>
-  </tr>
-  <tr>
-    <td>2023/2024</td>
-    <td>Preparatory Engineering / Second Semester</td>
-    <td><a href="https://drive.google.com/drive/folders/1xZUy6_5y63qNm8RowLt2xtJdfMLun0iR" target="_blank">Open</a></td>
-  </tr>
-  <tr>
-    <td>2024/2025</td>
-    <td>Civil Engineering – First Year / First Semester</td>
-    <td><a href="https://drive.google.com/drive/folders/19cPnys-MgV0ySa17j4NPE5bFBpy32lMi" target="_blank">Open</a></td>
-  </tr>
-  <tr>
-    <td>2024/2025</td>
-    <td>Civil Engineering – First Year / Second Semester</td>
-    <td><a href="https://drive.google.com/drive/folders/1vR6OVMnKX7r07_uLcMdKYPxDMBlZg6tM" target="_blank">Open</a></td>
-  </tr>
-  <tr>
-    <td>2025/2026</td>
-    <td>Civil Engineering – Second Year / First Semester</td>
-    <td><a href="https://drive.google.com/drive/folders/11vNshzT6Uub_A7KU2MhE5WDQupPyF4b9" target="_blank">Open</a></td>
-  </tr>
-</table>
-
-<!-- البانل الجانبي -->
-<div id="sidePanel" class="side-panel">
-  <!-- زر الدارك مود -->
-  <button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
-  <span class="close-btn" onclick="closePanel()">×</span>
-  <img src="https://i.postimg.cc/1t6Bdcrj/IMG-20250719-180749.jpg" class="panel-image" alt="Banner">
-
-  <div style="padding: 20px; color: #000; font-family: Tahoma, sans-serif; text-align: center; font-weight: bold;">
-    <h2 style="margin-bottom: 10px;">👋 أهلاً بيك في المكان اللي معمول علشانك.</h2>
-    <p style="font-size: 15px; line-height: 1.7;">
-      هنا مش بس هتلاقي كل ملفاتك ومقرراتك…<br>
-      هتلاقي ناس زيك، بيسعوا، بيتعلموا، ورايحين لهدف واضح.
-    </p>
-    <p style="font-size: 15px; margin-top: 15px;">
-      إحنا مش بنقدم روابط… إحنا بنبني طريق.<br>
-      بنشتغل مع بعض، نذاكر مع بعض، وندفع بعض لقدّام.
-    </p>
-    <p style="font-size: 15px; margin-top: 15px;">
-      ماتخليش يومك يعدي من غير خطوة لقدّام.<br>
-      ولو تعبت… افتكر إنك مش لوحدك.<br>
-      إحنا معاك في كل خطوة، لحد ما نوصل سوا.
-    </p>
-    <p style="font-size: 15px; margin-top: 20px;">
-      أنا واحد منكم، ودي كانت البداية.<br>
-      الباقي عليكم… خلّي مجهودنا يوصل للكل، وخلّي النجاح عادة.
-    </p>
-    <h3 style="margin-top: 25px;">
-      إحنا مش مجرد مجموعة<br>
-      إحنا الجيل اللي هيغيّر شكل الهندسة المدنية.
-    </h3>
+  <!-- Welcome Modal -->
+  <div id="welcomeModal" class="welcome-modal">
+    <div class="modal-content">
+      <h2>🚀 Civil Engineering Files - الإصدار v1.0</h2>
+      <p>Engineer Eslam Wael welcomes you</p>
+      <ul>
+        <li>✅ كل لينكات ملفات إعدادي ومدني في مكان واحد</li>
+        <li>✅ شكل جذّاب ومرتب وسهل على الموبايل</li>
+        <li>✅ إمكانية التبديل بين الوضع العادي والدارك</li>
+        <li>✅ بانل جانبي لعرض رسالة الدعم والتشجيع</li>
+        <li>✅ تصميم خفيف وسريع على أي جهاز</li>
+      </ul>
+      <p>دي مجرد البداية... كل نسخة جديدة هيكون فيها تحسينات أكتر تابعنا دايمًا</p>
+      <button onclick="closeModal()">OK</button>
+    </div>
   </div>
-</div>
 
-<!-- واتساب -->
-<div class="footer">
-  <p>If you face any issue, you can contact us via WhatsApp</p>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="whatsapp-img">
-  <a href="https://wa.me/201025442369?text=Hello%20Engineer%20Eslam" target="_blank">Click here</a>
-</div>
+  <!-- Logo -->
+  <img id="logo" src="https://i.postimg.cc/3xsLWr7W/1752884045690.jpg" alt="Al Jazeera Logo" class="logo">
 
-<!-- Script -->
-<script>
-  function openPanel() {
-    document.getElementById("sidePanel").classList.add("open");
-    document.querySelector(".menu-icon").style.display = "none"; // إخفاء زر التلت شرط
-  }
+  <h1>Third level students welcome you</h1>
 
-  function closePanel() {
-    document.getElementById("sidePanel").classList.remove("open");
-    document.querySelector(".menu-icon").style.display = "flex"; // إظهار زر التلت شرط
-  }
+  <!-- Menu Icon -->
+  <div class="menu-icon" id="toggleBtn" onclick="openPanel()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 
-  function toggleDarkMode() {
-    const body = document.body;
-    const toggleBtn = document.getElementById("darkModeToggle");
-    const logo = document.getElementById("logo");
+  <!-- Table -->
+  <table>
+    <tr>
+      <th>Year</th>
+      <th>Description</th>
+      <th>Link</th>
+    </tr>
+    <tr>
+      <td>---</td>
+      <td>Our Telegram channel</td>
+      <td><a href="https://t.me/Civilengineersgroup6" target="_blank">Open</a></td>
+    </tr>
+    <tr>
+      <td>2023/2024</td>
+      <td>Preparatory Engineering / Second Semester</td>
+      <td><a href="https://drive.google.com/drive/folders/1xZUy6_5y63qNm8RowLt2xtJdfMLun0iR" target="_blank">Open</a></td>
+    </tr>
+    <tr>
+      <td>2024/2025</td>
+      <td>Civil Engineering – First Year / First Semester</td>
+      <td><a href="https://drive.google.com/drive/folders/19cPnys-MgV0ySa17j4NPE5bFBpy32lMi" target="_blank">Open</a></td>
+    </tr>
+    <tr>
+      <td>2024/2025</td>
+      <td>Civil Engineering – First Year / Second Semester</td>
+      <td><a href="https://drive.google.com/drive/folders/1vR6OVMnKX7r07_uLcMdKYPxDMBlZg6tM" target="_blank">Open</a></td>
+    </tr>
+    <tr>
+      <td>2025/2026</td>
+      <td>Civil Engineering – Second Year / First Semester</td>
+      <td><a href="https://drive.google.com/drive/folders/11vNshzT6Uub_A7KU2MhE5WDQupPyF4b9" target="_blank">Open</a></td>
+    </tr>
+  </table>
 
-    body.classList.toggle("dark-mode");
+  <!-- Side Panel -->
+  <div id="sidePanel" class="side-panel">
+    <button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
+    <span class="close-btn" onclick="closePanel()">×</span>
+    <img src="https://i.postimg.cc/1t6Bdcrj/IMG-20250719-180749.jpg" class="panel-image" alt="Banner">
+    <div style="padding: 20px; color: #000; font-family: Tahoma, sans-serif; text-align: center; font-weight: bold;">
+      <h2 style="margin-bottom: 10px;">👋 أهلاً بيك في المكان اللي معمول علشانك.</h2>
+      <p style="font-size: 15px; line-height: 1.7;">
+        هنا مش بس هتلاقي كل ملفاتك ومقرراتك…<br>
+        هتلاقي ناس زيك، بيسعوا، بيتعلموا، ورايحين لهدف واضح.
+      </p>
+      <p style="font-size: 15px; margin-top: 15px;">
+        إحنا مش بنقدم روابط… إحنا بنبني طريق.<br>
+        بنشتغل مع بعض، نذاكر مع بعض، وندفع بعض لقدّام.
+      </p>
+      <p style="font-size: 15px; margin-top: 15px;">
+        ماتخليش يومك يعدي من غير خطوة لقدّام.<br>
+        ولو تعبت… افتكر إنك مش لوحدك.<br>
+        إحنا معاك في كل خطوة، لحد ما نوصل سوا.
+      </p>
+      <p style="font-size: 15px; margin-top: 20px;">
+        أنا واحد منكم، ودي كانت البداية.<br>
+        الباقي عليكم… خلّي مجهودنا يوصل للكل، وخلّي النجاح عادة.
+      </p>
+      <h3 style="margin-top: 25px;">
+        إحنا مش مجرد مجموعة<br>
+        إحنا الجيل اللي هيغيّر شكل الهندسة المدنية.
+      </h3>
+    </div>
+  </div>
 
-    if (body.classList.contains("dark-mode")) {
-      toggleBtn.textContent = "☀️";
-      logo.src = "https://i.postimg.cc/Y0msQBLV/Picsart-25-07-20-16-04-51-889.png";
-    } else {
-      toggleBtn.textContent = "🌙";
-      logo.src = "https://i.postimg.cc/3xsLWr7W/1752884045690.jpg";
+  <!-- Footer -->
+  <div class="footer">
+    <p>If you face any issue, you can contact us via WhatsApp</p>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="whatsapp-img">
+    <a href="https://wa.me/201025442369?text=Hello%20Engineer%20Eslam" target="_blank">Click here</a>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // دالة إغلاق الـ modal
+    function closeModal() {
+      const modal = document.getElementById("welcomeModal");
+      modal.classList.add("hidden");
+      localStorage.setItem("welcomeShown", "true"); // تخزين الحالة
+      setTimeout(() => {
+        modal.style.display = "none"; // إخفاء نهائي بعد التأثير
+      }, 300);
     }
-  }
 
-  window.onload = function () {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const body = document.body;
-    const toggleBtn = document.getElementById("darkModeToggle");
-    const logo = document.getElementById("logo");
-
-    if (prefersDark) {
-      body.classList.add("dark-mode");
-      toggleBtn.textContent = "☀️";
-      logo.src = "https://i.postimg.cc/Y0msQBLV/Picsart-25-07-20-16-04-51-889.png";
-    } else {
-      body.classList.remove("dark-mode");
-      toggleBtn.textContent = "🌙";
-      logo.src = "https://i.postimg.cc/3xsLWr7W/1752884045690.jpg";
+    // دالة فتح البانل
+    function openPanel() {
+      document.getElementById("sidePanel").classList.add("open");
+      document.querySelector(".menu-icon").style.display = "none";
     }
-  };
-</script>
 
+    // دالة إغلاق البانل
+    function closePanel() {
+      document.getElementById("sidePanel").classList.remove("open");
+      document.querySelector(".menu-icon").style.display = "flex";
+    }
+
+    // دالة تبديل الوضع الداكن
+    function toggleDarkMode() {
+      const body = document.body;
+      const toggleBtn = document.getElementById("darkModeToggle");
+      const logo = document.getElementById("logo");
+
+      body.classList.toggle("dark-mode");
+
+      if (body.classList.contains("dark-mode")) {
+        toggleBtn.textContent = "☀️";
+        logo.src = "https://i.postimg.cc/Y0msQBLV/Picsart-25-07-20-16-04-51-889.png";
+      } else {
+        toggleBtn.textContent = "🌙";
+        logo.src = "https://i.postimg.cc/3xsLWr7W/1752884045690.jpg";
+      }
+    }
+
+    // إعدادات تحميل الصفحة
+    window.onload = function () {
+      const modal = document.getElementById("welcomeModal");
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const body = document.body;
+      const toggleBtn = document.getElementById("darkModeToggle");
+      const logo = document.getElementById("logo");
+
+      // إعداد الوضع الداكن بناءً على إعدادات الجهاز
+      if (prefersDark) {
+        body.classList.add("dark-mode");
+        toggleBtn.textContent = "☀️";
+        logo.src = "https://i.postimg.cc/Y0msQBLV/Picsart-25-07-20-16-04-51-889.png";
+      } else {
+        body.classList.remove("dark-mode");
+        toggleBtn.textContent = "🌙";
+        logo.src = "https://i.postimg.cc/3xsLWr7W/1752884045690.jpg";
+      }
+
+      // التحقق من localStorage لإظهار الـ modal مرة واحدة
+      if (!localStorage.getItem("welcomeShown")) {
+        modal.classList.add("active");
+        modal.style.display = "flex";
+      } else {
+        modal.style.display = "none"; // التأكد من إخفاء الـ modal
+      }
+    };
+  </script>
 </body>
 </html>
