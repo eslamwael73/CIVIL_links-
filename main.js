@@ -780,19 +780,19 @@ const debouncedLoadIcons = debounce(loadIcons, 100);
 
   // حدث البحث
   document.getElementById('searchInput').addEventListener('input', function() {
-    const query = this.value;
-    const results = searchContent(query);
-    const resultsDiv = document.getElementById('searchResults');
-    resultsDiv.innerHTML = results.length === 0
-      ? `<p>${currentLang === 'ar' ? 'لا توجد نتائج' : 'No results found'}</p>`
-      : results.map(result => `
-          <div class="subject-box">
-            <a href="${result.link}" style="color: white; text-decoration: none;" onclick="event.stopPropagation(); window.open('${result.link}', '_blank'); console.log('Opening search link:', '${result.link}')">${result.name}</a>
-            <button class="favorite-btn ${favorites.includes(`${result.section}:${result.id}`) ? 'favorited' : ''}" onclick="event.stopPropagation(); toggleFavorite('${result.section}', '${result.id}')"><i data-lucide="heart"></i></button>
-          </div>
-        `).join('');
-    loadIcons();
-  });
+  const query = this.value;
+  const results = searchContent(query);
+  const resultsDiv = document.getElementById('searchResults');
+  resultsDiv.innerHTML = results.length === 0
+    ? `<p>${currentLang === 'ar' ? 'لا توجد نتائج' : 'No results found'}</p>`
+    : results.map(result => `
+        <div class="subject-box">
+          <a href="${result.link}" style="color: white; text-decoration: none;" onclick="event.stopPropagation(); openDriveLink('${result.link}', event); console.log('Opening search link:', '${result.link}')">${result.name}</a>
+          <button class="favorite-btn ${favorites.includes(`${result.section}:${result.id}`) ? 'favorited' : ''}" onclick="event.stopPropagation(); toggleFavorite('${result.section}', '${result.id}')"><i data-lucide="heart"></i></button>
+        </div>
+      `).join('');
+  loadIcons();
+});
 
 function applyCustomColor(color) {
   try {
