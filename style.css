@@ -1,0 +1,957 @@
+/* General Styles */
+body {
+  margin: 0;
+  font-family: 'Cairo', Arial, sans-serif;
+  background: var(--background-color, #f0f0f0);
+  color: var(--text-color, #333);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Custom Theme */
+body.custom-theme {
+  --primary-color: var(--custom-color, #1C6AE3);
+  --hover-color: var(--custom-hover, #007acc);
+  --background-color: #f0f0f0;
+  --text-color: #333;
+  --nav-bg: #fff;
+  --nav-border: #ccc;
+  --modal-bg: #fff;
+  --modal-text: #000;
+}
+
+body.custom-theme.dark-mode {
+  --primary-color: var(--custom-color, #1C6AE3);
+  --hover-color: var(--custom-hover, #007acc);
+  --background-color: #222;
+  --text-color: #fff;
+  --nav-bg: #333;
+  --nav-border: #555;
+  --modal-bg: #333;
+  --modal-text: #fff;
+}
+
+/* Apply Theme Variables */
+header {
+  background: var(--primary-color);
+}
+
+.nav-item.active {
+  color: var(--primary-color);
+}
+
+.nav-item.active i {
+  color: var(--primary-color);
+  filter: drop-shadow(0 0 4px var(--primary-color));
+}
+
+nav {
+  background: var(--nav-bg);
+  border-top: 1px solid var(--nav-border);
+}
+
+.btn, .subject-box, .term-box {
+  background-color: var(--primary-color);
+}
+
+.btn:hover, .subject-box:hover, .term-box:hover {
+  background-color: var(--hover-color);
+}
+
+.about-header, .settings-header {
+  background: var(--primary-color);
+}
+
+.civil-modal {
+  background: var(--modal-bg);
+  color: var(--modal-text);
+}
+
+.civil-modal h3 {
+  color: var(--primary-color);
+}
+
+.prep-title {
+  color: var(--primary-color);
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background: var(--background-color);
+  color: var(--text-color);
+}
+
+body.dark-mode nav {
+  background: var(--nav-bg);
+  border-top: 1px solid var(--nav-border);
+}
+
+body.dark-mode .nav-item {
+  color: #ddd;
+}
+
+body.dark-mode .nav-item.active {
+  color: var(--primary-color);
+}
+
+body.dark-mode .nav-item.active i {
+  color: var(--primary-color);
+}
+
+body.dark-mode .icon-btn:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .sidebar {
+  background: var(--nav-bg);
+  color: var(--text-color);
+}
+
+body.dark-mode .settings-page {
+  background: #121212;
+  color: var(--text-color);
+}
+
+body.dark-mode .about-page {
+  background: #121212;
+  color: var(--text-color);
+}
+
+body.dark-mode .about-header {
+  background: var(--primary-color);
+}
+
+body.dark-mode .about-container h1 {
+  color: var(--primary-color);
+}
+
+body.dark-mode .about-container footer {
+  color: #ccc;
+}
+
+body.dark-mode .search-results {
+  background: var(--modal-bg);
+  color: var(--modal-text);
+}
+
+body.dark-mode .prep-title {
+  color: var(--primary-color);
+}
+
+body.dark-mode .prep-subtitle {
+  color: #ccc;
+}
+
+body.dark-mode .subject-box {
+  background-color: var(--primary-color);
+}
+
+body.dark-mode .subject-box:hover {
+  background-color: var(--hover-color);
+}
+
+body.dark-mode .term-box {
+  background-color: var(--primary-color);
+}
+
+body.dark-mode .term-box:hover {
+  background-color: var(--hover-color);
+}
+
+body.dark-mode .civil-modal {
+  background: var(--modal-bg);
+  color: var(--modal-text);
+}
+
+body.dark-mode .civil-modal h3 {
+  color: var(--primary-color);
+}
+
+body.dark-mode .favorite-btn {
+  color: #ddd;
+}
+
+body.dark-mode .favorite-btn.favorited {
+  color: #ff4d4d;
+}
+
+/* Header */
+header {
+  color: white;
+  padding: 20px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+}
+
+.header-title {
+  font-weight: bold;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.header-icons {
+  display: flex;
+  gap: 5px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.icon-btn i {
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+.icon-btn:hover i {
+  transform: scale(1.2); /* تكبير الأيقونة عند التحويم */
+  transition: transform 0.2s;
+}
+
+.icon-btn:active i {
+  transform: scale(0.9); /* تصغير الأيقونة عند الضغط */
+}
+
+/* Main Content */
+main {
+  padding: 40px 15px 180px; /* زيادة padding-bottom لـ 180px عشان الصناديق تبعد عن البار */
+  text-align: center;
+  position: relative;
+  z-index: 0; /* المحتوى تحت الـ nav */
+}
+
+.main-img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  margin: 20px auto;
+}
+
+/* Footer Navigation */
+nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  background: var(--nav-bg);
+  border-top: 1px solid var(--nav-border);
+  z-index: 10; /* الـ nav فوق المحتوى */
+}
+
+.nav-item {
+  text-align: center;
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+}
+
+.nav-item i {
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin: 0 auto 3px;
+}
+
+.nav-item.active {
+  font-weight: bold;
+}
+
+/* Search Modal */
+.search-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  flex-direction: column;
+}
+
+.search-modal input {
+  padding: 10px;
+  width: 80%;
+  max-width: 400px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+}
+
+.search-results {
+  margin-top: 10px;
+  max-width: 400px;
+  width: 80%;
+  max-height: 50%;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  color: #000;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background: #fff;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+  transition: all 0.3s;
+  z-index: 1000;
+}
+
+html[lang="ar"] .sidebar {
+  left: -250px;
+}
+
+html[lang="ar"] .sidebar.open {
+  left: 0;
+}
+
+html[lang="en"] .sidebar {
+  right: -250px;
+}
+
+html[lang="en"] .sidebar.open {
+  right: 0;
+}
+
+.sidebar-content {
+  padding: 20px;
+}
+
+.sidebar-content h3 {
+  margin-top: 0;
+  text-align: right;
+}
+
+html[lang="en"] .sidebar-content h3 {
+  text-align: left;
+}
+
+.sidebar-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-content ul li {
+  padding: 10px 0;
+  cursor: pointer;
+  text-align: right;
+}
+
+html[lang="en"] .sidebar-content ul li {
+  text-align: left;
+}
+
+.sidebar-content ul li:hover {
+  color: var(--primary-color);
+}
+
+.close-sidebar {
+  position: absolute;
+  top: 10px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+html[lang="ar"] .close-sidebar {
+  right: 10px;
+}
+
+html[lang="en"] .close-sidebar {
+  left: 10px;
+}
+
+/* About Page */
+.about-page {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'Cairo', Arial, sans-serif;
+  z-index: 900;
+  overflow-y: auto;
+}
+
+.about-header {
+  padding: 15px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 901;
+}
+
+.about-header-title {
+  font-weight: bold;
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+html[lang="en"] .about-header-title {
+  margin-right: 0;
+  margin-left: 20px;
+}
+
+.about-back-btn {
+  background: none;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: white;
+  font-size: 18px;
+}
+
+.about-back-btn i {
+  width: 20px;
+  height: 20px;
+}
+
+.about-back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.about-container {
+  max-width: 350px;
+  width: 100%;
+  margin: 80px auto 20px;
+  padding: 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+.about-container h1,
+.about-container h3,
+.about-container p,
+.about-container footer {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.about-container h1 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.about-container p {
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.about-container footer {
+  margin-top: 10px;
+  color: #666;
+}
+
+/* Settings Page */
+.settings-page {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'Cairo', Arial, sans-serif;
+  z-index: 900;
+  overflow-y: auto; /* الرأسي */
+  overflow-x: hidden; /* منع التمرير الأفقي */
+  display: flex;
+  justify-content: center; /* توسيط أفقي */
+  align-items: center; /* توسيط رأسي */
+  box-sizing: border-box; /* ضمان إن العرض يشمل الـ padding */
+}
+
+.settings-header {
+  padding: 15px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 901;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.settings-header-title {
+  font-weight: bold;
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+html[lang="en"] .settings-header-title {
+  margin-right: 0;
+  margin-left: 20px;
+}
+
+.settings-back-btn {
+  background: none;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  color: white;
+  font-size: 18px;
+}
+
+.settings-back-btn i {
+  width: 20px;
+  height: 20px;
+}
+
+.settings-back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.settings-container {
+  max-width: 600px;
+  width: 100%;
+  margin: 100px 0 20px; /* إزالة margin-left/right واستخدام margin: auto لاحقًا */
+  margin-left: auto; /* توسيط صريح */
+  margin-right: auto;
+  padding: 20px 0; /* تقليل padding الجانبي لضمان التوسيط */
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center; /* توسيط العناصر داخل الحاوية */
+  justify-content: center; /* توسيط رأسي */
+  text-align: center; /* توسيط النصوص والعناصر */
+  min-height: calc(100vh - 120px);
+  box-sizing: border-box; /* ضمان إن العرض يشمل الـ padding */
+}
+
+/* شبكة الأزرار */
+.settings-grid {
+  display: flex;
+  flex-wrap: wrap; /* اتنين جنب بعض في الشاشات الكبيرة */
+  justify-content: center; /* توسيط أفقي مثالي */
+  align-items: center; /* توسيط رأسي */
+  gap: 20px; /* مسافة بين الأزرار */
+  width: 100%;
+  max-width: 600px; /* تقليل العرض لتناسب الأزرار الأصغر */
+}
+
+/* تنسيق الأزرار */
+.btn {
+  color: white;
+  border: none;
+  padding: 18px 25px;
+  font-size: 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  width: 100%;
+  max-width: 280px; /* تقليل العرض للشاشات الكبيرة */
+  text-align: center;
+  text-decoration: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background-color: var(--primary-color);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 600px) {
+  .settings-container {
+    margin: 80px auto 20px;
+    padding: 15px 10px;
+    min-height: auto;
+  }
+
+  .settings-grid {
+    display: flex;
+    flex-direction: column; /* ترتيب رأسي في الموبايل */
+    align-items: center; /* توسيط أفقي */
+    gap: 18px;
+  }
+
+  .btn {
+    max-width: 340px; /* تقليل العرض في الموبايل */
+    padding: 16px 20px;
+    font-size: 15px;
+    flex-direction: column; /* الأيقونة فوق النص */
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .btn i {
+    width: 28px;
+    height: 28px;
+  }
+
+  .btn:hover i {
+    transform: scale(1.15);
+  }
+
+  .btn:active i {
+    transform: scale(1.05);
+  }
+}
+
+/* Prep Page */
+.prep-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 15px;
+}
+
+.prep-title {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.prep-subtitle {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.subjects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.telegram-box {
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  text-align: center;
+  transition: background-color 0.3s, transform 0.3s;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column; /* تكديس النص رأسيًا */
+  justify-content: center;
+  align-items: center;
+  min-height: 80px; /* زيادة الارتفاع عشان النص الفرعي */
+  background-color: var(--primary-color); /* نفس خلفية الـ subject-box */
+}
+
+.telegram-box:hover {
+  background-color: var(--hover-color); /* نفس تأثير الـ hover */
+}
+
+.telegram-box:active {
+  transform: scale(0.95); /* نفس تأثير الضغط */
+}
+
+.telegram-box a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column; /* تكديس النص داخل الـ a */
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: transparent; /* إخفاء النص المباشر للرابط */
+  z-index: 1; /* التأكد إن الرابط تحت أي عناصر أخرى */
+}
+
+.telegram-box .telegram-title {
+  font-size: 1.2rem; /* نفس حجم النص في الـ subject-box */
+  font-weight: bold;
+  color: white;
+  z-index: 2; /* النص فوق الرابط */
+}
+
+.telegram-box .telegram-subtitle {
+  font-size: 0.8rem; /* حجم أصغر للنص الفرعي */
+  color: rgba(255, 255, 255, 0.8); /* لون أفتح */
+  margin-top: 5px; /* مسافة بين النصين */
+  display: block; /* النص الفرعي في سطر جديد */
+  z-index: 2; /* النص فوق الرابط */
+}
+
+.subject-box {
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  text-align: center;
+  transition: background-color 0.3s, transform 0.3s; /* تأكد إن transform موجود هنا */
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60px;
+  background-color: var(--primary-color);
+}
+
+.subject-box:hover {
+  background-color: var(--hover-color);
+}
+
+.subject-box:active {
+  transform: scale(0.95); /* تأثير الضغطة */
+}
+
+.subject-box a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: transparent;
+  z-index: 1;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #fff;
+  z-index: 2; /* أعلى من الرابط */
+  pointer-events: auto;
+}
+
+.favorite-btn.favorited {
+  color: #ff4d4d;
+}
+
+@media (max-width: 600px) {
+  .subjects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Civil Modal */
+.civil-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+  max-width: 300px;
+  width: 90%;
+  text-align: center;
+}
+
+.term-box {
+  color: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: background-color 0.3s, transform 0.3s;
+  cursor: pointer;
+  display: block;
+  position: relative;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.close-modal:hover {
+  background: #cc0000;
+}
+
+.icon {
+  width: 80px;
+  height: 55px;
+  vertical-align: middle;
+  margin-right: 2px;
+}
+input[type="color"] {
+  display: none !important;
+}
+
+/* تصميم التوست */
+.toastify {
+  font-family: 'Cairo', Arial, sans-serif;
+  font-size: 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+}
+.toastify .toast-close {
+  color: black !important; /* غيّره حسب لون الخلفية */
+  font-size: 18px;
+}
+/* Welcome Modal */
+.welcome-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.welcome-modal.active {
+  display: flex;
+}
+
+.welcome-modal.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center; /* للنصوص الإنجليزية */
+  width: 85%;
+  max-width: 320px;
+  min-height: 300px;
+  margin: 0 15px;
+  font-family: Tahoma, sans-serif;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #0077b6;
+  direction: ltr; /* النصوص الإنجليزية تبقى من الشمال لليمين */
+  text-align: center;
+}
+
+.modal-content p:first-of-type {
+  direction: ltr; /* النص الإنجليزي "Engineer Eslam Wael welcomes you" */
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.modal-content h3 {
+  font-size: 16px;
+  color: #0077b6;
+  margin: 15px 0 10px;
+  direction: rtl; /* عنوان "مميزات الموقع" من اليمين للشمال */
+  text-align: right;
+}
+
+.modal-content ul {
+  text-align: right; /* القايمة بالعربي من اليمين للشمال */
+  direction: rtl;
+  margin: 15px 0;
+  padding-right: 20px; /* padding يمين بدل شمال عشان RTL */
+  padding-left: 0;
+  font-size: 14px;
+}
+
+.modal-content ul li {
+  margin-bottom: 8px;
+}
+
+.modal-content p:last-of-type {
+  direction: rtl; /* النص العربي في الفقرة الأخيرة */
+  text-align: right;
+  margin-top: 15px;
+}
+
+.modal-content button {
+  background-color: #0077b6;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.2s ease;
+}
+
+.modal-content button:hover {
+  background-color: #005f8f;
+}
