@@ -949,16 +949,20 @@ function showToast(message) {
     }
   }).showToast();
 }
+
 // دالة لطلب جملة بالترتيب من الـ API
 async function getSequentialMessage(index) {
-  const apiEndpoint = 'https://eslamwael-api-arbic.netlify.app/.netlify/functions/random-message'; // استبدل هذا بالرابط بتاع Netlify Function
+  // تم استبدال الرابط بالرابط الصحيح
+  const apiEndpoint = 'https://eslamwael-api-arbic.netlify.app/.netlify/functions/random-message';
   try {
     const response = await fetch(`${apiEndpoint}?index=${index}`);
     const data = await response.json();
-    return data.text;
+    // تم تعديل هذا السطر ليرجع object كامل، بما فيه "text" و "totalMessages"
+    return data;
   } catch (error) {
     console.error("Error fetching message from API:", error);
-    return "هل صليت على النبي اليوم؟ ﷺ"; // رسالة احتياطية في حالة وجود خطأ
+    // رسالة احتياطية في حالة وجود خطأ
+    return { text: "هل صليت على النبي اليوم؟ ﷺ", totalMessages: 1100 };
   }
 }
 
@@ -966,14 +970,17 @@ async function getSequentialMessage(index) {
 async function showDailySequentialSalawatToast() {
   const lastIndex = parseInt(localStorage.getItem('salawatIndex') || '0', 10);
   
-  // نطلب الجملة اللي عليها الدور من الـ API
-  const message = await getSequentialMessage(lastIndex);
+  // نطلب الجملة اللي عليها الدور من الـ API، ونستقبل الرد بالكامل
+  const apiResponse = await getSequentialMessage(lastIndex);
   
-  // نعرض الـ Toast
-  showToast(message);
+  // نعرض الـ Toast باستخدام الـ "text" اللي جاي في الرد
+  showToast(apiResponse.text);
   
-  // نحفظ رقم الجملة الجديدة في الذاكرة
-  const newIndex = (lastIndex + 1) % 1100; // نفترض ان عدد الجمل 1100
+  // نستخرج العدد الفعلي للجمل من الرد الجديد
+  const totalMessages = apiResponse.totalMessages;
+  
+  // نحفظ رقم الجملة الجديدة في الذاكرة، باستخدام العدد الفعلي
+  const newIndex = (lastIndex + 1) % totalMessages; 
   localStorage.setItem('salawatIndex', newIndex.toString());
 }
 
@@ -985,6 +992,7 @@ function checkIslamicDate() {
   if (localStorage.getItem(storageKey)) {
     return;
   }
+
   let message = "";
   if (hijriMonth === 9 && hijriDay >= 1 && hijriDay <= 3) {
     message = "رمضان كريم 🌙";
