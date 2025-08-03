@@ -950,65 +950,75 @@ function showToast(message) {
   }).showToast();
 }
 
-// دالة لطلب جملة بالترتيب من الـ API
-async function getSequentialMessage(index) {
-  // تم استبدال الرابط بالرابط الصحيح
+// دالة لجلب التحديثات من API وإرسال إشعارات
+async function checkForUpdatesAndNotify() {
+  // التحقق من وجود صلاحية إرسال الإشعارات
+  if (!('Notification' in window) || Notification.permission !== 'granted') {
+    // إذا لم تكن هناك صلاحية، اطلبها من المستخدم
+    const permission = await Notification.requestPermission();
+    // إذا رفض المستخدم، أوقف تنفيذ الدالة
+    if (permission !== 'granted') {
+      console.log("تم رفض صلاحية الإشعارات.");
+      return;
+    }
+  }
+
+  // رابط الـ API الذي يوفر الجمل
   const apiEndpoint = 'https://eslamwael-api-arbic.netlify.app/.netlify/functions/random-message';
+  
   try {
-    const response = await fetch(`${apiEndpoint}?index=${index}`);
+    const response = await fetch(apiEndpoint);
+    if (!response.ok) {
+      throw new Error('فشل في جلب البيانات من الـ API');
+    }
     const data = await response.json();
-    // تم تعديل هذا السطر ليرجع object كامل، بما فيه "text" و "totalMessages"
-    return data;
+
+    // جلب آخر جملة تم إرسالها من الذاكرة المحلية (localStorage)
+    const lastMessage = localStorage.getItem('lastNotificationMessage');
+    
+    // التحقق مما إذا كانت الجملة الراجعة من الـ API مختلفة عن آخر جملة تم إرسالها
+    if (data.text && data.text !== lastMessage) {
+      // إرسال الإشعار للمستخدم
+      new Notification('Civil Files', {
+        body: data.text, // الجملة الجديدة من الـ API
+        icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png' // أيقونة التطبيق
+      });
+      
+      // حفظ الجملة الجديدة في الذاكرة المحلية لمنع تكرارها
+      localStorage.setItem('lastNotificationMessage', data.text);
+    }
   } catch (error) {
-    console.error("Error fetching message from API:", error);
-    // رسالة احتياطية في حالة وجود خطأ
-    return { text: "هل صليت على النبي اليوم؟ ﷺ", totalMessages: 1100 };
+    console.error('حدث خطأ أثناء جلب الجملة من الـ API:', error);
   }
 }
-
-// دالة لإظهار الـ Toast مع الجملة الجديدة
-async function showDailySequentialSalawatToast() {
-  const lastIndex = parseInt(localStorage.getItem('salawatIndex') || '0', 10);
-  
-  // نطلب الجملة اللي عليها الدور من الـ API، ونستقبل الرد بالكامل
-  const apiResponse = await getSequentialMessage(lastIndex);
-  
-  // نعرض الـ Toast باستخدام الـ "text" اللي جاي في الرد
-  showToast(apiResponse.text);
-  
-  // نستخرج العدد الفعلي للجمل من الرد الجديد
-  const totalMessages = apiResponse.totalMessages;
-  
-  // نحفظ رقم الجملة الجديدة في الذاكرة، باستخدام العدد الفعلي
-  const newIndex = (lastIndex + 1) % totalMessages; 
-  localStorage.setItem('salawatIndex', newIndex.toString());
-}
-
-// تعديل دالة checkIslamicDate عشان تستخدم showDailySequentialSalawatToast
+// التحقق من التاريخ الهجري
 function checkIslamicDate() {
-  const todayHijri = moment().format('iYYYY/iM/iD');
+ const todayHijri = moment().format('iYYYY/iM/iD');
   const [hijriYear, hijriMonth, hijriDay] = todayHijri.split('/').map(Number);
+
   const storageKey = `toastShown-${moment().format('YYYY-MM-DD')}`;
   if (localStorage.getItem(storageKey)) {
-    return;
+    return; // لو التوست ظهر النهارده خلاص ميتكررش
   }
 
   let message = "";
+
+  // رمضان (من 1 إلى 3 رمضان)
   if (hijriMonth === 9 && hijriDay >= 1 && hijriDay <= 3) {
     message = "رمضان كريم 🌙";
-  } else if (hijriMonth === 10 && hijriDay >= 1 && hijriDay <= 3) {
+  }
+  // عيد الفطر (1 إلى 3 شوال)
+  else if (hijriMonth === 10 && hijriDay >= 1 && hijriDay <= 3) {
     message = "عيد فطر سعيد! 🎉";
-  } else if (hijriMonth === 12 && hijriDay >= 10 && hijriDay <= 13) {
+  }
+  // عيد الأضحى (10 إلى 13 ذو الحجة)
+  else if (hijriMonth === 12 && hijriDay >= 10 && hijriDay <= 13) {
     message = "عيد أضحي سعيد! 🎉";
   }
 
   if (message !== "") {
     showToast(message);
-    localStorage.setItem(storageKey, "shown");
-  } else {
-    // لو مفيش مناسبة دينية، نعرض الجملة اليومية
-    showDailySequentialSalawatToast();
-    localStorage.setItem(storageKey, "shown");
+    localStorage.setItem(storageKey, "shown"); // نحفظ انه اتعرض النهارده
   }
 }
 
