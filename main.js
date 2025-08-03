@@ -949,35 +949,58 @@ function showToast(message) {
     }
   }).showToast();
 }
+// دالة لطلب جملة بالترتيب من الـ API
+async function getSequentialMessage(index) {
+  const apiEndpoint = 'https://eslamwael-api-arbic.netlify.app/.netlify/functions/random-message'; // استبدل هذا بالرابط بتاع Netlify Function
+  try {
+    const response = await fetch(`${apiEndpoint}?index=${index}`);
+    const data = await response.json();
+    return data.text;
+  } catch (error) {
+    console.error("Error fetching message from API:", error);
+    return "هل صليت على النبي اليوم؟ ﷺ"; // رسالة احتياطية في حالة وجود خطأ
+  }
+}
 
-// التحقق من التاريخ الهجري
+// دالة لإظهار الـ Toast مع الجملة الجديدة
+async function showDailySequentialSalawatToast() {
+  const lastIndex = parseInt(localStorage.getItem('salawatIndex') || '0', 10);
+  
+  // نطلب الجملة اللي عليها الدور من الـ API
+  const message = await getSequentialMessage(lastIndex);
+  
+  // نعرض الـ Toast
+  showToast(message);
+  
+  // نحفظ رقم الجملة الجديدة في الذاكرة
+  const newIndex = (lastIndex + 1) % 1100; // نفترض ان عدد الجمل 1100
+  localStorage.setItem('salawatIndex', newIndex.toString());
+}
+
+// تعديل دالة checkIslamicDate عشان تستخدم showDailySequentialSalawatToast
 function checkIslamicDate() {
- const todayHijri = moment().format('iYYYY/iM/iD');
+  const todayHijri = moment().format('iYYYY/iM/iD');
   const [hijriYear, hijriMonth, hijriDay] = todayHijri.split('/').map(Number);
-
   const storageKey = `toastShown-${moment().format('YYYY-MM-DD')}`;
   if (localStorage.getItem(storageKey)) {
-    return; // لو التوست ظهر النهارده خلاص ميتكررش
+    return;
   }
-
   let message = "";
-
-  // رمضان (من 1 إلى 3 رمضان)
   if (hijriMonth === 9 && hijriDay >= 1 && hijriDay <= 3) {
     message = "رمضان كريم 🌙";
-  }
-  // عيد الفطر (1 إلى 3 شوال)
-  else if (hijriMonth === 10 && hijriDay >= 1 && hijriDay <= 3) {
+  } else if (hijriMonth === 10 && hijriDay >= 1 && hijriDay <= 3) {
     message = "عيد فطر سعيد! 🎉";
-  }
-  // عيد الأضحى (10 إلى 13 ذو الحجة)
-  else if (hijriMonth === 12 && hijriDay >= 10 && hijriDay <= 13) {
+  } else if (hijriMonth === 12 && hijriDay >= 10 && hijriDay <= 13) {
     message = "عيد أضحي سعيد! 🎉";
   }
 
   if (message !== "") {
     showToast(message);
-    localStorage.setItem(storageKey, "shown"); // نحفظ انه اتعرض النهارده
+    localStorage.setItem(storageKey, "shown");
+  } else {
+    // لو مفيش مناسبة دينية، نعرض الجملة اليومية
+    showDailySequentialSalawatToast();
+    localStorage.setItem(storageKey, "shown");
   }
 }
 
