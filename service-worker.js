@@ -1,3 +1,5 @@
+importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
+
 const CACHE_NAME = 'civilfiles-cache-v1';
 const urlsToCache = [
   '/CIVIL_links-/',
@@ -9,9 +11,7 @@ const urlsToCache = [
   '/CIVIL_links-/css/toastify.min.css',
   '/CIVIL_links-/js/moment.min.js',
   '/CIVIL_links-/js/moment-hijri.min.js',
-  '/CIVIL_links-/icon-144.png',
-  '/CIVIL_links-/icon-192.png',
-  '/CIVIL_links-/icon-512.png',
+  '/CIVIL_links-/icon.png',
   '/CIVIL_links-/images/Picsart-25-07-22-18-01-32-565.png',
   '/CIVIL_links-/images/Picsart-25-07-20-16-04-51-889.png'
 ];
