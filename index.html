@@ -13,17 +13,21 @@
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="/manifest.json">
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "5d382686-0e60-4504-8d76-b645e9b4601b",
-        serviceWorker: {
-          path: '/OneSignalSDK.sw.js'
-        }
-      });
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "5d382686-0e60-4504-8d76-b645e9b4601b",
+      // مسارات ملفات الـ Service Worker
+      serviceWorkerPath: '/OneSignalSDK.sw.js',
+      serviceWorkerUpdaterPath: '/OneSignalSDKUpdaterWorker.js'
     });
-  </script>
+    // طلب إذن الإشعارات من المستخدم
+    await OneSignal.Notifications.requestPermission();
+  });
+</script>
 </head>
 <body>
   <header id="header">
