@@ -1,0 +1,16 @@
+{
+  "name": "Civil Files",
+  "short_name": "Civil Files",
+  "description": "اذكار الصلاة على النبي - تطبيق ويب",
+  "start_url": "/index.html",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
