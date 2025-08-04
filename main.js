@@ -1017,17 +1017,7 @@ function closeModal() {
     console.error("Welcome modal not found when trying to close");
   }
 }
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "5d382686-0e60-4504-8d76-b645e9b4601b",
-      // مسارات ملفات الـ Service Worker
-      serviceWorkerPath: '/OneSignalSDK.sw.js',
-      serviceWorkerUpdaterPath: '/OneSignalSDKUpdaterWorker.js'
-    });
-    // طلب إذن الإشعارات من المستخدم
-    await OneSignal.Notifications.requestPermission();
-  });
+
   // تهيئة الصفحة عند التحميل
   document.addEventListener("DOMContentLoaded", function() {
   try {
