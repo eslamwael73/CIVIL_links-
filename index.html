@@ -151,12 +151,15 @@
 </div>
 
   <script src="main.js"></script>
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
       appId: "5d382686-0e60-4504-8d76-b645e9b4601b",
+      serviceWorker: {
+        path: '/OneSignalSDK.sw.js'
+      }
     });
   });
 </script>
