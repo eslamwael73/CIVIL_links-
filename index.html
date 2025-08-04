@@ -18,9 +18,11 @@
   window.OneSignalDeferred = window.OneSignalDeferred || [];
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
-      appId: "5d382686-0e60-4504-8d76-b645e9b4601b",
-      serviceWorkerPath: '/OneSignalSDK.sw.js',
-      serviceWorkerUpdaterPath: '/OneSignalSDKUpdaterWorker.js'
+      appId: "9ff6e6b8-19b5-4185-9f52-4531a0c2c005",
+      safari_web_id: "web.onesignal.auto.68a9d4a9-72e3-41ba-a788-4f8badeb71ae",
+      notifyButton: {
+        enable: true,
+      },
     });
     await OneSignal.Notifications.requestPermission();
   });
@@ -42,7 +44,7 @@
 <body>
   <header id="header">
     <div class="header-title">
-      <img src="https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png" alt="Logo" class="icon">
+      <img src="https://i.postimg.cc/sgH7KDLb/icon.png" alt="Logo" class="icon">
       Civil Files
     </div>
     <div class="header-icons">
@@ -157,4 +159,3 @@
   <script src="main.js"></script>
 </body>
 </html>
-
