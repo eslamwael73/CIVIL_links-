@@ -868,12 +868,13 @@ input[type="color"] {
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(4px);
-  display: none;
+  display: flex; /* استخدام Flexbox لتوسيط المحتوى */
   justify-content: center;
   align-items: center;
   z-index: 9999;
   opacity: 1;
   transition: opacity 0.3s ease;
+  padding: 10px; /* إضافة مساحة داخلية لمنع المحتوى من الالتصاق بالحواف */
 }
 
 .welcome-modal.active {
@@ -889,44 +890,52 @@ input[type="color"] {
   background: #fff;
   padding: 20px;
   border-radius: 10px;
-  text-align: center; /* للنصوص الإنجليزية */
-  width: 85%;
-  max-width: 320px;
-  min-height: 300px;
-  margin: 0 15px;
-  font-family: Tahoma, sans-serif;
+  text-align: right;
+  width: 100%;
+  max-width: 400px; /* زيادة أقصى عرض ليكون أفضل على التابلت */
+  max-height: 90vh; /* تحديد أقصى ارتفاع ليتناسب مع أي شاشة */
+  overflow-y: auto; /* جعل المحتوى قابلاً للتمرير إذا كان طويلاً */
+  margin: 0; /* إزالة الـ margin لضمان أن الـ width 100% يعمل */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column; /* ترتيب العناصر عمودياً */
 }
 
-.modal-content h2 {
+.modal-content h2,
+.modal-content p:first-of-type,
+.modal-content h3 {
+  text-align: center; /* توسيط العناوين */
+  direction: rtl; /* اتجاه النصوص العربية */
   margin-bottom: 15px;
-  font-size: 18px;
+}
+.modal-content h2 {
+  font-size: 20px;
   color: #0077b6;
-  direction: ltr; /* النصوص الإنجليزية تبقى من الشمال لليمين */
+  direction: ltr; /* النص الإنجليزي */
   text-align: center;
 }
 
 .modal-content p:first-of-type {
-  direction: ltr; /* النص الإنجليزي "Engineer Eslam Wael welcomes you" */
+  direction: ltr; /* النص الإنجليزي */
   text-align: center;
-  margin-bottom: 15px;
 }
 
 .modal-content h3 {
-  font-size: 16px;
+  font-size: 18px;
   color: #0077b6;
   margin: 15px 0 10px;
-  direction: rtl; /* عنوان "مميزات الموقع" من اليمين للشمال */
+  direction: rtl; /* النص العربي */
   text-align: right;
 }
 
 .modal-content ul {
-  text-align: right; /* القايمة بالعربي من اليمين للشمال */
+  text-align: right;
   direction: rtl;
   margin: 15px 0;
-  padding-right: 20px; /* padding يمين بدل شمال عشان RTL */
+  padding-right: 20px;
   padding-left: 0;
-  font-size: 14px;
+  font-size: 15px;
+  flex-grow: 1; /* السماح للقائمة بملء المساحة المتبقية */
 }
 
 .modal-content ul li {
@@ -934,24 +943,34 @@ input[type="color"] {
 }
 
 .modal-content p:last-of-type {
-  direction: rtl; /* النص العربي في الفقرة الأخيرة */
-  text-align: right;
+  direction: rtl;
+  text-align: center; /* توسيط النص في الفقرة الأخيرة */
   margin-top: 15px;
 }
 
 .modal-content button {
   background-color: #0077b6;
   color: white;
-  padding: 8px 16px;
+  padding: 10px 20px; /* زيادة حجم الزر */
   border: none;
-  border-radius: 6px;
+  border-radius: 8px; /* زيادة انحناء الحواف */
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   margin-top: 15px;
   transition: background-color 0.2s ease;
+  width: 100%; /* جعل الزر يملأ العرض بالكامل */
 }
 
 .modal-content button:hover {
   background-color: #005f8f;
+}
+
+/* تعديل مهم لـ welcome-modal */
+.welcome-modal {
+  display: flex; /* تأكد من أنها flexbox */
+}
+
+.welcome-modal.hidden {
+  display: none;
 }
