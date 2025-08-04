@@ -12,7 +12,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/moment-hijri@2.1.2/moment-hijri.min.js"></script>
   <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="/manifest.json">
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
@@ -27,24 +26,11 @@
     await OneSignal.Notifications.requestPermission();
   });
 </script>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(registration => {
-          console.log('PWA Service Worker registered: ', registration);
-        })
-        .catch(error => {
-          console.log('PWA Service Worker registration failed: ', error);
-        });
-    });
-  }
-</script>
 </head>
 <body>
   <header id="header">
     <div class="header-title">
-      <img src="https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png" alt="Logo" class="icon">
+      <img src="https://i.postimg.cc/sgH7KDLb/icon.png" alt="Logo" class="icon">
       Civil Files
     </div>
     <div class="header-icons">
