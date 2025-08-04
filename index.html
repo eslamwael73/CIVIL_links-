@@ -5,44 +5,50 @@
   <title>Civil Files</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Civil Files - تطبيق ويب لمشاركة ملفات الهندسة المدنية">
-  <script src="https://unpkg.com/lucide@0.441.0/dist/umd/lucide.min.js"></script>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="/CIVIL_links-/icon-192.png">
+  <script src="/CIVIL_links-/js/lucide.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/moment-hijri@2.1.2/moment-hijri.min.js"></script>
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="/manifest.json">
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "5d382686-0e60-4504-8d76-b645e9b4601b",
-      serviceWorkerPath: '/OneSignalSDK.sw.js',
-      serviceWorkerUpdaterPath: '/OneSignalSDKUpdaterWorker.js'
+  <link rel="stylesheet" type="text/css" href="/CIVIL_links-/css/toastify.min.css">
+  <script src="/CIVIL_links-/js/toastify.min.js"></script>
+  <script src="/CIVIL_links-/js/moment.min.js"></script>
+  <script src="/CIVIL_links-/js/moment-hijri.min.js"></script>
+  <link rel="stylesheet" href="/CIVIL_links-/style.css">
+  <link rel="manifest" href="/CIVIL_links-/manifest.json">
+  <!-- OneSignal معلّق مؤقتاً عشان نتجنب التعارض -->
+  <!--
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "5d382686-0e60-4504-8d76-b645e9b4601b",
+        serviceWorkerPath: '/OneSignalSDK.sw.js',
+        serviceWorkerUpdaterPath: '/OneSignalSDKUpdaterWorker.js'
+      });
+      await OneSignal.Notifications.requestPermission();
     });
-    await OneSignal.Notifications.requestPermission();
-  });
-</script>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(registration => {
-          console.log('PWA Service Worker registered: ', registration);
-        })
-        .catch(error => {
-          console.log('PWA Service Worker registration failed: ', error);
-        });
-    });
-  }
-</script>
+  </script>
+  -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/CIVIL_links-/service-worker.js')
+          .then(registration => {
+            console.log('PWA Service Worker registered: ', registration);
+          })
+          .catch(error => {
+            console.log('PWA Service Worker registration failed: ', error);
+          });
+      });
+    }
+  </script>
 </head>
 <body>
   <header id="header">
     <div class="header-title">
-      <img src="https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png" alt="Logo" class="icon">
+      <img src="/CIVIL_links-/images/Picsart-25-07-20-16-04-51-889.png" alt="Logo" class="icon">
       Civil Files
     </div>
     <div class="header-icons">
@@ -54,7 +60,7 @@
 
   <main id="main-content">
     <h2>مرحبًا بك</h2>
-    <img src="https://i.postimg.cc/Y9LHL2xH/Picsart-25-07-22-18-01-32-565.png" alt="Welcome Image" class="main-img">
+    <img src="/CIVIL_links-/images/Picsart-25-07-22-18-01-32-565.png" alt="Welcome Image" class="main-img">
     <p>ابدأ باختيار القسم من الأسفل</p>
   </main>
 
@@ -112,7 +118,7 @@
       <p>ماتخليش يومك يعدي من غير خطوة لقدّام.<br>ولو تعبت… افتكر إنك مش لوحدك.<br>إحنا معاك في كل خطوة، لحد ما نوصل سوا.</p>
       <p>أنا واحد منكم، ودي كانت البداية.<br>الباقي عليكم… خلّي مجهودنا يوصل للكل، وخلّي النجاح عادة.</p>
       <p>المشروع دا مش جهد فرد… دا صوت دفعة كاملة حبت تسيب أثر، وتثبت إن لما بنتكاتف، نقدر نعمل حاجة تفضل شاهدة علينا.</p>
-    <p>منّا… ولينا… ودايمًا فخورين ببعض</p>
+      <p>منّا… ولينا… ودايمًا فخورين ببعض</p>
       <h3>إحنا مش مجرد مجموعة<br>إحنا الجيل اللي هيغيّر شكل الهندسة المدنية.</h3>
       <footer>Developed by Engineer Eslam Wael — Level 3 Civil</footer>
     </div>
@@ -133,28 +139,27 @@
       <button class="btn" onclick="resetSettings()">إرجع زي الأول</button>
     </div>
   </div>
-<div id="welcomeModal" class="welcome-modal">
-  <div class="modal-content">
-    <h2>Civil Engineering Files - Version 1.0</h2>
-    <p>Engineer Eslam Wael welcomes you</p>
-    <h3>مميزات الموقع</h3>
-    <ul>
-      <li>محرك بحث سريع للوصول إلى أي مادة</li>
-      <li>تصميم يشبه التطبيقات لتجربة أفضل على الهواتف</li>
-      <li>إمكانية التبديل بين الوضع العادي والداكن</li>
-      <li>تقسيم المواد حسب السنة الدراسية والترم بشكل منظم وواضح</li>
-      <li>إمكانية إضافة المواد إلى قائمة المفضلة لسهولة الرجوع إليها</li>
-      <li>تنبيه يومي بالصلاة على النبي يظهر عند الدخول</li>
-      <li>تم إضافة إشعار يومي بكلمة صباحية تغيّر مودك وتفتح يومك بإيجابية</li>
-      <li>رسائل خاصة للمستخدم في المناسبات الإسلامية مثل رمضان وعيد الفطر والأضحى</li>
-      <li>يدعم اللغتين: العربية والإنجليزية</li>
-      <li>إمكانية تغيير ألوان الموقع والثيم بالكامل من الإعدادات</li>
-    </ul>
-    <p>هذه مجرد البداية… وستستمر التحسينات والإضافات في الإصدارات القادمة بإذن الله</p>
-    <button onclick="closeModal()">OK</button>
+  <div id="welcomeModal" class="welcome-modal">
+    <div class="modal-content">
+      <h2>Civil Engineering Files - Version 1.0</h2>
+      <p>Engineer Eslam Wael welcomes you</p>
+      <h3>مميزات الموقع</h3>
+      <ul>
+        <li>محرك بحث سريع للوصول إلى أي مادة</li>
+        <li>تصميم يشبه التطبيقات لتجربة أفضل على الهواتف</li>
+        <li>إمكانية التبديل بين الوضع العادي والداكن</li>
+        <li>تقسيم المواد حسب السنة الدراسية والترم بشكل منظم وواضح</li>
+        <li>إمكانية إضافة المواد إلى قائمة المفضلة لسهولة الرجوع إليها</li>
+        <li>تنبيه يومي بالصلاة على النبي يظهر عند الدخول</li>
+        <li>تم إضافة إشعار يومي بكلمة صباحية تغيّر مودك وتفتح يومك بإيجابية</li>
+        <li>رسائل خاصة للمستخدم في المناسبات الإسلامية مثل رمضان وعيد الفطر والأضحى</li>
+        <li>يدعم اللغتين: العربية والإنجليزية</li>
+        <li>إمكانية تغيير ألوان الموقع والثيم بالكامل من الإعدادات</li>
+      </ul>
+      <p>هذه مجرد البداية… وستستمر التحسينات والإضافات في الإصدارات القادمة بإذن الله</p>
+      <button onclick="closeModal()">OK</button>
+    </div>
   </div>
-</div>
-  <script src="main.js"></script>
+  <script src="/CIVIL_links-/main.js"></script>
 </body>
 </html>
-
