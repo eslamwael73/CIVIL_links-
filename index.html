@@ -12,22 +12,20 @@
   <script src="https://cdn.jsdelivr.net/npm/moment-hijri@2.1.2/moment-hijri.min.js"></script>
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="/manifest.json">
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/OneSignalSDK.sw.js')
-        .then(registration => {
-          console.log('Service Worker registered: ', registration);
-        })
-        .catch(error => {
-          console.log('Service Worker registration failed: ', error);
-        });
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "5d382686-0e60-4504-8d76-b645e9b4601b",
+        serviceWorker: {
+          path: '/OneSignalSDK.sw.js'
+        }
+      });
     });
-  }
-</script>
+  </script>
 </head>
 <body>
-  <!-- HEADER -->
   <header id="header">
     <div class="header-title">
       <img src="https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png" alt="Logo" class="icon">
@@ -40,14 +38,12 @@
     </div>
   </header>
 
-  <!-- MAIN -->
   <main id="main-content">
     <h2>مرحبًا بك</h2>
     <img src="https://i.postimg.cc/Y9LHL2xH/Picsart-25-07-22-18-01-32-565.png" alt="Welcome Image" class="main-img">
     <p>ابدأ باختيار القسم من الأسفل</p>
   </main>
 
-  <!-- FOOTER NAVIGATION -->
   <nav id="nav">
     <div class="nav-item active" onclick="showPage('home')" data-page="home">
       <i data-lucide="home"></i>
@@ -67,14 +63,12 @@
     </div>
   </nav>
 
-  <!-- SEARCH MODAL -->
   <div class="search-modal" id="searchModal">
     <button class="close-btn" onclick="toggleSearch()">✕</button>
     <input type="text" placeholder="ابحث هنا..." id="searchInput">
     <div class="search-results" id="searchResults"></div>
   </div>
 
-  <!-- SIDEBAR -->
   <div class="sidebar" id="sidebar">
     <i data-lucide="x" class="close-sidebar" onclick="closeSidebar()"></i>
     <div class="sidebar-content">
@@ -90,7 +84,6 @@
     </div>
   </div>
 
-  <!-- ABOUT PAGE -->
   <div class="about-page" id="aboutPage">
     <header class="about-header">
       <div class="about-header-title">حول</div>
@@ -111,7 +104,6 @@
     </div>
   </div>
 
-  <!-- SETTINGS PAGE -->
   <div class="settings-page" id="settingsPage">
     <header class="settings-header">
       <div class="settings-header-title">الإعدادات</div>
@@ -127,7 +119,6 @@
       <button class="btn" onclick="resetSettings()">إرجع زي الأول</button>
     </div>
   </div>
-<!-- Welcome Modal -->
 <div id="welcomeModal" class="welcome-modal">
   <div class="modal-content">
     <h2>Civil Engineering Files - Version 1.0</h2>
@@ -140,7 +131,7 @@
       <li>تقسيم المواد حسب السنة الدراسية والترم بشكل منظم وواضح</li>
       <li>إمكانية إضافة المواد إلى قائمة المفضلة لسهولة الرجوع إليها</li>
       <li>تنبيه يومي بالصلاة على النبي يظهر عند الدخول</li>
-          <li>تم إضافة إشعار يومي بكلمة صباحية تغيّر مودك وتفتح يومك بإيجابية</li>
+      <li>تم إضافة إشعار يومي بكلمة صباحية تغيّر مودك وتفتح يومك بإيجابية</li>
       <li>رسائل خاصة للمستخدم في المناسبات الإسلامية مثل رمضان وعيد الفطر والأضحى</li>
       <li>يدعم اللغتين: العربية والإنجليزية</li>
       <li>إمكانية تغيير ألوان الموقع والثيم بالكامل من الإعدادات</li>
@@ -149,19 +140,6 @@
     <button onclick="closeModal()">OK</button>
   </div>
 </div>
-
   <script src="main.js"></script>
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "5d382686-0e60-4504-8d76-b645e9b4601b",
-      serviceWorker: {
-        path: '/OneSignalSDK.sw.js'
-      }
-    });
-  });
-</script>
 </body>
 </html>

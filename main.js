@@ -1,4 +1,4 @@
- let pageHistory = [];
+let pageHistory = [];
   let currentLang = localStorage.getItem('language') || 'ar';
   let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
   let lastClickTime = 0;
@@ -746,7 +746,6 @@ const debouncedLoadIcons = debounce(loadIcons, 100);
   }
 }
 
-
   // دالة تحديث عنوان الهيدر
   function updateHeaderTitle() {
   const headerTitle = document.querySelector('.header-title');
@@ -931,7 +930,7 @@ function openLink(url, event) {
   isLinkOpening = false;
 }
 
-// دالة لعرض التوست
+// دالة عرض التوست
 function showToast(message) {
   Toastify({
     text: message,
@@ -950,47 +949,7 @@ function showToast(message) {
   }).showToast();
 }
 
-// دالة لجلب التحديثات من API وإرسال إشعارات
-async function checkForUpdatesAndNotify() {
-  // التحقق من وجود صلاحية إرسال الإشعارات
-  if (!('Notification' in window) || Notification.permission !== 'granted') {
-    // إذا لم تكن هناك صلاحية، اطلبها من المستخدم
-    const permission = await Notification.requestPermission();
-    // إذا رفض المستخدم، أوقف تنفيذ الدالة
-    if (permission !== 'granted') {
-      console.log("تم رفض صلاحية الإشعارات.");
-      return;
-    }
-  }
 
-  // رابط الـ API الذي يوفر الجمل
-  const apiEndpoint = 'https://eslamwael-api-arbic.netlify.app/.netlify/functions/random-message';
-  
-  try {
-    const response = await fetch(apiEndpoint);
-    if (!response.ok) {
-      throw new Error('فشل في جلب البيانات من الـ API');
-    }
-    const data = await response.json();
-
-    // جلب آخر جملة تم إرسالها من الذاكرة المحلية (localStorage)
-    const lastMessage = localStorage.getItem('lastNotificationMessage');
-    
-    // التحقق مما إذا كانت الجملة الراجعة من الـ API مختلفة عن آخر جملة تم إرسالها
-    if (data.text && data.text !== lastMessage) {
-      // إرسال الإشعار للمستخدم
-      new Notification('Civil Files', {
-        body: data.text, // الجملة الجديدة من الـ API
-        icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png' // أيقونة التطبيق
-      });
-      
-      // حفظ الجملة الجديدة في الذاكرة المحلية لمنع تكرارها
-      localStorage.setItem('lastNotificationMessage', data.text);
-    }
-  } catch (error) {
-    console.error('حدث خطأ أثناء جلب الجملة من الـ API:', error);
-  }
-}
 // التحقق من التاريخ الهجري
 function checkIslamicDate() {
  const todayHijri = moment().format('iYYYY/iM/iD');
