@@ -2,18 +2,18 @@
   "name": "Civil Files",
   "short_name": "Civil Files",
   "description": "ملفات الهندسة المدنية",
-  "start_url": "./index.html",
+  "start_url": "/CIVIL_links-/index.html",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "display": "standalone",
   "icons": [
     {
-      "src": "https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png",
+      "src": "/CIVIL_links-/icon.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png",
+      "src": "/CIVIL_links-/icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
