@@ -971,10 +971,8 @@ input[type="color"] {
 }
 
 .app-footer .new-content {
-  text-align: right;
   margin-bottom: 20px;
   padding: 0 20px;
-  direction: rtl; /* حل مشكلة المحاذاة */
 }
 
 .app-footer .new-content p {
@@ -1018,4 +1016,14 @@ input[type="color"] {
 .app-footer .contact-links-new a img {
   width: 24px;
   height: 24px;
+}
+/* اتجاه النص حسب اللغة */
+.rtl-text {
+  text-align: right;
+  direction: rtl;
+}
+
+.ltr-text {
+  text-align: left;
+  direction: ltr;
 }

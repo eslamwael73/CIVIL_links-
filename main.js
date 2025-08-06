@@ -693,13 +693,13 @@ function updateAboutText() {
                     <div class="center-icon-container">
                         <img src="https://i.postimg.cc/BvvxrMhj/icon.png" alt="App Icon" class="app-icon">
                     </div>
-                    <div class="new-content">
+                    <div class="new-content ${currentLang === 'ar' ? 'rtl-text' : 'ltr-text'}">
                         <p>${currentLang === 'ar' ? 'نسخة خفيفة وآمنة بتجمعلك أهم الروابط الهندسية في مكان واحد.' : 'A light, secure version that brings together the most important engineering links in one place.'}</p>
                         <p>${currentLang === 'ar' ? 'تطبيق Civil Files هيسهّل عليك توصل لكل حاجة مهمة كطالب هندسة مدنية.' : 'The Civil Files app will make it easy for you to access everything important as a civil engineering student.'}</p>
                         <p>${currentLang === 'ar' ? 'التطبيق آمن تمامًا – مفيهوش صلاحيات غريبة أو إعلانات مزعجة.🛡️' : 'The app is completely safe – no strange permissions or annoying ads.🛡️'}</p>
                     </div>
-                    <p class="contact-title">${currentLang === 'ar' ? 'محتاج مساعدة؟ 📞' : 'Need help? 📞'}</p>
-                    <div class="contact-links-new">
+                    <p class="contact-title ${currentLang === 'ar' ? 'rtl-text' : 'ltr-text'}">${currentLang === 'ar' ? 'محتاج مساعدة؟ 📞' : 'Need help? 📞'}</p>
+                    <div class="contact-links-new ${currentLang === 'ar' ? 'rtl-text' : 'ltr-text'}">
                         <a href="https://wa.me/201025442369?text=Hello%20Engineer%20Islam!" target="_blank">
                             ${currentLang === 'ar' ? 'اضغط هنا للتواصل عبر واتساب' : 'Click here to contact via WhatsApp'}
                             <img src="https://i.postimg.cc/bv0K5YBy/Picsart-25-08-06-15-22-09-229.png" alt="Whatsapp Icon" class="social-icon">
@@ -715,7 +715,6 @@ function updateAboutText() {
         loadIcons();
     }
 }
-
 
 // دالة تحديث نصوص صفحة الإعدادات
 function updateSettingsText() {
