@@ -698,13 +698,13 @@ function updateAboutText() {
                         <p>${currentLang === 'ar' ? 'التطبيق آمن تمامًا – مفيهوش صلاحيات غريبة أو إعلانات مزعجة.🛡️' : 'The app is completely safe – no strange permissions or annoying ads.🛡️'}</p>
                     </div>
                     <p class="contact-title ${currentLang === 'ar' ? 'rtl-text' : 'ltr-text'}">${currentLang === 'ar' ? 'محتاج مساعدة؟ 📞' : 'Need help? 📞'}</p>
-                    <div class="contact-links-new ${currentLang === 'ar' ? 'rtl-text' : 'ltr-text'}">
+                    <div class="contact-links-new">
                         <a href="https://wa.me/201025442369?text=Hello%20Engineer%20Islam!" target="_blank">
-                            ${currentLang === 'ar' ? 'اضغط هنا للتواصل عبر واتساب' : 'Click here to contact via WhatsApp'}
+                            <span>${currentLang === 'ar' ? 'اضغط هنا للتواصل عبر واتساب' : 'Click here to contact via WhatsApp'}</span>
                             <img src="https://i.postimg.cc/bv0K5YBy/Picsart-25-08-06-15-22-09-229.png" alt="Whatsapp Icon" class="social-icon">
                         </a>
                         <a href="https://t.me/EngEslamWael" target="_blank">
-                            ${currentLang === 'ar' ? 'اضغط هنا للتواصل عبر التليجرام' : 'Click here to contact via Telegram'}
+                            <span>${currentLang === 'ar' ? 'اضغط هنا للتواصل عبر التليجرام' : 'Click here to contact via Telegram'}</span>
                             <img src="https://i.postimg.cc/8c7XTTtr/Telegram.png" alt="Telegram Icon" class="social-icon">
                         </a>
                     </div>

@@ -1000,7 +1000,6 @@ input[type="color"] {
   margin-bottom: 20px;
   padding: 0 20px;
   align-items: flex-end; /* يمين دايمًا في العربي والإنجليزي */
-  direction: inherit; /* يرث اتجاه النص من اللغة */
 }
 
 .app-footer .contact-links-new a {
@@ -1011,6 +1010,14 @@ input[type="color"] {
   align-items: center;
   gap: 8px;
   transition: color 0.3s;
+}
+
+.app-footer .contact-links-new a.rtl-text {
+  flex-direction: row; /* النص ثم الأيقونة في العربي */
+}
+
+.app-footer .contact-links-new a.ltr-text {
+  flex-direction: row-reverse; /* الأيقونة ثم النص في الإنجليزي */
 }
 
 .app-footer .contact-links-new a:hover {
