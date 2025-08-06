@@ -720,29 +720,49 @@ function updateAboutText() {
 
 // دالة تحديث نصوص صفحة الإعدادات
 function updateSettingsText() {
-    const settingsTitle = document.querySelector('.settings-header-title');
-    const settingsBackBtn = document.querySelector('.settings-back-btn');
-    
-    if (settingsTitle) {
-        settingsTitle.innerText = currentLang === 'ar' ? 'الإعدادات' : 'Settings';
-    }
-
-    if (settingsBackBtn) {
-        settingsBackBtn.innerHTML = `
-            <i data-lucide="${currentLang === 'ar' ? 'arrow-right' : 'arrow-left'}"></i> 
-            ${currentLang === 'ar' ? 'رجوع' : 'Back'}
-        `;
-    }
-    
-    // تحديث نص الأزرار مباشرة
-    document.querySelector('.settings-grid button[onclick="toggleLanguage()"] span').innerText = currentLang === 'ar' ? 'تغيير اللغة' : 'Change Language';
-    document.querySelector('.settings-grid button[onclick="openColorPicker()"] span').innerText = currentLang === 'ar' ? 'اختيار لون جديد' : 'Choose New Color';
-    document.querySelector('.settings-grid a[href*="docs.google.com"] span').innerText = currentLang === 'ar' ? 'تقييم الموقع' : 'Rate the Website';
-    document.querySelector('.settings-grid a[href*="mediafire.com"] span').innerText = currentLang === 'ar' ? 'تنزيل التطبيق' : 'Download App';
-    document.querySelector('.settings-grid button[onclick="shareWebsite()"] span').innerText = currentLang === 'ar' ? 'مشاركة الموقع' : 'Share Website';
-    document.querySelector('.settings-grid button[onclick="resetSettings()"] span').innerText = currentLang === 'ar' ? 'إعادة الضبط' : 'Reset Settings';
-    
+  const settingsPage = document.getElementById('settingsPage');
+  if (settingsPage) {
+    settingsPage.innerHTML = `
+      <header class="settings-header">
+        <div class="settings-header-title">${currentLang === 'ar' ? 'الإعدادات' : 'Settings'}</div>
+        <button class="settings-back-btn" onclick="goBack()">
+          <i data-lucide="${currentLang === 'ar' ? 'arrow-right' : 'arrow-left'}"></i> 
+          ${currentLang === 'ar' ? 'رجوع' : 'Back'}
+        </button>
+      </header>
+      <div class="settings-container">
+        <div class="settings-grid">
+          <button class="btn" onclick="toggleLanguage()">
+            <i data-lucide="globe"></i>
+            <span>${currentLang === 'ar' ? 'تغيير اللغة' : 'Change Language'}</span>
+          </button>
+          <button class="btn" onclick="openColorPicker()">
+            <i data-lucide="palette"></i>
+            <span>${currentLang === 'ar' ? 'اختيار لون جديد' : 'Choose New Color'}</span>
+          </button>
+          <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdmktV9yW6t9fx93CLJMYxvgy1l6J5v-RNKXtQjPXQeKG7PfA/viewform?usp=sharing" target="_blank">
+            <i data-lucide="star"></i>
+            <span>${currentLang === 'ar' ? 'تقييم الموقع' : 'Rate the Website'}</span>
+          </a>
+          <a class="btn" href="https://www.mediafire.com/file/ivia6yruf30g4j2/CIVIL+Files+1.0.apk/file" target="_blank">
+            <i data-lucide="download"></i>
+            <span>${currentLang === 'ar' ? 'تنزيل التطبيق' : 'Download App'}</span>
+          </a>
+          <button class="btn" onclick="shareWebsite()">
+            <i data-lucide="share-2"></i>
+            <span>${currentLang === 'ar' ? 'مشاركة الموقع' : 'Share Website'}</span>
+          </button>
+          <button class="btn" onclick="resetSettings()">
+            <i data-lucide="rotate-ccw"></i>
+            <span>${currentLang === 'ar' ? 'إعادة الضبط' : 'Reset Settings'}</span>
+          </button>
+        </div>
+      </div>
+    `;
     loadIcons();
+  } else {
+    console.error('Settings page not found');
+  }
 }
 
   // دالة تحديث عنوان الهيدر
