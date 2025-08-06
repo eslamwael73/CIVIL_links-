@@ -691,11 +691,12 @@ function updateAboutText() {
 
     loadIcons();
 }
-  // دالة تحديث نصوص صفحة الإعدادات
+
+// دالة تحديث نصوص صفحة الإعدادات
 function updateSettingsText() {
     const settingsTitle = document.querySelector('.settings-header-title');
     const settingsBackBtn = document.querySelector('.settings-back-btn');
-
+    
     if (settingsTitle) {
         settingsTitle.innerText = currentLang === 'ar' ? 'الإعدادات' : 'Settings';
     }
@@ -706,33 +707,15 @@ function updateSettingsText() {
             ${currentLang === 'ar' ? 'رجوع' : 'Back'}
         `;
     }
-
-    // تحديث نص الأزرار مباشرة إذا كانت موجودة
-    const langBtn = document.querySelector('.settings-container button[onclick="toggleLanguage()"]');
-    if (langBtn) {
-        langBtn.innerHTML = `<i data-lucide="globe"></i><span>${currentLang === 'ar' ? 'تغيير اللغة' : 'Change Language'}</span>`;
-    }
-
-    const rateBtn = document.querySelector('.settings-container a[href*="docs.google.com"]');
-    if (rateBtn) {
-        rateBtn.innerHTML = `<i data-lucide="star"></i><span>${currentLang === 'ar' ? 'تقييم الموقع' : 'Rate the Website'}</span>`;
-    }
-
-    const shareBtn = document.querySelector('.settings-container button[onclick="shareWebsite()"]');
-    if (shareBtn) {
-        shareBtn.innerHTML = `<i data-lucide="share-2"></i><span>${currentLang === 'ar' ? 'مشاركة الموقع' : 'Share Website'}</span>`;
-    }
-
-    const downloadBtn = document.querySelector('.settings-container a[href*="mediafire.com"]');
-    if (downloadBtn) {
-        downloadBtn.innerHTML = `<i data-lucide="download"></i><span>${currentLang === 'ar' ? 'تنزيل التطبيق' : 'Download App'}</span>`;
-    }
-
-    const resetBtn = document.querySelector('.settings-container button[onclick="resetSettings()"]');
-    if (resetBtn) {
-        resetBtn.innerHTML = `<i data-lucide="rotate-ccw"></i><span>${currentLang === 'ar' ? 'إرجع زي الأول' : 'Reset Settings'}</span>`;
-    }
-
+    
+    // تحديث نص الأزرار مباشرة
+    document.querySelector('.settings-container button[onclick="toggleLanguage()"]').innerText = currentLang === 'ar' ? 'تغيير اللغة' : 'Change Language';
+    document.querySelector('.settings-container button[onclick="openColorPicker()"]').innerText = currentLang === 'ar' ? 'اختيار لون جديد' : 'Choose New Color';
+    document.querySelector('.settings-container a[href*="docs.google.com"]').innerText = currentLang === 'ar' ? 'تقييم الموقع' : 'Rate the Website';
+    document.querySelector('.settings-container a[href*="mediafire.com"]').innerText = currentLang === 'ar' ? 'تنزيل التطبيق' : 'Download App';
+    document.querySelector('.settings-container button[onclick="shareWebsite()"]').innerText = currentLang === 'ar' ? 'مشاركة الموقع' : 'Share Website';
+    document.querySelector('.settings-container button[onclick="resetSettings()"]').innerText = currentLang === 'ar' ? 'إرجع زي الأول' : 'Reset Settings';
+    
     loadIcons();
 }
 
