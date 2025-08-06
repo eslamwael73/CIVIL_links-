@@ -677,31 +677,43 @@ const debouncedLoadIcons = debounce(loadIcons, 100);
 function updateAboutText() {
     const aboutPage = document.getElementById('aboutPage');
     if (aboutPage) {
-        // تحديث العنوان وزر الرجوع
-        aboutPage.querySelector('.about-header-title').innerText = currentLang === 'ar' ? 'حول' : 'About';
-        aboutPage.querySelector('.about-back-btn').innerHTML = `
-            <i data-lucide="${currentLang === 'ar' ? 'arrow-right' : 'arrow-left'}"></i> 
-            ${currentLang === 'ar' ? 'رجوع' : 'Back'}
+        aboutPage.innerHTML = `
+            <header class="about-header">
+                <div class="about-header-title">${currentLang === 'ar' ? 'حول' : 'About'}</div>
+                <button class="about-back-btn" onclick="goBack()">
+                    <i data-lucide="${currentLang === 'ar' ? 'arrow-right' : 'arrow-left'}"></i> ${currentLang === 'ar' ? 'رجوع' : 'Back'}
+                </button>
+            </header>
+            <div class="about-container">
+                <h1>👋 أهلاً بيك في المكان اللي معمول علشانك.</h1>
+                <p>هنا مش بس هتلاقي كل ملفاتك ومقرراتك…<br>هتلاقي ناس زيك، بيسعوا، بيتعلموا، ورايحين لهدف واضح.</p>
+                <p>إحنا مش بنقدم روابط… إحنا بنبني طريق.<br>بنشتغل مع بعض، نذاكر مع بعض، وندفع بعض لقدّام.</p>
+                <p>ماتخليش يومك يعدي من غير خطوة لقدّام.<br>ولو تعبت… افتكر إنك مش لوحدك.<br>إحنا معاك في كل خطوة، لحد ما نوصل سوا.</p>
+                <p>أنا واحد منكم، ودي كانت البداية.<br>الباقي عليكم… خلّي مجهودنا يوصل للكل، وخلّي النجاح عادة.</p>
+                <p>المشروع دا مش جهد فرد… دا صوت دفعة كاملة حبت تسيب أثر، وتثبت إن لما بنتكاتف، نقدر نعمل حاجة تفضل شاهدة علينا.</p>
+                <p>منّا… ولينا… ودايمًا فخورين ببعض</p>
+                <h3>إحنا مش مجرد مجموعة<br>إحنا الجيل اللي هيغيّر شكل الهندسة المدنية.</h3>
+                <footer>Developed by Engineer Eslam Wael — Level 3 Civil</footer>
+
+                <div class="app-footer">
+                    <p class="app-info">Civil Files - Version 1.0</p>
+                    <div class="center-icon-container">
+                        <img src="https://i.postimg.cc/BvvxrMhj/icon.png" alt="App Icon" class="app-icon">
+                    </div>
+                    <p class="contact-title">للتواصل معنا إذا واجهت أي مشكلة</p>
+                    <div class="contact-links-new">
+                        <a href="https://wa.me/201025442369?text=Hello%20Engineer%20Islam!" target="_blank">
+                            اضغط هنا للتواصل عبر واتساب
+                            <img src="https://i.postimg.cc/bv0K5YBy/Picsart-25-08-06-15-22-09-229.png" alt="Whatsapp Icon" class="social-icon">
+                        </a>
+                        <a href="https://t.me/EngEslamWael" target="_blank">
+                            للتواصل هنا عبر تيليجرام
+                            <img src="https://i.postimg.cc/8c7XTTtr/Telegram.png" alt="Telegram Icon" class="social-icon">
+                        </a>
+                    </div>
+                </div>
+            </div>
         `;
-        
-        // تحديث نصوص المربع الأسود
-        const contactTitle = aboutPage.querySelector('.contact-us-text');
-        const whatsappText = aboutPage.querySelector('.whatsapp-text');
-        const telegramText = aboutPage.querySelector('.telegram-text');
-        const footerText = aboutPage.querySelector('footer');
-
-        if (currentLang === 'ar') {
-            contactTitle.innerText = 'تواصل معنا';
-            whatsappText.innerText = 'واتساب';
-            telegramText.innerText = 'تيليجرام';
-            footerText.innerText = 'Developed by Engineer Eslam Wael — Level 3 Civil';
-        } else {
-            contactTitle.innerText = 'Contact Us';
-            whatsappText.innerText = 'WhatsApp';
-            telegramText.innerText = 'Telegram';
-            footerText.innerText = 'Developed by Engineer Eslam Wael — Level 3 Civil';
-        }
-
         loadIcons();
     }
 }
