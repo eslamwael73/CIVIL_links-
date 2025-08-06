@@ -949,7 +949,6 @@ input[type="color"] {
   margin-top: 50px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  direction: rtl; /* هذا السطر هو لحل مشكلة المحاذاة */
 }
 
 .app-footer .app-info {
@@ -972,9 +971,10 @@ input[type="color"] {
 }
 
 .app-footer .new-content {
-  text-align: right; /* محاذاة النصوص الجديدة لليمين */
+  text-align: right;
   margin-bottom: 20px;
   padding: 0 20px;
+  direction: rtl; /* حل مشكلة المحاذاة */
 }
 
 .app-footer .new-content p {
@@ -988,6 +988,7 @@ input[type="color"] {
   font-weight: bold;
   margin-bottom: 10px;
   padding-right: 20px;
+  direction: rtl; /* حل مشكلة المحاذاة */
 }
 
 .app-footer .contact-links-new {
@@ -997,6 +998,7 @@ input[type="color"] {
   gap: 15px;
   margin-right: 20px;
   margin-bottom: 20px;
+  direction: rtl; /* حل مشكلة المحاذاة */
 }
 
 .app-footer .contact-links-new a {
