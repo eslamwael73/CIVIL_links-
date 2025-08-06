@@ -940,31 +940,34 @@ input[type="color"] {
   direction: rtl;
   text-align: center;
 }
-/* إزالة أي margin أو padding من الـ body و html */
+/* إزالة أي margin أو padding من الـ html و body */
 html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  overflow-x: hidden; /* منع الـ scrollbar الأفقي */
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  overflow-x: hidden !important; /* منع الـ scrollbar الأفقي */
 }
 
+/* ضمان إن كل العناصر تستخدم box-sizing */
+* {
+  box-sizing: border-box;
+}
 /* About Page - App Footer */
 .app-footer {
   background-color: #000;
   color: #fff;
-  padding: 40px 0;
-  margin: 0;
-  width: 100%; /* عرض كامل بدون viewport width */
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  box-sizing: border-box;
+  padding: 5px 0; /* عدلت الـ padding عشان يبقى أقرب للحواف */
+  margin: 0 !important; /* إزالة أي هوامش */
+  width: 100% !important; /* عرض كامل */
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  text-align: center;
+  position: relative; /* التأكد من التحكم في العرض */
 }
 
-/* ضمان إن أي container فوق الفوتر ميأثرش */
-.about-container {
-  margin: 0;
-  padding: 0;
-  width: 100%;
+/* ضمان إن الفوتر مش هيتأثر بأي container خارجي */
+.app-footer > * {
+  max-width: 100%;
 }
 
 .app-footer .app-info {
@@ -995,13 +998,13 @@ html, body {
 
 .app-footer .new-content p {
   font-size: 14px;
-  margin-bottom: 10px; /* زيادة المسافة لمظهر أنيق */
+  margin-bottom: 10px;
 }
 
 .app-footer .contact-title {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 15px; /* زيادة المسافة لمظهر مرتب */
+  margin-bottom: 15px;
   padding: 0 20px;
   text-align: inherit;
 }
@@ -1021,7 +1024,7 @@ html, body {
   font-size: 16px;
   display: flex;
   align-items: center;
-  gap: 10px; /* زيادة المسافة بين النص والأيقونة لمظهر أنيق */
+  gap: 10px;
   transition: color 0.3s;
 }
 
