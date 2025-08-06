@@ -717,43 +717,48 @@ function updateAboutText() {
 }
 
 // دالة تحديث نصوص صفحة الإعدادات
-function updateSettingsText() {
-    const settingsPage = document.getElementById('settingsPage');
-    if (settingsPage) {
-        settingsPage.innerHTML = `
-            <header class="settings-header">
-                <div class="settings-header-title">${currentLang === 'ar' ? 'الإعدادات' : 'Settings'}</div>
-                <button class="settings-back-btn" onclick="goBack()">
-                    <i data-lucide="${currentLang === 'ar' ? 'arrow-right' : 'arrow-left'}"></i>
-                    ${currentLang === 'ar' ? 'رجوع' : 'Back'}
+function updateAboutText() {
+    const aboutPage = document.getElementById('aboutPage');
+    if (aboutPage) {
+        aboutPage.innerHTML = `
+            <header class="about-header">
+                <div class="about-header-title">${currentLang === 'ar' ? 'حول' : 'About'}</div>
+                <button class="about-back-btn" onclick="goBack()">
+                    <i data-lucide="${currentLang === 'ar' ? 'arrow-right' : 'arrow-left'}"></i> ${currentLang === 'ar' ? 'رجوع' : 'Back'}
                 </button>
             </header>
-            <div class="settings-container">
-                <div class="settings-grid">
-                    <button class="btn" onclick="toggleLanguage()">
-                        <i data-lucide="globe"></i>
-                        <span>${currentLang === 'ar' ? 'تغيير اللغة' : 'Change Language'}</span>
-                    </button>
-                    <button class="btn" onclick="openColorPicker()">
-                        <i data-lucide="palette"></i>
-                        <span>${currentLang === 'ar' ? 'اختيار لون جديد' : 'Choose New Color'}</span>
-                    </button>
-                    <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdmktV9yW6t9fx93CLJMYxvgy1l6J5v-RNKXtQjPXQeKG7PfA/viewform?usp=sharing" target="_blank">
-                        <i data-lucide="star"></i>
-                        <span>${currentLang === 'ar' ? 'تقييم الموقع' : 'Rate the Website'}</span>
-                    </a>
-                    <a class="btn" href="https://www.mediafire.com/file/ivia6yruf30g4j2/CIVIL+Files+1.0.apk/file" target="_blank">
-                        <i data-lucide="download"></i>
-                        <span>${currentLang === 'ar' ? 'تنزيل التطبيق' : 'Download App'}</span>
-                    </a>
-                    <button class="btn" onclick="shareWebsite()">
-                        <i data-lucide="share-2"></i>
-                        <span>${currentLang === 'ar' ? 'مشاركة الموقع' : 'Share Website'}</span>
-                    </button>
-                    <button class="btn" onclick="resetSettings()">
-                        <i data-lucide="rotate-ccw"></i>
-                        <span>${currentLang === 'ar' ? 'إعادة الضبط' : 'Reset Settings'}</span>
-                    </button>
+            <div class="about-container">
+                <h1>👋 ${currentLang === 'ar' ? 'أهلاً بيك في المكان اللي معمول علشانك.' : 'Welcome to the place made just for you.'}</h1>
+                <p>${currentLang === 'ar' ? 'هنا مش بس هتلاقي كل ملفاتك ومقرراتك…<br>هتلاقي ناس زيك، بيسعوا، بيتعلموا، ورايحين لهدف واضح.' : 'Here, you won’t just find your files and courses…<br>You’ll find people like you, striving, learning, and heading toward a clear goal.'}</p>
+                <p>${currentLang === 'ar' ? 'إحنا مش بنقدم روابط… إحنا بنبني طريق.<br>بنشتغل مع بعض، نذاكر مع بعض، وندفع بعض لقدّام.' : 'We don’t just provide links… we build a path.<br>We work together, study together, and push each other forward.'}</p>
+                <p>${currentLang === 'ar' ? 'ماتخليش يومك يعدي من غير خطوة لقدّام.<br>ولو تعبت… افتكر إنك مش لوحدك.<br>إحنا معاك في كل خطوة، لحد ما نوصل سوا.' : 'Don’t let a day pass without taking a step forward.<br>If you get tired… remember you’re not alone.<br>We’re with you every step of the way, until we reach our goal together.'}</p>
+                <p>${currentLang === 'ar' ? 'أنا واحد منكم، ودي كانت البداية.<br>الباقي عليكم… خلّي مجهودنا يوصل للكل، وخلّي النجاح عادة.' : 'I’m one of you, and this was the start.<br>The rest is up to you… let our efforts reach everyone, and make success a habit.'}</p>
+                <p>${currentLang === 'ar' ? 'المشروع دا مش جهد فرد… دا صوت دفعة كاملة حبت تسيب أثر، وتثبت إن لما بنتكاتف، نقدر نعمل حاجة تفضل شاهدة علينا.' : 'This project isn’t the effort of one person… it’s the voice of an entire group that wanted to leave a mark, proving that when we come together, we can create something lasting.'}</p>
+                <p>${currentLang === 'ar' ? 'منّا… ولينا… ودايمًا فخورين ببعض' : 'From us… to us… and always proud of each other.'}</p>
+                <h3>${currentLang === 'ar' ? 'إحنا مش مجرد مجموعة<br>إحنا الجيل اللي هيغيّر شكل الهندسة المدنية.' : 'We’re not just a group<br>We’re the generation that will change the face of civil engineering.'}</h3>
+                
+                <div class="app-footer">
+                    <p class="app-info">Civil Files - Version 1.0</p>
+                    <div class="center-icon-container">
+                        <img src="https://i.postimg.cc/BvvxrMhj/icon.png" alt="App Icon" class="app-icon">
+                    </div>
+                    <div class="new-content ${currentLang === 'ar' ? 'rtl-text' : 'ltr-text'}">
+                        <p>${currentLang === 'ar' ? 'نسخة خفيفة وآمنة بتجمعلك أهم الروابط الهندسية في مكان واحد.' : 'A light, secure version that brings together the most important engineering links in one place.'}</p>
+                        <p>${currentLang === 'ar' ? 'تطبيق Civil Files هيسهّل عليك توصل لكل حاجة مهمة كطالب هندسة مدنية.' : 'The Civil Files app will make it easy for you to access everything important as a civil engineering student.'}</p>
+                        <p>${currentLang === 'ar' ? 'التطبيق آمن تمامًا – مفيهوش صلاحيات غريبة أو إعلانات مزعجة.🛡️' : 'The app is completely safe – no strange permissions or annoying ads.🛡️'}</p>
+                    </div>
+                    <p class="contact-title ${currentLang === 'ar' ? 'rtl-text' : 'ltr-text'}">${currentLang === 'ar' ? 'محتاج مساعدة؟ 📞' : 'Need help? 📞'}</p>
+                    <div class="contact-links-new ${currentLang === 'ar' ? 'rtl-text' : 'ltr-text'}">
+                        <a href="https://wa.me/201025442369?text=Hello%20Engineer%20Islam!" target="_blank">
+                            ${currentLang === 'ar' ? 'اضغط هنا للتواصل عبر واتساب' : 'Click here to contact via WhatsApp'}
+                            <img src="https://i.postimg.cc/bv0K5YBy/Picsart-25-08-06-15-22-09-229.png" alt="Whatsapp Icon" class="social-icon">
+                        </a>
+                        <a href="https://t.me/EngEslamWael" target="_blank">
+                            ${currentLang === 'ar' ? 'اضغط هنا للتواصل عبر التليجرام' : 'Click here to contact via Telegram'}
+                            <img src="https://i.postimg.cc/8c7XTTtr/Telegram.png" alt="Telegram Icon" class="social-icon">
+                        </a>
+                    </div>
+                    <footer class="developer-credit">Developed by Engineer Eslam Wael — Level 3 Civil</footer>
                 </div>
             </div>
         `;

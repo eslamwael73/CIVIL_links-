@@ -944,11 +944,15 @@ input[type="color"] {
 .app-footer {
   background-color: #000;
   color: #fff;
-  padding: 40px 20px;
+  padding: 40px 0; /* إزالة padding يمين ويسار */
   text-align: center;
   margin-top: 50px;
+  margin-left: 0; /* إزالة أي هوامش */
+  margin-right: 0;
+  width: 100%; /* التأكد من أن الفوتر يملأ العرض كاملاً */
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
+  box-sizing: border-box; /* التأكد من أن الـ padding مش هيأثر على العرض */
 }
 
 .app-footer .app-info {
@@ -973,6 +977,7 @@ input[type="color"] {
 .app-footer .new-content {
   margin-bottom: 20px;
   padding: 0 20px;
+  text-align: inherit; /* يرث اتجاه النص من الكلاس (rtl أو ltr) */
 }
 
 .app-footer .new-content p {
@@ -981,22 +986,24 @@ input[type="color"] {
 }
 
 .app-footer .contact-title {
-  text-align: right;
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
-  padding-right: 20px;
-  direction: rtl; /* حل مشكلة المحاذاة */
+  padding: 0 20px;
+  text-align: inherit; /* يرث اتجاه النص */
 }
 
 .app-footer .contact-links-new {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
   gap: 15px;
-  margin-right: 20px;
   margin-bottom: 20px;
-  direction: rtl; /* حل مشكلة المحاذاة */
+  padding: 0 20px;
+  align-items: flex-start; /* افتراضي لـ LTR */
+}
+
+.app-footer .contact-links-new.rtl-text {
+  align-items: flex-end; /* محاذاة لليمين في العربي */
 }
 
 .app-footer .contact-links-new a {
@@ -1017,6 +1024,14 @@ input[type="color"] {
   width: 24px;
   height: 24px;
 }
+
+.app-footer .developer-credit {
+  font-size: 14px;
+  margin-top: 20px;
+  padding: 10px 0;
+  text-align: center; /* دايمًا في المنتصف */
+}
+
 /* اتجاه النص حسب اللغة */
 .rtl-text {
   text-align: right;
