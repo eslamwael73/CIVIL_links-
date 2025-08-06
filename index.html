@@ -128,22 +128,34 @@
       <i data-lucide="arrow-right"></i> رجوع
     </button>
   </header>
-<div class="settings-page" id="settingsPage">
-  <header class="settings-header">
-    <div class="settings-header-title">الإعدادات</div>
-    <button class="settings-back-btn" onclick="goBack()">
-      <i data-lucide="arrow-right"></i> رجوع
-    </button>
-  </header>
-<div class="settings-container">
-  <button class="btn" onclick="toggleLanguage()">تغيير اللغة</button>
-  <button class="btn" onclick="openColorPicker()">اختيار لون جديد</button>
-  <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdmktV9yW6t9fx93CLJMYxvgy1l6J5v-RNKXtQjPXQeKG7PfA/viewform?usp=sharing" target="_blank">تقييم الموقع</a>
-  <button class="btn" onclick="shareWebsite()">مشاركة الموقع</button>
-  <a class="btn" href="https://www.mediafire.com/file/ivia6yruf30g4j2/CIVIL+Files+1.0.apk/file" target="_blank">تنزيل التطبيق</a>
-  <button class="btn" onclick="resetSettings()">إرجع زي الأول</button>
-</div>
-</div>
+  <div class="settings-container">
+    <div class="settings-grid">
+      <button class="btn" onclick="toggleLanguage()">
+        <i data-lucide="globe"></i>
+        <span>تغيير اللغة</span>
+      </button>
+      <button class="btn" onclick="openColorPicker()">
+        <i data-lucide="palette"></i>
+        <span>اختيار لون جديد</span>
+      </button>
+      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdmktV9yW6t9fx93CLJMYxvgy1l6J5v-RNKXtQjPXQeKG7PfA/viewform?usp=sharing" target="_blank">
+        <i data-lucide="star"></i>
+        <span>تقييم الموقع</span>
+      </a>
+      <a class="btn" href="https://www.mediafire.com/file/ivia6yruf30g4j2/CIVIL+Files+1.0.apk/file" target="_blank">
+        <i data-lucide="download"></i>
+        <span>تنزيل التطبيق</span>
+      </a>
+      <button class="btn" onclick="shareWebsite()">
+        <i data-lucide="share-2"></i>
+        <span>مشاركة الموقع</span>
+      </button>
+      <button class="btn" onclick="resetSettings()">
+        <i data-lucide="rotate-ccw"></i>
+        <span>إرجع زي الأول</span>
+      </button>
+    </div>
+  </div>
 </div>
 <div id="welcomeModal" class="welcome-modal">
   <div class="modal-content">

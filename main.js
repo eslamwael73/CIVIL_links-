@@ -694,29 +694,25 @@ function updateAboutText() {
 
 // دالة تحديث نصوص صفحة الإعدادات
 function updateSettingsText() {
-    const settingsTitle = document.querySelector('.settings-header-title');
-    const settingsBackBtn = document.querySelector('.settings-back-btn');
+  const settingsPage = document.getElementById('settingsPage');
+  if (settingsPage) {
+    settingsPage.querySelector('.settings-header-title').innerText = currentLang === 'ar' ? 'الإعدادات' : 'Settings';
+    settingsPage.querySelector('.settings-back-btn').innerHTML = `
+      <i data-lucide="${currentLang === 'ar' ? 'arrow-right' : 'arrow-left'}"></i> 
+      ${currentLang === 'ar' ? 'رجوع' : 'Back'}
+    `;
     
-    if (settingsTitle) {
-        settingsTitle.innerText = currentLang === 'ar' ? 'الإعدادات' : 'Settings';
-    }
-
-    if (settingsBackBtn) {
-        settingsBackBtn.innerHTML = `
-            <i data-lucide="${currentLang === 'ar' ? 'arrow-right' : 'arrow-left'}"></i> 
-            ${currentLang === 'ar' ? 'رجوع' : 'Back'}
-        `;
-    }
-    
-    // تحديث نص الأزرار مباشرة
-    document.querySelector('.settings-container button[onclick="toggleLanguage()"]').innerText = currentLang === 'ar' ? 'تغيير اللغة' : 'Change Language';
-    document.querySelector('.settings-container button[onclick="openColorPicker()"]').innerText = currentLang === 'ar' ? 'اختيار لون جديد' : 'Choose New Color';
-    document.querySelector('.settings-container a[href*="docs.google.com"]').innerText = currentLang === 'ar' ? 'تقييم الموقع' : 'Rate the Website';
-    document.querySelector('.settings-container a[href*="mediafire.com"]').innerText = currentLang === 'ar' ? 'تنزيل التطبيق' : 'Download App';
-    document.querySelector('.settings-container button[onclick="shareWebsite()"]').innerText = currentLang === 'ar' ? 'مشاركة الموقع' : 'Share Website';
-    document.querySelector('.settings-container button[onclick="resetSettings()"]').innerText = currentLang === 'ar' ? 'إرجع زي الأول' : 'Reset Settings';
+    settingsPage.querySelector('.settings-grid button[onclick="toggleLanguage()"] span').innerText = currentLang === 'ar' ? 'تغيير اللغة' : 'Change Language';
+    settingsPage.querySelector('.settings-grid button[onclick="openColorPicker()"] span').innerText = currentLang === 'ar' ? 'اختيار لون جديد' : 'Choose New Color';
+    settingsPage.querySelector('.settings-grid a[href*="docs.google.com"] span').innerText = currentLang === 'ar' ? 'تقييم الموقع' : 'Rate the Website';
+    settingsPage.querySelector('.settings-grid a[href*="mediafire.com"] span').innerText = currentLang === 'ar' ? 'تنزيل التطبيق' : 'Download App';
+    settingsPage.querySelector('.settings-grid button[onclick="shareWebsite()"] span').innerText = currentLang === 'ar' ? 'مشاركة الموقع' : 'Share Website';
+    settingsPage.querySelector('.settings-grid button[onclick="resetSettings()"] span').innerText = currentLang === 'ar' ? 'إرجع زي الأول' : 'Reset Settings';
     
     loadIcons();
+  } else {
+    console.error('Settings page not found');
+  }
 }
 
   // دالة تحديث عنوان الهيدر
