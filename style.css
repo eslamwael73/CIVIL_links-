@@ -999,11 +999,8 @@ input[type="color"] {
   gap: 15px;
   margin-bottom: 20px;
   padding: 0 20px;
-  align-items: flex-start;
-}
-
-.app-footer .contact-links-new.rtl-text {
-  align-items: flex-end;
+  align-items: flex-end; /* يمين دايمًا في العربي والإنجليزي */
+  direction: inherit; /* يرث اتجاه النص من اللغة */
 }
 
 .app-footer .contact-links-new a {
