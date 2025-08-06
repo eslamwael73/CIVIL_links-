@@ -673,23 +673,37 @@ const debouncedLoadIcons = debounce(loadIcons, 100);
     document.querySelector('.sidebar-content h3').innerText = currentLang === 'ar' ? 'القائمة' : 'Menu';
   }
 
-   // دالة تحديث نصوص صفحة حول
+// دالة تحديث نصوص صفحة حول
 function updateAboutText() {
-    const aboutTitle = document.querySelector('.about-header-title');
-    const aboutBackBtn = document.querySelector('.about-back-btn');
-
-    if (aboutTitle) {
-        aboutTitle.innerText = currentLang === 'ar' ? 'حول' : 'About';
-    }
-
-    if (aboutBackBtn) {
-        aboutBackBtn.innerHTML = `
+    const aboutPage = document.getElementById('aboutPage');
+    if (aboutPage) {
+        // تحديث العنوان وزر الرجوع
+        aboutPage.querySelector('.about-header-title').innerText = currentLang === 'ar' ? 'حول' : 'About';
+        aboutPage.querySelector('.about-back-btn').innerHTML = `
             <i data-lucide="${currentLang === 'ar' ? 'arrow-right' : 'arrow-left'}"></i> 
             ${currentLang === 'ar' ? 'رجوع' : 'Back'}
         `;
-    }
+        
+        // تحديث نصوص المربع الأسود
+        const contactTitle = aboutPage.querySelector('.contact-us-text');
+        const whatsappText = aboutPage.querySelector('.whatsapp-text');
+        const telegramText = aboutPage.querySelector('.telegram-text');
+        const footerText = aboutPage.querySelector('footer');
 
-    loadIcons();
+        if (currentLang === 'ar') {
+            contactTitle.innerText = 'تواصل معنا';
+            whatsappText.innerText = 'واتساب';
+            telegramText.innerText = 'تيليجرام';
+            footerText.innerText = 'Developed by Engineer Eslam Wael — Level 3 Civil';
+        } else {
+            contactTitle.innerText = 'Contact Us';
+            whatsappText.innerText = 'WhatsApp';
+            telegramText.innerText = 'Telegram';
+            footerText.innerText = 'Developed by Engineer Eslam Wael — Level 3 Civil';
+        }
+
+        loadIcons();
+    }
 }
 
 // دالة تحديث نصوص صفحة الإعدادات
