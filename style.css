@@ -940,10 +940,12 @@ input[type="color"] {
   direction: rtl;
   text-align: center;
 }
-/* إزالة أي margin أو padding من الـ body أو أي container خارجي */
-body {
+/* إزالة أي margin أو padding من الـ body و html */
+html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* منع الـ scrollbar الأفقي */
 }
 
 /* About Page - App Footer */
@@ -951,19 +953,25 @@ body {
   background-color: #000;
   color: #fff;
   padding: 40px 0;
-  text-align: center;
-  margin: 0; /* إزالة أي هوامش */
-  width: 100vw; /* استخدام viewport width عشان يملّي العرض كله */
+  margin: 0;
+  width: 100%; /* عرض كامل بدون viewport width */
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   box-sizing: border-box;
-  position: relative; /* التأكد من أن الفوتر يتحكم في عرضه */
+}
+
+/* ضمان إن أي container فوق الفوتر ميأثرش */
+.about-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .app-footer .app-info {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .app-footer .center-icon-container {
@@ -987,13 +995,13 @@ body {
 
 .app-footer .new-content p {
   font-size: 14px;
-  margin-bottom: 5px;
+  margin-bottom: 10px; /* زيادة المسافة لمظهر أنيق */
 }
 
 .app-footer .contact-title {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 15px; /* زيادة المسافة لمظهر مرتب */
   padding: 0 20px;
   text-align: inherit;
 }
@@ -1013,7 +1021,7 @@ body {
   font-size: 16px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px; /* زيادة المسافة بين النص والأيقونة لمظهر أنيق */
   transition: color 0.3s;
 }
 
@@ -1023,7 +1031,7 @@ body {
 
 .app-footer .contact-links-new a.ltr-text {
   flex-direction: row; /* النص ثم الأيقونة في الإنجليزي */
-  justify-content: flex-end; /* التأكد من أن الرابط كله يمين */
+  justify-content: flex-end; /* التأكد من المحاذاة لليمين */
 }
 
 .app-footer .contact-links-new a:hover {
