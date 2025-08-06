@@ -673,77 +673,67 @@ const debouncedLoadIcons = debounce(loadIcons, 100);
     document.querySelector('.sidebar-content h3').innerText = currentLang === 'ar' ? 'القائمة' : 'Menu';
   }
 
-  // دالة تحديث نصوص صفحة حول
-   function updateAboutText() {
-      const aboutPage = document.getElementById('aboutPage');
-      aboutPage.innerHTML = `
-        <header class="about-header">
-          <div class="about-header-title">${currentLang === 'ar' ? 'حول' : 'About'}</div>
-          <button class="about-back-btn" onclick="goBack()">
-            <i data-lucide="${currentLang === 'ar' ? 'arrow-right' : 'arrow-left'}"></i> ${currentLang === 'ar' ? 'رجوع' : 'Back'}
-          </button>
-        </header>
-        <div class="about-container">
-          <h1>👋 أهلاً بيك في المكان اللي معمول علشانك.</h1>
-          <p>هنا مش بس هتلاقي كل ملفاتك ومقرراتك…<br>هتلاقي ناس زيك، بيسعوا، بيتعلموا، ورايحين لهدف واضح.</p>
-          <p>إحنا مش بنقدم روابط… إحنا بنبني طريق.<br>بنشتغل مع بعض، نذاكر مع بعض، وندفع بعض لقدّام.</p>
-          <p>ماتخليش يومك يعدي من غير خطوة لقدّام.<br>ولو تعبت… افتكر إنك مش لوحدك.<br>إحنا معاك في كل خطوة، لحد ما نوصل سوا.</p>
-          <p>أنا واحد منكم، ودي كانت البداية.<br>الباقي عليكم… خلّي مجهودنا يوصل للكل، وخلّي النجاح عادة.</p>
-          <p>المشروع دا مش جهد فرد… دا صوت دفعة كاملة حبت تسيب أثر، وتثبت إن لما بنتكاتف، نقدر نعمل حاجة تفضل شاهدة علينا.</p>
-    <p>منّا… ولينا… ودايمًا فخورين ببعض</p>
-          <h3>إحنا مش مجرد مجموعة<br>إحنا الجيل اللي هيغيّر شكل الهندسة المدنية.</h3>
-          <footer>Developed by Engineer Eslam Wael — Level 3 Civil</footer>
-        </div>
-      `;
-      loadIcons();
+   // دالة تحديث نصوص صفحة حول
+function updateAboutText() {
+    const aboutTitle = document.querySelector('.about-header-title');
+    const aboutBackBtn = document.querySelector('.about-back-btn');
+
+    if (aboutTitle) {
+        aboutTitle.innerText = currentLang === 'ar' ? 'حول' : 'About';
     }
 
-  // دالة تحديث نصوص صفحة الإعدادات
-  function updateSettingsText() {
-  const settingsPage = document.getElementById('settingsPage');
-  if (settingsPage) {
-    settingsPage.innerHTML = `
-      <header class="settings-header">
-        <div class="settings-header-title">${currentLang === 'ar' ? 'الإعدادات' : 'Settings'}</div>
-        <button class="settings-back-btn" onclick="goBack()">
-          <i data-lucide="${currentLang === 'ar' ? 'arrow-right' : 'arrow-left'}"></i> 
-          ${currentLang === 'ar' ? 'رجوع' : 'Back'}
-        </button>
-      </header>
-      <div class="settings-container">
-        <div class="settings-grid">
-          <button class="btn" onclick="toggleLanguage()">
-            <i data-lucide="globe"></i>
-            <span>${currentLang === 'ar' ? 'تغيير اللغة' : 'Change Language'}</span>
-          </button>
-          <button class="btn" onclick="openColorPicker()">
-            <i data-lucide="palette"></i>
-            <span>${currentLang === 'ar' ? 'اختيار لون جديد' : 'Choose New Color'}</span>
-          </button>
-          <a class="btn" href="https://wa.me/201025442369?text=Hello%20Engineer%20Eslam!" target="_blank">
-            <i data-lucide="message-circle"></i>
-            <span>${currentLang === 'ar' ? 'التواصل عبر واتساب' : 'Contact on WhatsApp'}</span>
-          </a>
-          <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdmktV9yW6t9fx93CLJMYxvgy1l6J5v-RNKXtQjPXQeKG7PfA/viewform?usp=sharing" target="_blank">
-            <i data-lucide="star"></i>
-            <span>${currentLang === 'ar' ? 'تقييم الموقع' : 'Rate the Website'}</span>
-          </a>
-          <button class="btn" onclick="shareWebsite()">
-            <i data-lucide="share-2"></i>
-            <span>${currentLang === 'ar' ? 'مشاركة الموقع' : 'Share Website'}</span>
-          </button>
-          <button class="btn" onclick="resetSettings()">
-            <i data-lucide="rotate-ccw"></i>
-            <span>${currentLang === 'ar' ? 'إعادة الضبط' : 'Reset Settings'}</span>
-          </button>
-        </div>
-      </div>
-    `;
-    console.log('Settings page updated successfully');
+    if (aboutBackBtn) {
+        aboutBackBtn.innerHTML = `
+            <i data-lucide="${currentLang === 'ar' ? 'arrow-right' : 'arrow-left'}"></i> 
+            ${currentLang === 'ar' ? 'رجوع' : 'Back'}
+        `;
+    }
+
     loadIcons();
-  } else {
-    console.error('Settings page not found');
-  }
+}
+  // دالة تحديث نصوص صفحة الإعدادات
+function updateSettingsText() {
+    const settingsTitle = document.querySelector('.settings-header-title');
+    const settingsBackBtn = document.querySelector('.settings-back-btn');
+
+    if (settingsTitle) {
+        settingsTitle.innerText = currentLang === 'ar' ? 'الإعدادات' : 'Settings';
+    }
+
+    if (settingsBackBtn) {
+        settingsBackBtn.innerHTML = `
+            <i data-lucide="${currentLang === 'ar' ? 'arrow-right' : 'arrow-left'}"></i> 
+            ${currentLang === 'ar' ? 'رجوع' : 'Back'}
+        `;
+    }
+
+    // تحديث نص الأزرار مباشرة إذا كانت موجودة
+    const langBtn = document.querySelector('.settings-container button[onclick="toggleLanguage()"]');
+    if (langBtn) {
+        langBtn.innerHTML = `<i data-lucide="globe"></i><span>${currentLang === 'ar' ? 'تغيير اللغة' : 'Change Language'}</span>`;
+    }
+
+    const rateBtn = document.querySelector('.settings-container a[href*="docs.google.com"]');
+    if (rateBtn) {
+        rateBtn.innerHTML = `<i data-lucide="star"></i><span>${currentLang === 'ar' ? 'تقييم الموقع' : 'Rate the Website'}</span>`;
+    }
+
+    const shareBtn = document.querySelector('.settings-container button[onclick="shareWebsite()"]');
+    if (shareBtn) {
+        shareBtn.innerHTML = `<i data-lucide="share-2"></i><span>${currentLang === 'ar' ? 'مشاركة الموقع' : 'Share Website'}</span>`;
+    }
+
+    const downloadBtn = document.querySelector('.settings-container a[href*="mediafire.com"]');
+    if (downloadBtn) {
+        downloadBtn.innerHTML = `<i data-lucide="download"></i><span>${currentLang === 'ar' ? 'تنزيل التطبيق' : 'Download App'}</span>`;
+    }
+
+    const resetBtn = document.querySelector('.settings-container button[onclick="resetSettings()"]');
+    if (resetBtn) {
+        resetBtn.innerHTML = `<i data-lucide="rotate-ccw"></i><span>${currentLang === 'ar' ? 'إرجع زي الأول' : 'Reset Settings'}</span>`;
+    }
+
+    loadIcons();
 }
 
   // دالة تحديث عنوان الهيدر
