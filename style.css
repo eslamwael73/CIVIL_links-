@@ -940,19 +940,24 @@ input[type="color"] {
   direction: rtl;
   text-align: center;
 }
+/* إزالة أي margin أو padding من الـ body أو أي container خارجي */
+body {
+  margin: 0;
+  padding: 0;
+}
+
 /* About Page - App Footer */
 .app-footer {
   background-color: #000;
   color: #fff;
   padding: 40px 0;
   text-align: center;
-  margin-top: 50px;
-  margin-left: 0;
-  margin-right: 0;
-  width: 100%;
+  margin: 0; /* إزالة أي هوامش */
+  width: 100vw; /* استخدام viewport width عشان يملّي العرض كله */
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   box-sizing: border-box;
+  position: relative; /* التأكد من أن الفوتر يتحكم في عرضه */
 }
 
 .app-footer .app-info {
@@ -999,7 +1004,7 @@ input[type="color"] {
   gap: 15px;
   margin-bottom: 20px;
   padding: 0 20px;
-  align-items: flex-end; /* يمين دايمًا في العربي والإنجليزي */
+  align-items: flex-end; /* يمين دايمًا */
 }
 
 .app-footer .contact-links-new a {
@@ -1017,7 +1022,8 @@ input[type="color"] {
 }
 
 .app-footer .contact-links-new a.ltr-text {
-  flex-direction: row-reverse; /* الأيقونة ثم النص في الإنجليزي */
+  flex-direction: row; /* النص ثم الأيقونة في الإنجليزي */
+  justify-content: flex-end; /* التأكد من أن الرابط كله يمين */
 }
 
 .app-footer .contact-links-new a:hover {
