@@ -940,7 +940,6 @@ input[type="color"] {
   direction: rtl;
   text-align: center;
 }
-
 /* About Page - App Footer */
 .app-footer {
   background-color: #000;
@@ -950,6 +949,7 @@ input[type="color"] {
   margin-top: 50px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
+  direction: rtl; /* هذا السطر هو لحل مشكلة المحاذاة */
 }
 
 .app-footer .app-info {
@@ -969,6 +969,17 @@ input[type="color"] {
   width: 60px;
   height: 60px;
   border-radius: 10px;
+}
+
+.app-footer .new-content {
+  text-align: right; /* محاذاة النصوص الجديدة لليمين */
+  margin-bottom: 20px;
+  padding: 0 20px;
+}
+
+.app-footer .new-content p {
+  font-size: 14px;
+  margin-bottom: 5px;
 }
 
 .app-footer .contact-title {

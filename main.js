@@ -696,11 +696,16 @@ function updateAboutText() {
                 <footer>Developed by Engineer Eslam Wael — Level 3 Civil</footer>
 
                 <div class="app-footer">
-                    <p class="app-info">Civil Files - Version 1.0</p>
+                    <p class="app-info">${currentLang === 'ar' ? 'Civil Files - Version 1.0' : 'Civil Files - Version 1.0'}</p>
                     <div class="center-icon-container">
                         <img src="https://i.postimg.cc/BvvxrMhj/icon.png" alt="App Icon" class="app-icon">
                     </div>
-                    <p class="contact-title">للتواصل معنا إذا واجهت أي مشكلة</p>
+                    <div class="new-content">
+                        <p>${currentLang === 'ar' ? 'نسخة خفيفة وآمنة بتجمعلك أهم الروابط الهندسية في مكان واحد.' : 'A light, secure version that brings together the most important engineering links in one place.'}</p>
+                        <p>${currentLang === 'ar' ? 'تطبيق Civil Files هيسهّل عليك توصل لكل حاجة مهمة كطالب هندسة مدنية.' : 'The Civil Files app will make it easy for you to access everything important as a civil engineering student.'}</p>
+                        <p>${currentLang === 'ar' ? 'التطبيق آمن تمامًا – مفيهوش صلاحيات غريبة أو إعلانات مزعجة.🛡️' : 'The app is completely safe – no strange permissions or annoying ads.🛡️'}</p>
+                    </div>
+                    <p class="contact-title">${currentLang === 'ar' ? 'محتاج مساعدة؟ 📞' : 'Need help? 📞'}</p>
                     <div class="contact-links-new">
                         <a href="https://wa.me/201025442369?text=Hello%20Engineer%20Islam!" target="_blank">
                             اضغط هنا للتواصل عبر واتساب
