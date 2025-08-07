@@ -8,7 +8,7 @@ let isLinkOpening = false; // متغير لتتبع حالة الفتح
 // بيانات صفحة مدني
 const civilData = {
     year1: {
-        term1: { link: "https://drive.google.com/drive/folders/19cPnys-MgV0ySa17j4NPE5bFBpy32lMi", name: { ar: "السنة الأولى - الترم الأول", en: "First Year - First Term" } },
+        term1: { link: "https://drive.google.com/drive/folders/19cPnys-MgV0ySa17j4NPE5bFBpy32hMi", name: { ar: "السنة الأولى - الترم الأول", en: "First Year - First Term" } },
         term2: { link: "https://drive.google.com/drive/folders/1vR6OVMnKX7r07_uLcMdKYPxDMBlZg6tM", name: { ar: "السنة الأولى - الترم الثاني", en: "First Year - Second Term" } },
         all: { name: { ar: "السنة الأولى", en: "First Year" } }
     },
@@ -443,6 +443,7 @@ function showPage(page) {
 
     // إغلاق أي مودال مفتوح
     document.querySelectorAll('.civil-modal').forEach(modal => modal.remove());
+    document.querySelectorAll('.download-modal').forEach(modal => modal.remove()); // لإغلاق مودال التحميل
 
     // تحديث pageHistory: إزالة الصفحة الحالية إذا كانت موجودة، وإضافة الصفحة الجديدة إذا كانت رئيسية
     const currentActive = document.querySelector('.nav-item.active');
@@ -487,6 +488,7 @@ function showAbout() {
 
     // إغلاق أي مودال مفتوح
     document.querySelectorAll('.civil-modal').forEach(modal => modal.remove());
+    document.querySelectorAll('.download-modal').forEach(modal => modal.remove()); // لإغلاق مودال التحميل
 
     closeSidebar();
     mainContent.style.display = 'none';
@@ -509,6 +511,7 @@ function showSettings() {
 
     // إغلاق أي مودال مفتوح
     document.querySelectorAll('.civil-modal').forEach(modal => modal.remove());
+    document.querySelectorAll('.download-modal').forEach(modal => modal.remove()); // لإغلاق مودال التحميل
 
     closeSidebar();
     mainContent.style.display = 'none';
@@ -528,6 +531,7 @@ function goBack() {
 
     // إغلاق أي مودال مفتوح
     document.querySelectorAll('.civil-modal').forEach(modal => modal.remove());
+    document.querySelectorAll('.download-modal').forEach(modal => modal.remove()); // لإغلاق مودال التحميل
 
     // إخفاء صفحات الإعدادات وحول
     aboutPage.style.display = 'none';
@@ -716,6 +720,25 @@ function updateAboutText() {
     }
 }
 
+// دالة جديدة لعرض مودال التحميل
+function showDownloadModal() {
+    const modal = document.createElement('div');
+    modal.className = 'civil-modal download-modal';
+    modal.innerHTML = `
+      <button class="close-modal" onclick="this.parentElement.remove()">✕</button>
+      <h3>${currentLang === 'ar' ? 'تنزيل التطبيق' : 'Download App'}</h3>
+      <div class="term-box" onclick="openLink('https://www.mediafire.com/file/ivia6yruf30g4j2/CIVIL+Files+1.0.apk/file', event)">
+        <span>Android</span>
+      </div>
+      <div class="term-box" onclick="showToast('${currentLang === 'ar' ? 'قريبًا...' : 'Coming soon...'}')">
+        <span>iPhone</span>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    modal.style.display = 'block';
+    loadIcons();
+}
+
 // دالة تحديث نصوص صفحة الإعدادات
 function updateSettingsText() {
     const settingsPage = document.getElementById('settingsPage');
@@ -742,10 +765,10 @@ function updateSettingsText() {
                         <i data-lucide="star"></i>
                         <span>${currentLang === 'ar' ? 'تقييم الموقع' : 'Rate the Website'}</span>
                     </a>
-                    <a class="btn" href="https://www.mediafire.com/file/ivia6yruf30g4j2/CIVIL+Files+1.0.apk/file" target="_blank">
+                    <button class="btn" onclick="showDownloadModal()">
                         <i data-lucide="download"></i>
                         <span>${currentLang === 'ar' ? 'تنزيل التطبيق' : 'Download App'}</span>
-                    </a>
+                    </button>
                     <button class="btn" onclick="shareWebsite()">
                         <i data-lucide="share-2"></i>
                         <span>${currentLang === 'ar' ? 'مشاركة الموقع' : 'Share Website'}</span>
