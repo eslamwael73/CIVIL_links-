@@ -3,33 +3,29 @@ const { initializeApp, cert } = require('firebase-admin/app');
 const { getMessaging } = require('firebase-admin/messaging');
 const fetch = require('node-fetch');
 
-// قم بتهيئة Firebase Admin SDK باستخدام مفتاح حساب الخدمة
-// ستحتاج إلى إضافة مفتاح حساب الخدمة الخاص بك كمتغير بيئة في Netlify
-// اسمه FIREBASE_SERVICE_ACCOUNT_KEY
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
 
 initializeApp({
   credential: cert(serviceAccount),
-  databaseURL: 'https://eslam-api-5a47a.firebaseio.com' // تأكد من أن هذا الرابط صحيح
+  databaseURL: 'https://eslam-api-5a47a.firebaseio.com'
 });
 
 exports.handler = async (event, context) => {
   try {
-    // 1. جلب رسالة عشوائية من الـ API الخاص بك
     const messageResponse = await fetch('https://eslamwael-api-arbic.netlify.app/.netlify/functions/random-message');
     const messageData = await messageResponse.json();
     const dailyMessage = messageData.text;
 
-    // 2. إعداد حمولة الإشعار (Notification Payload) لـ Firebase
     const notificationPayload = {
       notification: {
         title: "ملفات مدني",
-        body: dailyMessage
+        body: dailyMessage,
+        icon: "https://eslamwael-api-arbic.netlify.app/icon.png", // هنا تضع رابط الأيقونة
+        badge: "https://eslamwael-api-arbic.netlify.app/badge.png"  // هنا تضع رابط الأيقونة الصغيرة (اختياري)
       },
-      topic: 'all_users' // سيتم إرسال الإشعار لجميع المشتركين في هذا الـ topic
+      topic: 'all_users'
     };
 
-    // 3. إرسال الإشعار عبر Firebase Admin SDK
     const response = await getMessaging().send(notificationPayload);
     console.log('Successfully sent message:', response);
 
