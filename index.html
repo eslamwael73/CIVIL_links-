@@ -106,7 +106,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging.js";
+    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging.js";
 
     // Your web app's Firebase configuration
     const firebaseConfig = {
@@ -118,22 +118,62 @@
       appId: "1:1001488651880:web:2ca301f5ea7e23e0c38ddd",
       measurementId: "G-4TMM1SBG3B"
     };
-    
+
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const messaging = getMessaging(app);
 
-    // هنا يتم طلب الإذن
-    getToken(messaging, { vapidKey: 'BHhUWghDf41__sveHRV2PBEAQi-J2SfYo0emn-3Ma1Ev7yEpE47_iL4_v-oWwEIJ6AKyzCOpFC8_JdLy55Y7kno' }).then((currentToken) => {
-      if (currentToken) {
-        console.log('FCM registration token:', currentToken);
-        // أرسل هذا الـ token إلى السيرفر الخاص بك لحفظه في قاعدة البيانات
-      } else {
-        console.log('No registration token available. Request permission to generate one.');
-      }
-    }).catch((err) => {
-      console.log('An error occurred while retrieving token. ', err);
+    // دالة لطلب الإذن والاشتراك
+    function requestPermission() {
+      console.log('Requesting permission...');
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          console.log('Notification permission granted.');
+
+          getToken(messaging, { vapidKey: 'BHhUWghDf41__sveHRV2PBEAQi-J2SfYo0emn-3Ma1Ev7yEpE47_iL4_v-oWwEIJ6AKyzCOpFC8_JdLy55Y7kno' }).then((currentToken) => {
+            if (currentToken) {
+              console.log('FCM registration token:', currentToken);
+              // إرسال الـ token إلى السيرفر للاشتراك في الـ topic
+              fetch('https://fcm.googleapis.com/v1/projects/eslam-api-5a47a/messages:send', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${currentToken}` // هنا يتم استخدام الـ token للاشتراك
+                },
+                body: JSON.stringify({
+                  message: {
+                    token: currentToken,
+                    topic: 'all_users'
+                  }
+                })
+              }).then(response => {
+                console.log('Subscribed to topic:', response);
+              }).catch(error => {
+                console.error('Error subscribing to topic:', error);
+              });
+            } else {
+              console.log('No registration token available. Request permission to generate one.');
+            }
+          }).catch((err) => {
+            console.log('An error occurred while retrieving token. ', err);
+          });
+
+        } else {
+          console.log('Unable to get permission to notify.');
+        }
+      });
+    }
+
+    // استدعاء الدالة عند تحميل الصفحة
+    requestPermission();
+
+    // استقبال الرسائل عندما يكون الموقع مفتوحًا
+    onMessage(messaging, (payload) => {
+      console.log('Message received. ', payload);
+      new Notification(payload.notification.title, {
+        body: payload.notification.body,
+      });
     });
   </script>
-
 </body>
 </html>
