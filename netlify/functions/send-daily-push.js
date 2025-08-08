@@ -16,12 +16,17 @@ exports.handler = async (event, context) => {
     const messageData = await messageResponse.json();
     const dailyMessage = messageData.text;
 
+    // هذا هو الكود الصحيح
     const notificationPayload = {
       notification: {
-        title: "ملفات مدني",
+        title: "Civil Files",
         body: dailyMessage,
-        icon: "https://eslamwael-api-arbic.netlify.app/icon.png", // هنا تضع رابط الأيقونة
-        badge: "https://eslamwael-api-arbic.netlify.app/badge.png"  // هنا تضع رابط الأيقونة الصغيرة (اختياري)
+      },
+      webpush: {
+        notification: {
+          icon: "https://eslamwael-api-arbic.netlify.app/icon.png", // هنا رابط الأيقونة
+          badge: "https://eslamwael-api-arbic.netlify.app/badge.png" // هنا رابط الأيقونة الصغيرة
+        }
       },
       topic: 'all_users'
     };
