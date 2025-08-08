@@ -12,20 +12,33 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/moment-hijri@2.1.2/moment-hijri.min.js"></script>
   <link rel="stylesheet" href="style.css">
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "9ff6e6b8-19b5-4185-9f52-4531a0c2c005",
-      safari_web_id: "web.onesignal.auto.68a9d4a9-72e3-41ba-a788-4f8badeb71ae",
-      notifyButton: {
-        enable: true,
-      },
-    });
-    await OneSignal.Notifications.requestPermission();
-  });
-</script>
+
+  <link rel="manifest" href="/manifest.json">
+
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyAADlFaE-Qmp19P2wIsnZdjWhDmkjEJm8A",
+      authDomain: "eslam-api-5a47a.firebaseapp.com",
+      projectId: "eslam-api-5a47a",
+      storageBucket: "eslam-api-5a47a.firebasestorage.app",
+      messagingSenderId: "1001488651880",
+      appId: "1:1001488651880:web:2ca301f5ea7e23e0c38ddd",
+      measurementId: "G-4TMM1SBG3B"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+
 </head>
 <body>
   <header id="header">
