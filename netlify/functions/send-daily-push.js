@@ -1,50 +1,48 @@
 // Filename: send-daily-push.js
+const { initializeApp, cert } = require('firebase-admin/app');
+const { getMessaging } = require('firebase-admin/messaging');
 const fetch = require('node-fetch');
+
+// قم بتهيئة Firebase Admin SDK باستخدام مفتاح حساب الخدمة
+// ستحتاج إلى إضافة مفتاح حساب الخدمة الخاص بك كمتغير بيئة في Netlify
+// اسمه FIREBASE_SERVICE_ACCOUNT_KEY
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+
+initializeApp({
+  credential: cert(serviceAccount),
+  databaseURL: 'https://eslam-api-5a47a.firebaseio.com' // تأكد من أن هذا الرابط صحيح
+});
 
 exports.handler = async (event, context) => {
   try {
-    // 1. Fetch a random message from your API
+    // 1. جلب رسالة عشوائية من الـ API الخاص بك
     const messageResponse = await fetch('https://eslamwael-api-arbic.netlify.app/.netlify/functions/random-message');
     const messageData = await messageResponse.json();
-    // تم تعديل السطر ده عشان يأخذ قيمة الـ "text" من الـ API
     const dailyMessage = messageData.text;
 
-    // 2. Set up OneSignal configuration
-    const oneSignalAppId = "5d382686-0e60-4504-8d76-b645e9b4601b";
-    const oneSignalApiKey = "4hzt3yz5suhqfgdtotrie3tzw";
-    
-    // 3. Prepare the notification payload
+    // 2. إعداد حمولة الإشعار (Notification Payload) لـ Firebase
     const notificationPayload = {
-      app_id: oneSignalAppId,
-      included_segments: ["Subscribed Users"],
-      contents: { "en": dailyMessage, "ar": dailyMessage },
-      headings: { "en": "Civil Files", "ar": "ملفات مدني" }
+      notification: {
+        title: "ملفات مدني",
+        body: dailyMessage
+      },
+      topic: 'all_users' // سيتم إرسال الإشعار لجميع المشتركين في هذا الـ topic
     };
 
-    // 4. Send the notification via OneSignal API
-    const oneSignalResponse = await fetch('https://onesignal.com/api/v1/notifications', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${oneSignalApiKey}`
-      },
-      body: JSON.stringify(notificationPayload)
-    });
-
-    const responseData = await oneSignalResponse.json();
-
-    console.log("Notification sent successfully:", responseData);
+    // 3. إرسال الإشعار عبر Firebase Admin SDK
+    const response = await getMessaging().send(notificationPayload);
+    console.log('Successfully sent message:', response);
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Notification sent successfully" })
+      body: JSON.stringify({ message: "Notification sent successfully", response: response })
     };
 
   } catch (error) {
     console.error("Error sending notification:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Failed to send notification" })
+      body: JSON.stringify({ error: "Failed to send notification", details: error.message })
     };
   }
 };
