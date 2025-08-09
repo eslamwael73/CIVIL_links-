@@ -12,9 +12,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/moment-hijri@2.1.2/moment-hijri.min.js"></script>
   <link rel="stylesheet" href="style.css">
-
   <link rel="manifest" href="/manifest.json">
-
 </head>
 <body>
   <header id="header">
@@ -76,10 +74,10 @@
   </div>
 
   <div class="about-page" id="aboutPage">
-    </div>
+  </div>
 
   <div class="settings-page" id="settingsPage">
-    </div>
+  </div>
 
   <div id="welcomeModal" class="welcome-modal">
     <div class="modal-content">
@@ -105,7 +103,6 @@
   <script src="main.js"></script>
 
   <script type="module">
-    // تم تغيير إصدار مكتبات Firebase إلى 9.1.1 لتتوافق مع Service Worker
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app-compat.js";
     import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-messaging-compat.js";
 
@@ -116,13 +113,26 @@
       storageBucket: "eslam-api-5a47a.firebasestorage.app",
       messagingSenderId: "1001488651880",
       appId: "1:1001488651880:web:2ca301f5ea7e23e0c38ddd",
-      measurementId: "G-4TMM1SBG3B"
+      // measurementId: "G-4TMM1SBG3B"
     };
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+          .then((registration) => {
+            console.log('Service Worker registered with scope:', registration.scope);
+          })
+          .catch((err) => {
+            console.log('Service Worker registration failed:', err);
+          });
+      });
+    }
 
     const app = initializeApp(firebaseConfig);
     const messaging = getMessaging(app);
 
     function requestPermission() {
+      console.log('Requesting permission...');
       Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
           console.log('Notification permission granted.');
