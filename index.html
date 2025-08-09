@@ -105,8 +105,9 @@
   <script src="main.js"></script>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging.js";
+    // تم تغيير إصدار مكتبات Firebase إلى 9.1.1 لتتوافق مع Service Worker
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app-compat.js";
+    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-messaging-compat.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAADlFaE-Qmp19P2wIsnZdjWhDmkjEJm8A",
