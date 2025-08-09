@@ -1,10 +1,9 @@
-// Filename: main.js
 let pageHistory = [];
 let currentLang = localStorage.getItem('language') || 'ar';
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 let lastClickTime = 0;
 let hasOpenedApp = false;
-let isLinkOpening = false;
+let isLinkOpening = false; // متغير لتتبع حالة الفتح
 
 // بيانات صفحة مدني
 const civilData = {
@@ -41,9 +40,10 @@ const prepData = {
 };
 
 function closeCivilModal(modal) {
-    modal.remove();
+    modal.remove(); // إزالة المودال مباشرة
 }
 
+// دالة إظهار المودال لصفحة مدني
 function showCivilModal(year) {
     const modal = document.createElement('div');
     modal.className = 'civil-modal';
@@ -78,15 +78,16 @@ function openDriveLink(url, event) {
     event.stopPropagation();
 
     const now = Date.now();
-    if (now - lastClickTime < 500) return;
+    if (now - lastClickTime < 500) return; // تقليل الوقت لـ 500ms
     lastClickTime = now;
 
-    if (isLinkOpening) return;
+    if (isLinkOpening) return; // منع فتح الرابط لو لسه فيه رابط بيتفتح
     isLinkOpening = true;
 
     const clickedElement = event.currentTarget;
     clickedElement.style.transform = 'scale(0.95)';
 
+    // محاولة فتح التطبيق
     const iframe = document.createElement('iframe');
     iframe.style.display = 'none';
     iframe.src = `intent://drive.google.com${new URL(url).pathname}#Intent;scheme=https;package=com.google.android.apps.docs;end`;
@@ -96,6 +97,7 @@ function openDriveLink(url, event) {
         clickedElement.style.transform = '';
     }, 200);
 
+    // التحقق من فتح التطبيق
     const blurHandler = () => {
         hasOpenedApp = true;
         isLinkOpening = false;
@@ -103,20 +105,23 @@ function openDriveLink(url, event) {
     };
     window.addEventListener('blur', blurHandler);
 
+    // Fallback للمتصفح
     setTimeout(() => {
         if (!hasOpenedApp) {
             window.open(url, '_blank');
         }
         document.body.removeChild(iframe);
         isLinkOpening = false;
-    }, 1000);
+    }, 1000); // تقليل الوقت لـ 1 ثانية
 }
 
+// دالة إضافة/إزالة من المفضلة
 function toggleFavorite(section, item) {
     const favoriteId = `${section}:${item}`;
     const index = favorites.indexOf(favoriteId);
     const isAdding = index === -1;
 
+    // تحديث المفضلة
     if (isAdding) {
         favorites.push(favoriteId);
         console.log(`Added to favorites: ${favoriteId}`);
@@ -140,16 +145,20 @@ function toggleFavorite(section, item) {
 
     localStorage.setItem('favorites', JSON.stringify(favorites));
 
+    // تحديث جميع القلوب في كل الصفحات
     updateAllHeartIcons();
 
+    // تحديث صفحة المفضلة ديناميكيًا حتى لو مش مفتوحة
     updateFavoritesPage();
 }
 
+// دالة مساعدة للتحقق من أن صفحة المفضلة نشطة
 function isFavoritesPageActive() {
     const activeNavItem = document.querySelector('.nav-item.active');
     return activeNavItem && activeNavItem.dataset.page === 'favorites';
 }
 
+// دالة مساعدة للحصول على بيانات العنصر
 function getItemData(section, id) {
     if (section === 'prep') return prepData[id];
     if (section === 'civil') {
@@ -159,6 +168,7 @@ function getItemData(section, id) {
     return null;
 }
 
+// دالة لتحديث جميع أيقونات القلوب
 function updateAllHeartIcons() {
     document.querySelectorAll('.favorite-btn').forEach(btn => {
         const onclickContent = btn.getAttribute('onclick');
@@ -176,6 +186,7 @@ function updateAllHeartIcons() {
     loadIcons();
 }
 
+// دالة لعرض المفضلة
 function renderFavorites() {
     const container = document.getElementById('favorites-grid');
     if (!container) return;
@@ -197,10 +208,12 @@ function renderFavorites() {
     loadIcons();
 }
 
+// دالة لتحديث صفحة المفضلة ديناميكيًا
 function updateFavoritesPage() {
     if (isFavoritesPageActive()) {
         renderFavorites();
     }
+    // نخزن الـ DOM بتاع صفحة المفضلة في الخلفية
     pages.favorites[currentLang] = `
     <div class="prep-container">
       <h1 class="prep-title">${currentLang === 'ar' ? 'المفضلة' : 'Favorites'}</h1>
@@ -221,6 +234,7 @@ function updateFavoritesPage() {
   `;
 }
 
+// دالة البحث
 function searchContent(query) {
     query = query.toLowerCase().trim();
     const results = [];
@@ -249,6 +263,7 @@ function searchContent(query) {
     return results;
 }
 
+// بيانات الصفحات
 const pages = {
     home: {
         ar: `
@@ -398,6 +413,7 @@ function debounce(func, wait) {
 
 const debouncedLoadIcons = debounce(loadIcons, 100);
 
+// دالة تحميل الأيقونات
 function loadIcons(attempts = 5) {
     if (attempts <= 0) {
         console.error('Failed to load Lucide library after multiple attempts');
@@ -411,11 +427,13 @@ function loadIcons(attempts = 5) {
     }
 }
 
+// دالة إغلاق الشريط الجانبي
 function closeSidebar() {
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.remove('open');
 }
 
+// دالة إظهار الصفحة
 function showPage(page) {
     const mainContent = document.getElementById('main-content');
     const aboutPage = document.getElementById('aboutPage');
@@ -423,14 +441,18 @@ function showPage(page) {
     const header = document.getElementById('header');
     const nav = document.getElementById('nav');
 
+    // إغلاق أي مودال مفتوح
     document.querySelectorAll('.civil-modal').forEach(modal => modal.remove());
-    document.querySelectorAll('.download-modal').forEach(modal => modal.remove());
+    document.querySelectorAll('.download-modal').forEach(modal => modal.remove()); // لإغلاق مودال التحميل
 
+    // تحديث pageHistory: إزالة الصفحة الحالية إذا كانت موجودة، وإضافة الصفحة الجديدة إذا كانت رئيسية
     const currentActive = document.querySelector('.nav-item.active');
     if (currentActive) {
         const currentPage = currentActive.getAttribute('data-page');
         if (currentPage && currentPage !== page && ['home', 'prep', 'civil', 'favorites'].includes(page)) {
+            // إزالة الصفحة الحالية إذا كانت موجودة في pageHistory
             pageHistory = pageHistory.filter(p => p !== page);
+            // إضافة الصفحة الجديدة
             pageHistory.push(page);
         }
     }
@@ -456,6 +478,7 @@ function showPage(page) {
     updateAllHeartIcons();
 }
 
+// دالة إظهار صفحة حول
 function showAbout() {
     const mainContent = document.getElementById('main-content');
     const aboutPage = document.getElementById('aboutPage');
@@ -463,8 +486,9 @@ function showAbout() {
     const header = document.getElementById('header');
     const nav = document.getElementById('nav');
 
+    // إغلاق أي مودال مفتوح
     document.querySelectorAll('.civil-modal').forEach(modal => modal.remove());
-    document.querySelectorAll('.download-modal').forEach(modal => modal.remove());
+    document.querySelectorAll('.download-modal').forEach(modal => modal.remove()); // لإغلاق مودال التحميل
 
     closeSidebar();
     mainContent.style.display = 'none';
@@ -477,6 +501,7 @@ function showAbout() {
     loadIcons();
 }
 
+// دالة إظهار صفحة الإعدادات
 function showSettings() {
     const mainContent = document.getElementById('main-content');
     const aboutPage = document.getElementById('aboutPage');
@@ -484,8 +509,9 @@ function showSettings() {
     const header = document.getElementById('header');
     const nav = document.getElementById('nav');
 
+    // إغلاق أي مودال مفتوح
     document.querySelectorAll('.civil-modal').forEach(modal => modal.remove());
-    document.querySelectorAll('.download-modal').forEach(modal => modal.remove());
+    document.querySelectorAll('.download-modal').forEach(modal => modal.remove()); // لإغلاق مودال التحميل
 
     closeSidebar();
     mainContent.style.display = 'none';
@@ -498,18 +524,21 @@ function showSettings() {
     loadIcons();
 }
 
+// دالة الرجوع
 function goBack() {
     const aboutPage = document.getElementById('aboutPage');
     const settingsPage = document.getElementById('settingsPage');
 
+    // إغلاق أي مودال مفتوح
     document.querySelectorAll('.civil-modal').forEach(modal => modal.remove());
-    document.querySelectorAll('.download-modal').forEach(modal => modal.remove());
+    document.querySelectorAll('.download-modal').forEach(modal => modal.remove()); // لإغلاق مودال التحميل
 
+    // إخفاء صفحات الإعدادات وحول
     aboutPage.style.display = 'none';
     settingsPage.style.display = 'none';
 
     if (pageHistory.length > 0) {
-        const previousPage = pageHistory.pop();
+        const previousPage = pageHistory.pop(); // آخر صفحة في pageHistory
         if (['home', 'prep', 'civil', 'favorites'].includes(previousPage)) {
             showPage(previousPage);
         } else {
@@ -520,6 +549,7 @@ function goBack() {
     }
 }
 
+// دالة تبديل البحث
 function toggleSearch() {
     const modal = document.getElementById('searchModal');
     const input = document.getElementById('searchInput');
@@ -532,24 +562,33 @@ function toggleSearch() {
     loadIcons();
 }
 
+// دالة تبديل الوضع الليلي
 function toggleDarkMode() {
     try {
+        // تبديل الكلاس
         document.body.classList.toggle('dark-mode');
         const isDarkMode = document.body.classList.contains('dark-mode');
 
+        // حفظ الحالة في التخزين المحلي
         localStorage.setItem('darkMode', isDarkMode);
 
+        // تطبيق اللون الأساسي حسب الوضع
         const customColor = localStorage.getItem('customColor') || '#1C6AE3';
         const appliedColor = isDarkMode ? lightenColor(customColor, 0.2) : customColor;
         document.body.style.setProperty('--primary-color', appliedColor);
 
+        // تحديث أيقونة الوضع الداكن
         const darkModeBtn = document.querySelector('[title="Dark Mode"]');
         if (darkModeBtn) {
+            // مسح الأيقونة الحالية
             darkModeBtn.innerHTML = '';
+
+            // إنشاء أيقونة جديدة حسب الوضع
             const newIcon = document.createElement('i');
             newIcon.setAttribute('data-lucide', isDarkMode ? 'sun' : 'moon');
             darkModeBtn.appendChild(newIcon);
 
+            // إعادة توليد الأيقونات
             setTimeout(() => {
                 if (typeof lucide !== 'undefined' && lucide.createIcons) {
                     lucide.createIcons();
@@ -565,6 +604,7 @@ function toggleDarkMode() {
     }
 }
 
+// دالة تبديل الشريط الجانبي
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.toggle('open');
@@ -572,12 +612,14 @@ function toggleSidebar() {
     loadIcons();
 }
 
+// دالة تبديل اللغة
 function toggleLanguage() {
     currentLang = currentLang === 'ar' ? 'en' : 'ar';
     localStorage.setItem('language', currentLang);
     document.documentElement.lang = currentLang;
     document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
 
+    // ريستارت كامل لـ pageHistory ورجوع للرئيسية
     pageHistory = [];
 
     updateHeaderTitle();
@@ -587,11 +629,13 @@ function toggleLanguage() {
     updateSettingsText();
     updateFavoritesPage();
 
+    // إعادة تحميل الصفحة الرئيسية
     showPage('home');
     closeSidebar();
     loadIcons();
 }
 
+// دالة تحديث نصوص التنقل
 function updateNavText() {
     const navItems = document.querySelectorAll('.nav-item');
     const navText = {
@@ -607,6 +651,7 @@ function updateNavText() {
     });
 }
 
+// دالة تحديث نصوص الشريط الجانبي
 function updateSidebarText() {
     const sidebarItems = document.querySelectorAll('.sidebar-content ul li');
     const sidebarText = [
@@ -625,6 +670,7 @@ function updateSidebarText() {
     document.querySelector('.sidebar-content h3').innerText = currentLang === 'ar' ? 'القائمة' : 'Menu';
 }
 
+// دالة تحديث نصوص صفحة حول
 function updateAboutText() {
     const aboutPage = document.getElementById('aboutPage');
     if (aboutPage) {
@@ -674,6 +720,7 @@ function updateAboutText() {
     }
 }
 
+// دالة جديدة لعرض مودال التحميل
 function showDownloadModal() {
     const modal = document.createElement('div');
     modal.className = 'civil-modal download-modal';
@@ -692,6 +739,7 @@ function showDownloadModal() {
     loadIcons();
 }
 
+// دالة تحديث نصوص صفحة الإعدادات
 function updateSettingsText() {
     const settingsPage = document.getElementById('settingsPage');
     if (settingsPage) {
@@ -736,6 +784,7 @@ function updateSettingsText() {
     }
 }
 
+// دالة تحديث عنوان الهيدر
 function updateHeaderTitle() {
     const headerTitle = document.querySelector('.header-title');
     if (headerTitle) {
@@ -746,6 +795,7 @@ function updateHeaderTitle() {
     }
 }
 
+// دالة مشاركة الموقع
 function shareWebsite() {
     const url = 'https://eslamwael73.github.io/CIVIL_links-/';
     if (navigator.share) {
@@ -763,6 +813,7 @@ function shareWebsite() {
     }
 }
 
+// حدث البحث
 document.getElementById('searchInput').addEventListener('input', function () {
     const query = this.value;
     const results = searchContent(query);
@@ -796,6 +847,7 @@ function applyCustomColor(color) {
     }
 }
 
+// دالة لتقليل سطوع اللون للـ hover
 function darkenColor(hex, factor) {
     hex = hex.replace('#', '');
     const r = parseInt(hex.substring(0, 2), 16);
@@ -806,6 +858,7 @@ function darkenColor(hex, factor) {
 
 function openColorPicker() {
     try {
+        // فحص توافق المتصفح
         const supportsColorInput = 'HTMLInputElement' in window && 'type' in document.createElement('input');
         if (!supportsColorInput) {
             alert(currentLang === 'ar' ? 'اختيار الألوان غير مدعوم في هذا المتصفح. جرب متصفح آخر.' : 'Color picker is not supported in this browser. Try another browser.');
@@ -822,7 +875,7 @@ function openColorPicker() {
         input.style.border = 'none';
         input.style.padding = '0';
         input.style.margin = '0';
-        input.style.pointerEvents = 'none';
+        input.style.pointerEvents = 'none'; // منع التفاعل المباشر
 
         input.onchange = function () {
             try {
@@ -856,6 +909,7 @@ function lightenColor(hex, factor) {
     return `#${Math.min(Math.floor(r + (255 - r) * factor), 255).toString(16).padStart(2, '0')}${Math.min(Math.floor(g + (255 - g) * factor), 255).toString(16).padStart(2, '0')}${Math.min(Math.floor(b + (255 - b) * factor), 255).toString(16).padStart(2, '0')}`;
 }
 
+// دالة لإعادة ضبط الإعدادات
 function resetSettings() {
     try {
         document.body.classList.remove('dark-mode', 'custom-theme', 'custom-background');
@@ -906,6 +960,7 @@ function openLink(url, event) {
     isLinkOpening = false;
 }
 
+// دالة عرض التوست
 function showToast(message) {
     Toastify({
         text: message,
@@ -924,30 +979,34 @@ function showToast(message) {
     }).showToast();
 }
 
+// التحقق من التاريخ الهجري
 function checkIslamicDate() {
     const todayHijri = moment().format('iYYYY/iM/iD');
     const [hijriYear, hijriMonth, hijriDay] = todayHijri.split('/').map(Number);
 
     const storageKey = `toastShown-${moment().format('YYYY-MM-DD')}`;
     if (localStorage.getItem(storageKey)) {
-        return;
+        return; // لو التوست ظهر النهارده خلاص ميتكررش
     }
 
     let message = "";
 
+    // رمضان (من 1 إلى 3 رمضان)
     if (hijriMonth === 9 && hijriDay >= 1 && hijriDay <= 3) {
         message = "رمضان كريم 🌙";
     }
+    // عيد الفطر (1 إلى 3 شوال)
     else if (hijriMonth === 10 && hijriDay >= 1 && hijriDay <= 3) {
         message = "عيد فطر سعيد! 🎉";
     }
+    // عيد الأضحى (10 إلى 13 ذو الحجة)
     else if (hijriMonth === 12 && hijriDay >= 10 && hijriDay <= 13) {
         message = "عيد أضحي سعيد! 🎉";
     }
 
     if (message !== "") {
         showToast(message);
-        localStorage.setItem(storageKey, "shown");
+        localStorage.setItem(storageKey, "shown"); // نحفظ انه اتعرض النهارده
     }
 }
 
@@ -955,8 +1014,8 @@ function showDailySalawatToast() {
     Toastify({
         text: "هل صليت على النبي اليوم؟ ﷺ",
         duration: 5000,
-        gravity: "bottom",
-        position: "center",
+        gravity: "bottom", // أسفل الشاشة
+        position: "center", // في المنتصف أفقيًا
         close: true,
         backgroundColor: "#ffffff",
         style: {
@@ -965,7 +1024,7 @@ function showDailySalawatToast() {
             borderRadius: "10px",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
             color: "#000000",
-            marginBottom: "60px"
+            marginBottom: "60px" // ← رفع التوست عن الحافة السفلية
         }
     }).showToast();
 }
@@ -974,19 +1033,21 @@ function closeModal() {
     const modal = document.getElementById("welcomeModal");
     if (modal) {
         modal.classList.add("hidden");
-        localStorage.setItem("welcomeShown", "true");
+        localStorage.setItem("welcomeShown", "true"); // تخزين الحالة
         setTimeout(() => {
-            modal.style.display = "none";
+            modal.style.display = "none"; // إخفاء المودال
+            // إظهار العناصر الرئيسية
             document.getElementById("main-content").style.display = "block";
             document.getElementById("header").style.display = "flex";
             document.getElementById("nav").style.display = "flex";
+            // إظهار الـ toast بعد إغلاق المودال في أول مرة
             showDailySalawatToast();
         }, 300);
     }
 }
 
 // تهيئة الصفحة عند التحميل
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", function () {
     try {
         document.documentElement.lang = currentLang;
         document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
@@ -1001,12 +1062,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         const appliedColor = isDarkMode ? lightenColor(customColor, 0.2) : customColor;
         document.body.style.setProperty('--primary-color', appliedColor);
 
+        // إخفاء كل العناصر غير المودال في البداية
         document.getElementById("main-content").style.display = "none";
         document.getElementById("settingsPage").style.display = "none";
         document.getElementById("aboutPage").style.display = "none";
         document.getElementById("header").style.display = "none";
         document.getElementById("nav").style.display = "none";
 
+        // التحقق من المودال
         const modal = document.getElementById("welcomeModal");
         if (modal) {
             if (!localStorage.getItem("welcomeShown")) {
@@ -1014,18 +1077,23 @@ document.addEventListener("DOMContentLoaded", async function () {
                 modal.style.display = "flex";
             } else {
                 modal.style.display = "none";
+                // إظهار العناصر الرئيسية لو المودال مش هيظهر
                 document.getElementById("main-content").style.display = "block";
                 document.getElementById("header").style.display = "flex";
                 document.getElementById("nav").style.display = "flex";
+                // إظهار الـ toast لو المودال مش هيظهر
                 showDailySalawatToast();
             }
         } else {
+            // إظهار العناصر الرئيسية لو المودال مش موجود
             document.getElementById("main-content").style.display = "block";
             document.getElementById("header").style.display = "flex";
             document.getElementById("nav").style.display = "flex";
+            // إظهار الـ toast لو المودال مش موجود
             showDailySalawatToast();
         }
 
+        // تحديث أيقونة الـ Dark Mode
         const darkModeIcon = document.querySelector('[title="Dark Mode"] i');
         if (darkModeIcon) {
             darkModeIcon.setAttribute('data-lucide', isDarkMode ? 'sun' : 'moon');
@@ -1040,80 +1108,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         updateFavoritesPage();
         loadIcons();
         checkIslamicDate();
-
-        // -------------------------------------------------------------------------------------------------------
-        // تم نقل كود Firebase والإشعارات هنا لضمان عمله في المكان الصحيح بعد تحميل كل شيء
-        // وتم تعديله ليعمل بشكل مستقل عن window.addEventListener('load', ...) الذي يمكن أن يتعارض مع DOMContentLoaded
-        // -------------------------------------------------------------------------------------------------------
-
-        // تهيئة Firebase في نفس المكان الذي يتم فيه تسجيل Service Worker
-        if ('serviceWorker' in navigator) {
-            try {
-                // استيراد مكتبات Firebase بشكل ديناميكي
-                const { initializeApp } = await import("https://www.gstatic.com/firebasejs/9.1.1/firebase-app-compat.js");
-                const { getMessaging, getToken, onMessage } = await import("https://www.gstatic.com/firebasejs/9.1.1/firebase-messaging-compat.js");
-
-                const firebaseConfig = {
-                    apiKey: "AIzaSyAADlFaE-Qmp19P2wIsnZdjWhDmkjEJm8A",
-                    authDomain: "eslam-api-5a47a.firebaseapp.com",
-                    projectId: "eslam-api-5a47a",
-                    storageBucket: "eslam-api-5a47a.firebasestorage.app",
-                    messagingSenderId: "1001488651880",
-                    appId: "1:1001488651880:web:2ca301f5ea7e23e0c38ddd",
-                };
-
-                const app = initializeApp(firebaseConfig);
-                const messaging = getMessaging(app);
-
-                // تسجيل Service Worker
-                navigator.serviceWorker.register('/firebase-messaging-sw.js')
-                    .then((registration) => {
-                        console.log('Service Worker registered with scope:', registration.scope);
-                        
-                        // طلب الإذن والحصول على التوكن
-                        Notification.requestPermission().then((permission) => {
-                            if (permission === 'granted') {
-                                console.log('Notification permission granted.');
-                                getToken(messaging, { vapidKey: 'BHhUWghDf41__sveHRV2PBEAQi-J2SfYo0emn-3Ma1Ev7yEpE47_iL4_v-oWwEIJ6AKyzCOpFC8_JdLy55Y7kno' }).then((currentToken) => {
-                                    if (currentToken) {
-                                        console.log('FCM registration token:', currentToken);
-                                        fetch('/.netlify/functions/subscribe-user', {
-                                            method: 'POST',
-                                            headers: { 'Content-Type': 'application/json' },
-                                            body: JSON.stringify({ token: currentToken })
-                                        }).then(response => {
-                                            console.log('Subscribed to topic successfully.');
-                                        }).catch(error => {
-                                            console.error('Error subscribing to topic:', error);
-                                        });
-                                    } else {
-                                        console.log('No registration token available.');
-                                    }
-                                }).catch((err) => {
-                                    console.log('An error occurred while retrieving token. ', err);
-                                });
-                            } else {
-                                console.log('Unable to get permission to notify.');
-                            }
-                        });
-                    })
-                    .catch((err) => {
-                        console.error('Service Worker registration failed:', err);
-                    });
-
-                // معالجة الإشعارات عند وصولها
-                onMessage(messaging, (payload) => {
-                    console.log('Message received. ', payload);
-                    new Notification(payload.notification.title, {
-                        body: payload.notification.body,
-                    });
-                });
-            } catch (error) {
-                console.error("Firebase initialization failed:", error);
-            }
-        }
-        // -------------------------------------------------------------------------------------------------------
-
     } catch (error) {
         console.error('Error during page load:', error);
     }
