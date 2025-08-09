@@ -1,4 +1,3 @@
-// Filename: subscribe-user.js
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getMessaging } = require('firebase-admin/messaging');
 
@@ -25,7 +24,28 @@ exports.handler = async (event, context) => {
   }
   
   try {
-    const { token } = JSON.parse(event.body);
+    // التحقق مما إذا كان event.body موجودًا وقوم بفك تشفيره إذا كان base64
+    let body = event.body;
+    if (event.isBase64Encoded) {
+        body = Buffer.from(body, 'base64').toString('utf-8');
+    }
+
+    // التحقق من وجود البيانات قبل محاولة تحليلها
+    if (!body) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: "Request body is empty." })
+      };
+    }
+
+    const { token } = JSON.parse(body);
+
+    if (!token) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: "Token is missing in the request body." })
+      };
+    }
 
     await getMessaging().subscribeToTopic(token, 'all_users');
     
