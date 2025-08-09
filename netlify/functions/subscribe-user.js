@@ -2,14 +2,28 @@
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getMessaging } = require('firebase-admin/messaging');
 
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+let serviceAccount;
+try {
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+} catch (error) {
+  console.error("Failed to parse FIREBASE_SERVICE_ACCOUNT_KEY:", error);
+}
 
-initializeApp({
-  credential: cert(serviceAccount),
-  databaseURL: 'https://eslam-api-5a47a.firebaseio.com'
-});
+if (serviceAccount) {
+  initializeApp({
+    credential: cert(serviceAccount),
+    databaseURL: 'https://eslam-api-5a47a.firebaseio.com'
+  });
+}
 
 exports.handler = async (event, context) => {
+  if (!serviceAccount) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "FIREBASE_SERVICE_ACCOUNT_KEY is missing or invalid." })
+    };
+  }
+  
   try {
     const { token } = JSON.parse(event.body);
 
