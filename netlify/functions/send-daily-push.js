@@ -3,20 +3,33 @@ const { initializeApp, cert } = require('firebase-admin/app');
 const { getMessaging } = require('firebase-admin/messaging');
 const fetch = require('node-fetch');
 
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+let serviceAccount;
+try {
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+} catch (error) {
+  console.error("Failed to parse FIREBASE_SERVICE_ACCOUNT_KEY:", error);
+}
 
-initializeApp({
-  credential: cert(serviceAccount),
-  databaseURL: 'https://eslam-api-5a47a.firebaseio.com'
-});
+if (serviceAccount) {
+  initializeApp({
+    credential: cert(serviceAccount),
+    databaseURL: 'https://eslam-api-5a47a.firebaseio.com'
+  });
+}
 
 exports.handler = async (event, context) => {
+  if (!serviceAccount) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "FIREBASE_SERVICE_ACCOUNT_KEY is missing or invalid." })
+    };
+  }
+  
   try {
     const messageResponse = await fetch('https://eslamwael-api-arbic.netlify.app/.netlify/functions/random-message');
     const messageData = await messageResponse.json();
     const dailyMessage = messageData.text;
 
-    // هذا هو الكود الصحيح
     const notificationPayload = {
       notification: {
         title: "Civil Files",
@@ -24,8 +37,8 @@ exports.handler = async (event, context) => {
       },
       webpush: {
         notification: {
-          icon: "https://eslamwael-api-arbic.netlify.app/icon.png", // هنا رابط الأيقونة
-          badge: "https://eslamwael-api-arbic.netlify.app/badge.png" // هنا رابط الأيقونة الصغيرة
+          icon: "https://eslamwael-api-arbic.netlify.app/icon.png",
+          // تمت إزالة سطر badge.png
         }
       },
       topic: 'all_users'
