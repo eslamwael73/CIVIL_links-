@@ -1,4 +1,9 @@
 // Filename: main.js
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getMessaging, getToken, onMessage, deleteToken } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging.js";
+
+// -- أكواد مشروعك الأصلية --
+// ---------------------------------------------------------------------------------------------------
 let pageHistory = [];
 let currentLang = localStorage.getItem('language') || 'ar';
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -6,7 +11,6 @@ let lastClickTime = 0;
 let hasOpenedApp = false;
 let isLinkOpening = false;
 
-// بيانات صفحة مدني
 const civilData = {
     year1: {
         term1: { link: "https://drive.google.com/drive/folders/19cPnys-MgV0ySa17j4NPE5bFBpy32hMi", name: { ar: "السنة الأولى - الترم الأول", en: "First Year - First Term" } },
@@ -30,7 +34,6 @@ const civilData = {
     }
 };
 
-// بيانات المواد في إعدادي
 const prepData = {
     physics: { link: "https://drive.google.com/drive/folders/1xK_yAObA4zCJo8b85ajqqS4LHpvoQBVP", name: { ar: "فيزياء 2", en: "Physics 2" } },
     math: { link: "https://drive.google.com/drive/folders/1xH4POYHcCXOCQ0HXPiSrKG7cNuMP5YY9", name: { ar: "رياضيات 2", en: "Mathematics 2" } },
@@ -73,36 +76,28 @@ function openDriveLink(url, event) {
         event.stopImmediatePropagation();
         return;
     }
-
     event.preventDefault();
     event.stopPropagation();
-
     const now = Date.now();
     if (now - lastClickTime < 500) return;
     lastClickTime = now;
-
     if (isLinkOpening) return;
     isLinkOpening = true;
-
     const clickedElement = event.currentTarget;
     clickedElement.style.transform = 'scale(0.95)';
-
     const iframe = document.createElement('iframe');
     iframe.style.display = 'none';
     iframe.src = `intent://drive.google.com${new URL(url).pathname}#Intent;scheme=https;package=com.google.android.apps.docs;end`;
     document.body.appendChild(iframe);
-
     setTimeout(() => {
         clickedElement.style.transform = '';
     }, 200);
-
     const blurHandler = () => {
         hasOpenedApp = true;
         isLinkOpening = false;
         window.removeEventListener('blur', blurHandler);
     };
     window.addEventListener('blur', blurHandler);
-
     setTimeout(() => {
         if (!hasOpenedApp) {
             window.open(url, '_blank');
@@ -116,7 +111,6 @@ function toggleFavorite(section, item) {
     const favoriteId = `${section}:${item}`;
     const index = favorites.indexOf(favoriteId);
     const isAdding = index === -1;
-
     if (isAdding) {
         favorites.push(favoriteId);
         console.log(`Added to favorites: ${favoriteId}`);
@@ -137,11 +131,8 @@ function toggleFavorite(section, item) {
             console.log(`Removed terms for ${year} from favorites`);
         }
     }
-
     localStorage.setItem('favorites', JSON.stringify(favorites));
-
     updateAllHeartIcons();
-
     updateFavoritesPage();
 }
 
@@ -179,7 +170,6 @@ function updateAllHeartIcons() {
 function renderFavorites() {
     const container = document.getElementById('favorites-grid');
     if (!container) return;
-
     container.innerHTML = favorites.length === 0
         ? `<p>${currentLang === 'ar' ? 'لا توجد مفضلات' : 'No favorites'}</p>`
         : favorites.map(fav => {
@@ -193,7 +183,6 @@ function renderFavorites() {
               </div>
             `;
         }).join('');
-
     loadIcons();
 }
 
@@ -227,13 +216,11 @@ function searchContent(query) {
     if (query === '') {
         return results;
     }
-
     Object.entries(prepData).forEach(([id, data]) => {
         if (data.name[currentLang].toLowerCase().includes(query)) {
             results.push({ section: 'prep', id, name: data.name[currentLang], link: data.link });
         }
     });
-
     Object.entries(civilData).forEach(([year, data]) => {
         if (data.all.name[currentLang].toLowerCase().includes(query)) {
             results.push({ section: 'civil', id: `${year}.all`, name: data.all.name[currentLang], link: '#' });
@@ -245,7 +232,6 @@ function searchContent(query) {
             results.push({ section: 'civil', id: `${year}.term2`, name: data.term2.name[currentLang], link: data.term2.link });
         }
     });
-
     return results;
 }
 
@@ -536,20 +522,16 @@ function toggleDarkMode() {
     try {
         document.body.classList.toggle('dark-mode');
         const isDarkMode = document.body.classList.contains('dark-mode');
-
         localStorage.setItem('darkMode', isDarkMode);
-
         const customColor = localStorage.getItem('customColor') || '#1C6AE3';
         const appliedColor = isDarkMode ? lightenColor(customColor, 0.2) : customColor;
         document.body.style.setProperty('--primary-color', appliedColor);
-
         const darkModeBtn = document.querySelector('[title="Dark Mode"]');
         if (darkModeBtn) {
             darkModeBtn.innerHTML = '';
             const newIcon = document.createElement('i');
             newIcon.setAttribute('data-lucide', isDarkMode ? 'sun' : 'moon');
             darkModeBtn.appendChild(newIcon);
-
             setTimeout(() => {
                 if (typeof lucide !== 'undefined' && lucide.createIcons) {
                     lucide.createIcons();
@@ -577,16 +559,13 @@ function toggleLanguage() {
     localStorage.setItem('language', currentLang);
     document.documentElement.lang = currentLang;
     document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-
     pageHistory = [];
-
     updateHeaderTitle();
     updateNavText();
     updateSidebarText();
     updateAboutText();
     updateSettingsText();
     updateFavoritesPage();
-
     showPage('home');
     closeSidebar();
     loadIcons();
@@ -600,7 +579,6 @@ function updateNavText() {
         civil: { ar: 'مدني', en: 'Civil' },
         favorites: { ar: 'مفضلة', en: 'Favorites' }
     };
-
     navItems.forEach(item => {
         const page = item.getAttribute('data-page');
         item.querySelector('div').innerText = navText[page][currentLang];
@@ -617,11 +595,9 @@ function updateSidebarText() {
         { ar: 'الإعدادات', en: 'Settings' },
         { ar: 'حول', en: 'About' }
     ];
-
     sidebarItems.forEach((item, index) => {
         item.innerText = sidebarText[index][currentLang];
     });
-
     document.querySelector('.sidebar-content h3').innerText = currentLang === 'ar' ? 'القائمة' : 'Menu';
 }
 
@@ -884,24 +860,18 @@ function openLink(url, event) {
         event.stopImmediatePropagation();
         return;
     }
-
     event.preventDefault();
     event.stopPropagation();
-
     const now = Date.now();
     if (now - lastClickTime < 500) return;
     lastClickTime = now;
-
     if (isLinkOpening) return;
     isLinkOpening = true;
-
     const clickedElement = event.currentTarget;
     clickedElement.parentElement.style.transform = 'scale(0.95)';
-
     setTimeout(() => {
         clickedElement.parentElement.style.transform = '';
     }, 200);
-
     window.open(url, '_blank');
     isLinkOpening = false;
 }
@@ -927,14 +897,11 @@ function showToast(message) {
 function checkIslamicDate() {
     const todayHijri = moment().format('iYYYY/iM/iD');
     const [hijriYear, hijriMonth, hijriDay] = todayHijri.split('/').map(Number);
-
     const storageKey = `toastShown-${moment().format('YYYY-MM-DD')}`;
     if (localStorage.getItem(storageKey)) {
         return;
     }
-
     let message = "";
-
     if (hijriMonth === 9 && hijriDay >= 1 && hijriDay <= 3) {
         message = "رمضان كريم 🌙";
     }
@@ -944,7 +911,6 @@ function checkIslamicDate() {
     else if (hijriMonth === 12 && hijriDay >= 10 && hijriDay <= 13) {
         message = "عيد أضحي سعيد! 🎉";
     }
-
     if (message !== "") {
         showToast(message);
         localStorage.setItem(storageKey, "shown");
@@ -990,7 +956,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     try {
         document.documentElement.lang = currentLang;
         document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-
         const savedTheme = localStorage.getItem('theme') || 'custom';
         const customColor = localStorage.getItem('customColor') || '#1C6AE3';
         document.body.classList.add('custom-theme');
@@ -1035,107 +1000,96 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             }, 50);
         }
-
         showPage('home');
         updateFavoritesPage();
         loadIcons();
         checkIslamicDate();
 
-        // -------------------------------------------------------------------------------------------------------
-        // تم نقل كود Firebase والإشعارات هنا لضمان عمله في المكان الصحيح بعد تحميل كل شيء
-        // وتم تعديله ليعمل بشكل مستقل عن window.addEventListener('load', ...) الذي يمكن أن يتعارض مع DOMContentLoaded
-        // -------------------------------------------------------------------------------------------------------
-
-        // تهيئة Firebase في نفس المكان الذي يتم فيه تسجيل Service Worker
-        if ('serviceWorker' in navigator) {
-            try {
-                // استيراد مكتبات Firebase بشكل ديناميكي
-                const { initializeApp } = await import("https://www.gstatic.com/firebasejs/9.1.1/firebase-app-compat.js");
-                const { getMessaging, getToken, onMessage, deleteToken } = await import("https://www.gstatic.com/firebasejs/9.1.1/firebase-messaging-compat.js");
-
-                const firebaseConfig = {
-                    apiKey: "AIzaSyAADlFaE-Qmp19P2wIsnZdjWhDmkjEJm8A",
-                    authDomain: "eslam-api-5a47a.firebaseapp.com",
-                    projectId: "eslam-api-5a47a",
-                    storageBucket: "eslam-api-5a47a.firebasestorage.app",
-                    messagingSenderId: "1001488651880",
-                    appId: "1:1001488651880:web:2ca301f5ea7e23e0c38ddd",
-                };
-
-                const app = initializeApp(firebaseConfig);
-                const messaging = getMessaging(app);
-
-                // تسجيل Service Worker
-                navigator.serviceWorker.register('/firebase-messaging-sw.js')
-                    .then((registration) => {
-                        console.log('Service Worker registered with scope:', registration.scope);
-                        
-                        // طلب الإذن والحصول على التوكن
-                        Notification.requestPermission().then((permission) => {
-                            if (permission === 'granted') {
-                                console.log('Notification permission granted.');
-                                // حذف الرمز القديم أولاً ثم الحصول على الرمز الجديد
-                                deleteToken(messaging).then(() => {
-                                    console.log('Old token deleted successfully.');
-                                    getToken(messaging, { vapidKey: 'BM-2QcW-T52JmJtGkO2I6Yf-H8YlD4dF6g8Y9oHqXpA3rJ-E1tC6h5Y4kLzXmB7a' }).then((currentToken) => {
-                                        if (currentToken) {
-                                            console.log('New FCM registration token:', currentToken);
-                                            fetch('/.netlify/functions/subscribe-user', {
-                                                method: 'POST',
-                                                headers: { 'Content-Type': 'application/json' },
-                                                body: JSON.stringify({ token: currentToken })
-                                            }).then(response => {
-                                                console.log('Subscribed to topic successfully.');
-                                            }).catch(error => {
-                                                console.error('Error subscribing to topic:', error);
-                                            });
-                                        } else {
-                                            console.log('No registration token available.');
-                                        }
-                                    }).catch((err) => {
-                                        console.log('An error occurred while retrieving token. ', err);
-                                    });
-                                }).catch((err) => {
-                                    console.log('An error occurred while deleting old token. ', err);
-                                    // If deletion fails, still try to get a new token
-                                    getToken(messaging, { vapidKey: 'BM-2QcW-T52JmJtGkO2I6Yf-H8YlD4dF6g8Y9oHqXpA3rJ-E1tC6h5Y4kLzXmB7a' }).then((currentToken) => {
-                                        if (currentToken) {
-                                            console.log('New FCM registration token:', currentToken);
-                                            fetch('/.netlify/functions/subscribe-user', {
-                                                method: 'POST',
-                                                headers: { 'Content-Type': 'application/json' },
-                                                body: JSON.stringify({ token: currentToken })
-                                            }).then(response => {
-                                                console.log('Subscribed to topic successfully.');
-                                            }).catch(error => {
-                                                console.error('Error subscribing to topic:', error);
-                                            });
-                                        }
-                                    });
-                                });
-                            } else {
-                                console.log('Unable to get permission to notify.');
-                            }
-                        });
-                    })
-                    .catch((err) => {
-                        console.error('Service Worker registration failed:', err);
-                    });
-
-                // معالجة الإشعارات عند وصولها
-                onMessage(messaging, (payload) => {
-                    console.log('Message received. ', payload);
-                    new Notification(payload.notification.title, {
-                        body: payload.notification.body,
-                    });
-                });
-            } catch (error) {
-                console.error("Firebase initialization failed:", error);
-            }
-        }
-        // -------------------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------
+        // هذا هو كود Firebase الذي تمت مراجعته وتصحيحه، تم وضعه في دالة منفصلة لزيادة التنظيم
+        // ----------------------------------------------------------------------------------
+        initializeFirebase();
 
     } catch (error) {
         console.error('Error during page load:', error);
     }
 });
+
+// دالة منفصلة لتنظيم كود Firebase
+async function initializeFirebase() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        console.log('Push messaging is not supported by this browser.');
+        return;
+    }
+
+    // معلومات Firebase الخاصة بك
+    const firebaseConfig = {
+      apiKey: "AIzaSyAADlFaE-Qmp19P2wIsnZdjWhDmkjEJm8A",
+      authDomain: "eslam-api-5a47a.firebaseapp.com",
+      projectId: "eslam-api-5a47a",
+      storageBucket: "eslam-api-5a47a.firebasestorage.app",
+      messagingSenderId: "1001488651880",
+      appId: "1:1001488651880:web:2ca301f5ea7e23e0c38ddd",
+    };
+
+    // مفتاح VAPID من إعدادات مشروعك في Firebase
+    const vapidKey = 'BM-2QcW-T52JmJtGkO2I6Yf-H8YlD4dF6g8Y9oHqXpA3rJ-E1tC6h5Y4kLzXmB7a';
+
+    try {
+        const app = initializeApp(firebaseConfig);
+        const messaging = getMessaging(app);
+
+        // تسجيل Service Worker
+        await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+        const registration = await navigator.serviceWorker.ready;
+        console.log('Service Worker is ready with scope:', registration.scope);
+
+        // طلب الإذن والحصول على التوكن
+        Notification.requestPermission().then(async (permission) => {
+            if (permission === 'granted') {
+                console.log('Notification permission granted.');
+                
+                // حاول حذف التوكن القديم أولاً قبل طلب توكن جديد
+                try {
+                    await deleteToken(messaging);
+                    console.log('Old token deleted successfully.');
+                } catch (err) {
+                    console.warn('Unable to delete old token. A new one will still be requested.', err);
+                }
+
+                // طلب توكن جديد
+                getToken(messaging, { vapidKey: vapidKey }).then((currentToken) => {
+                    if (currentToken) {
+                        console.log('New FCM registration token:', currentToken);
+                        fetch('/.netlify/functions/subscribe-user', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ token: currentToken })
+                        }).then(response => {
+                            console.log('Subscribed to topic successfully.');
+                        }).catch(error => {
+                            console.error('Error subscribing to topic:', error);
+                        });
+                    } else {
+                        console.log('No registration token available.');
+                    }
+                }).catch((err) => {
+                    console.log('An error occurred while retrieving token. ', err);
+                });
+            } else {
+                console.log('Unable to get permission to notify. Permission status:', permission);
+            }
+        });
+        
+        // معالجة الإشعارات عند وصولها
+        onMessage(messaging, (payload) => {
+            console.log('Message received. ', payload);
+            new Notification(payload.notification.title, {
+                body: payload.notification.body,
+            });
+        });
+
+    } catch (error) {
+        console.error("Firebase initialization failed:", error);
+    }
+}
