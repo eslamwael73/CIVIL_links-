@@ -1077,7 +1077,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 // حذف الرمز القديم أولاً ثم الحصول على الرمز الجديد
                                 deleteToken(messaging).then(() => {
                                     console.log('Old token deleted successfully.');
-                                    getToken(messaging, { vapidKey: 'BM-2QcW-T52JmJtGkO2I6Yf-H8YlD4dF6g8Y9oHqXpA3rJ-E1tC6h5Y4kLzXmB7a' }).then((currentToken) => {
+                                    getToken(messaging, { vapidKey: 'BHhUWghDf41__sveHRV2PBEAQi-J2SfYo0emn-3Ma1Ev7yEpE47_iL4_v-oWwEIJ6AKyzCOpFC8_JdLy55Y7kno' }).then((currentToken) => {
                                         if (currentToken) {
                                             console.log('New FCM registration token:', currentToken);
                                             fetch('/.netlify/functions/subscribe-user', {
@@ -1098,7 +1098,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 }).catch((err) => {
                                     console.log('An error occurred while deleting old token. ', err);
                                     // If deletion fails, still try to get a new token
-                                    getToken(messaging, { vapidKey: 'BM-2QcW-T52JmJtGkO2I6Yf-H8YlD4dF6g8Y9oHqXpA3rJ-E1tC6h5Y4kLzXmB7a' }).then((currentToken) => {
+                                    getToken(messaging, { vapidKey: 'BHhUWghDf41__sveHRV2PBEAQi-J2SfYo0emn-3Ma1Ev7yEpE47_iL4_v-oWwEIJ6AKyzCOpFC8_JdLy55Y7kno' }).then((currentToken) => {
                                         if (currentToken) {
                                             console.log('New FCM registration token:', currentToken);
                                             fetch('/.netlify/functions/subscribe-user', {
