@@ -971,7 +971,7 @@ function showDailySalawatToast() {
 function closeModal() {
     const modal = document.getElementById("welcomeModal");
     if (modal) {
-        console.log("Closing welcome modal"); // للتأكد إن الدالة بتشتغل
+        console.log("Closing welcome modal"); // عشان تتأكد إن الدالة شغالة
         modal.style.display = "none"; // إخفاء المودل فورًا
         localStorage.setItem("welcomeShown", "true");
         document.getElementById("main-content").style.display = "block";
@@ -1137,7 +1137,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }, 50);
         }
-        
+
+        // إضافة event listener لزر OK
+        const okButton = document.getElementById("okButton");
+        if (okButton) {
+            okButton.addEventListener("click", closeModal);
+        } else {
+            console.error("OK button not found in welcome modal");
+        }
+
         // استدعاء دالة تهيئة Firebase Messaging هنا
         initializeMessaging();
 
