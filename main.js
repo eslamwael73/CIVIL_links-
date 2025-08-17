@@ -1040,19 +1040,52 @@ function requestPermissionAndGenerateToken() {
     });
 }
 
-function deleteFCMToken() {
-    getToken(messaging, { vapidKey: 'BHhUWghDf41__sveHRV2PBEAQi-J2SfYo0emn-3Ma1Ev7yEpE47_iL4_v-oWwEIJ6AKyzCOpFC8_JdLy55Y7kno' })
-        .then((currentToken) => {
-            if (currentToken) {
-                deleteToken(messaging, currentToken).then(() => {
-                    console.log('Token deleted successfully.');
-                    // يمكنك هنا إرسال إشارة إلى سيرفرك بحذف التوكن أيضاً
-                }).catch((err) => {
-                    console.log('Unable to delete token. ', err);
-                });
-            }
+// استيراد الدوال من Firebase
+import { getToken, deleteToken } from "firebase/messaging";
+
+// دالة تحديث التوكن (تحذف القديم وتولد جديد)
+async function refreshFCMToken(messaging) {
+    try {
+        // حذف التوكن القديم
+        await deleteToken(messaging);
+        console.log("Old token deleted ✅");
+
+        // طلب إذن من المستخدم
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+            console.log("User denied notifications ❌");
+            return null;
+        }
+
+        // توليد توكن جديد
+        const newToken = await getToken(messaging, {
+            vapidKey: "BHhUWghDf41__sveHRV2PBEAQi-J2SfYo0emn-3Ma1Ev7yEpE47_iL4_v-oWwEIJ6AKyzCOpFC8_JdLy55Y7kno"
         });
+
+        if (newToken) {
+            console.log("New token generated ✅:", newToken);
+            // هنا ابعته لسيرفرك علشان تحدث قاعدة البيانات
+            return newToken;
+        } else {
+            console.log("No token generated ❌");
+            return null;
+        }
+
+    } catch (error) {
+        console.error("Error refreshing FCM token ❌:", error);
+        return null;
+    }
 }
+
+// تشغيل الدالة أوتوماتيك أول ما الموقع يفتح
+window.addEventListener("load", () => {
+    refreshFCMToken(messaging).then((token) => {
+        if (token) {
+            // مثال: ابعت التوكن لسيرفرك
+            // fetch("/save-token", { method: "POST", body: JSON.stringify({ token }) });
+        }
+    });
+});
 
 // تهيئة الصفحة عند التحميل
 document.addEventListener("DOMContentLoaded", function () {
