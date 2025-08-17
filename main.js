@@ -971,15 +971,15 @@ function showDailySalawatToast() {
 function closeModal() {
     const modal = document.getElementById("welcomeModal");
     if (modal) {
-        modal.classList.add("hidden");
+        console.log("Closing welcome modal"); // للتأكد إن الدالة بتشتغل
+        modal.style.display = "none"; // إخفاء المودل فورًا
         localStorage.setItem("welcomeShown", "true");
-        setTimeout(() => {
-            modal.style.display = "none";
-            document.getElementById("main-content").style.display = "block";
-            document.getElementById("header").style.display = "flex";
-            document.getElementById("nav").style.display = "flex";
-            showDailySalawatToast();
-        }, 300);
+        document.getElementById("main-content").style.display = "block";
+        document.getElementById("header").style.display = "flex";
+        document.getElementById("nav").style.display = "flex";
+        showDailySalawatToast();
+    } else {
+        console.error("Welcome modal not found in DOM");
     }
 }
 
