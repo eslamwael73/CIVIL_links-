@@ -1050,8 +1050,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         if ('serviceWorker' in navigator) {
             try {
                 // استيراد مكتبات Firebase بشكل ديناميكي
-                const { initializeApp } = await import("https://www.gstatic.com/firebasejs/9.1.1/firebase-app-compat.js");
-                const { getMessaging, getToken, onMessage, deleteToken } = await import("https://www.gstatic.com/firebasejs/9.1.1/firebase-messaging-compat.js");
+                const { initializeApp } = await import("https://www.gstatic.com/firebasejs/12.1.0/firebase-app-compat.js");
+                const { getMessaging, getToken, onMessage, deleteToken } = await import("https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging-compat.js");
 
                 const firebaseConfig = {
                     apiKey: "AIzaSyAADlFaE-Qmp19P2wIsnZdjWhDmkjEJm8A",
