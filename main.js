@@ -1,10 +1,10 @@
+// Filename: main.js
 let pageHistory = [];
 let currentLang = localStorage.getItem('language') || 'ar';
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 let lastClickTime = 0;
 let hasOpenedApp = false;
 let isLinkOpening = false;
-let isMessagingInitialized = false;
 
 // بيانات صفحة مدني
 const civilData = {
@@ -44,7 +44,6 @@ function closeCivilModal(modal) {
     modal.remove();
 }
 
-// دالة إظهار المودال لصفحة مدني
 function showCivilModal(year) {
     const modal = document.createElement('div');
     modal.className = 'civil-modal';
@@ -113,7 +112,6 @@ function openDriveLink(url, event) {
     }, 1000);
 }
 
-// دالة إضافة/إزالة من المفضلة
 function toggleFavorite(section, item) {
     const favoriteId = `${section}:${item}`;
     const index = favorites.indexOf(favoriteId);
@@ -141,7 +139,9 @@ function toggleFavorite(section, item) {
     }
 
     localStorage.setItem('favorites', JSON.stringify(favorites));
+
     updateAllHeartIcons();
+
     updateFavoritesPage();
 }
 
@@ -937,9 +937,11 @@ function checkIslamicDate() {
 
     if (hijriMonth === 9 && hijriDay >= 1 && hijriDay <= 3) {
         message = "رمضان كريم 🌙";
-    } else if (hijriMonth === 10 && hijriDay >= 1 && hijriDay <= 3) {
+    }
+    else if (hijriMonth === 10 && hijriDay >= 1 && hijriDay <= 3) {
         message = "عيد فطر سعيد! 🎉";
-    } else if (hijriMonth === 12 && hijriDay >= 10 && hijriDay <= 13) {
+    }
+    else if (hijriMonth === 12 && hijriDay >= 10 && hijriDay <= 13) {
         message = "عيد أضحي سعيد! 🎉";
     }
 
@@ -971,124 +973,20 @@ function showDailySalawatToast() {
 function closeModal() {
     const modal = document.getElementById("welcomeModal");
     if (modal) {
-        console.log("Closing welcome modal"); // عشان تتأكد إن الدالة شغالة
-        modal.style.display = "none"; // إخفاء المودل فورًا
+        modal.classList.add("hidden");
         localStorage.setItem("welcomeShown", "true");
-        document.getElementById("main-content").style.display = "block";
-        document.getElementById("header").style.display = "flex";
-        document.getElementById("nav").style.display = "flex";
-        showDailySalawatToast();
-    } else {
-        console.error("Welcome modal not found in DOM");
+        setTimeout(() => {
+            modal.style.display = "none";
+            document.getElementById("main-content").style.display = "block";
+            document.getElementById("header").style.display = "flex";
+            document.getElementById("nav").style.display = "flex";
+            showDailySalawatToast();
+        }, 300);
     }
 }
-
-// ===========================================
-// أكواد Firebase Messaging الجديدة والمدمجة
-// ===========================================
-
-let messaging;
-
-function initializeMessaging() {
-    if (typeof firebase !== 'undefined' && firebase.messaging && !isMessagingInitialized) {
-        messaging = firebase.messaging();
-        isMessagingInitialized = true;
-        console.log("Firebase Messaging has been initialized.");
-        
-        // استدعاء دالة طلب الصلاحيات وتوليد التوكن
-        requestPermissionAndGenerateToken();
-        
-        // إعداد onMessage لاستقبال الإشعارات في الخلفية
-        onMessage(messaging, (payload) => {
-            console.log('Message received while app is in foreground. ', payload);
-            const notificationTitle = payload.notification.title;
-            const notificationOptions = {
-                body: payload.notification.body,
-                icon: payload.notification.icon,
-            };
-            new Notification(notificationTitle, notificationOptions);
-        });
-        
-    } else if (typeof firebase !== 'undefined' && firebase.messaging && isMessagingInitialized) {
-        console.log("Firebase Messaging is already initialized.");
-    } else {
-        console.warn("Firebase or Firebase Messaging library not available. Retrying...");
-        setTimeout(initializeMessaging, 500);
-    }
-}
-
-function requestPermissionAndGenerateToken() {
-    console.log('Requesting permission...');
-    Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-            console.log('Notification permission granted.');
-            getToken(messaging, { vapidKey: 'BHhUWghDf41__sveHRV2PBEAQi-J2SfYo0emn-3Ma1Ev7yEpE47_iL4_v-oWwEIJ6AKyzCOpFC8_JdLy55Y7kno' })
-                .then((currentToken) => {
-                    if (currentToken) {
-                        console.log('FCM registration token:', currentToken);
-                        // هنا يمكنك إرسال التوكن إلى قاعدة البيانات أو السيرفر الخاص بك
-                    } else {
-                        console.log('No registration token available. Request permission to generate one.');
-                    }
-                })
-                .catch((err) => {
-                    console.log('An error occurred while retrieving token. ', err);
-                });
-        } else {
-            console.log('Unable to get permission to notify.');
-        }
-    });
-}
-
-// استيراد الدوال من Firebase
-import { getToken, deleteToken } from "firebase/messaging";
-
-// دالة تحديث التوكن (تحذف القديم وتولد جديد)
-async function refreshFCMToken(messaging) {
-    try {
-        // حذف التوكن القديم
-        await deleteToken(messaging);
-        console.log("Old token deleted ✅");
-
-        // طلب إذن من المستخدم
-        const permission = await Notification.requestPermission();
-        if (permission !== "granted") {
-            console.log("User denied notifications ❌");
-            return null;
-        }
-
-        // توليد توكن جديد
-        const newToken = await getToken(messaging, {
-            vapidKey: "BHhUWghDf41__sveHRV2PBEAQi-J2SfYo0emn-3Ma1Ev7yEpE47_iL4_v-oWwEIJ6AKyzCOpFC8_JdLy55Y7kno"
-        });
-
-        if (newToken) {
-            console.log("New token generated ✅:", newToken);
-            // هنا ابعته لسيرفرك علشان تحدث قاعدة البيانات
-            return newToken;
-        } else {
-            console.log("No token generated ❌");
-            return null;
-        }
-
-    } catch (error) {
-        console.error("Error refreshing FCM token ❌:", error);
-        return null;
-    }
-}
-
-// تشغيل الدالة أوتوماتيك أول ما الموقع يفتح
-window.addEventListener("load", () => {
-    refreshFCMToken(messaging).then((token) => {
-        if (token) {
-            // مثال: ابعت التوكن لسيرفرك
-            // fetch("/save-token", { method: "POST", body: JSON.stringify({ token }) });
-        }
-    });
-});
 
 // تهيئة الصفحة عند التحميل
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     try {
         document.documentElement.lang = currentLang;
         document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
@@ -1138,21 +1036,105 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 50);
         }
 
-        // إضافة event listener لزر OK
-        const okButton = document.getElementById("okButton");
-        if (okButton) {
-            okButton.addEventListener("click", closeModal);
-        } else {
-            console.error("OK button not found in welcome modal");
-        }
-
-        // استدعاء دالة تهيئة Firebase Messaging هنا
-        initializeMessaging();
-
         showPage('home');
         updateFavoritesPage();
         loadIcons();
         checkIslamicDate();
+
+        // -------------------------------------------------------------------------------------------------------
+        // تم نقل كود Firebase والإشعارات هنا لضمان عمله في المكان الصحيح بعد تحميل كل شيء
+        // وتم تعديله ليعمل بشكل مستقل عن window.addEventListener('load', ...) الذي يمكن أن يتعارض مع DOMContentLoaded
+        // -------------------------------------------------------------------------------------------------------
+
+        // تهيئة Firebase في نفس المكان الذي يتم فيه تسجيل Service Worker
+        if ('serviceWorker' in navigator) {
+            try {
+                // استيراد مكتبات Firebase بشكل ديناميكي
+                const { initializeApp } = await import("https://www.gstatic.com/firebasejs/9.1.1/firebase-app-compat.js");
+                const { getMessaging, getToken, onMessage, deleteToken } = await import("https://www.gstatic.com/firebasejs/9.1.1/firebase-messaging-compat.js");
+
+                const firebaseConfig = {
+                    apiKey: "AIzaSyAADlFaE-Qmp19P2wIsnZdjWhDmkjEJm8A",
+                    authDomain: "eslam-api-5a47a.firebaseapp.com",
+                    projectId: "eslam-api-5a47a",
+                    storageBucket: "eslam-api-5a47a.firebasestorage.app",
+                    messagingSenderId: "1001488651880",
+                    appId: "1:1001488651880:web:2ca301f5ea7e23e0c38ddd",
+                };
+
+                const app = initializeApp(firebaseConfig);
+                const messaging = getMessaging(app);
+
+                // تسجيل Service Worker
+                navigator.serviceWorker.register('/firebase-messaging-sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                        
+                        // طلب الإذن والحصول على التوكن
+                        Notification.requestPermission().then((permission) => {
+                            if (permission === 'granted') {
+                                console.log('Notification permission granted.');
+                                // حذف الرمز القديم أولاً ثم الحصول على الرمز الجديد
+                                deleteToken(messaging).then(() => {
+                                    console.log('Old token deleted successfully.');
+                                    getToken(messaging, { vapidKey: 'BM-2QcW-T52JmJtGkO2I6Yf-H8YlD4dF6g8Y9oHqXpA3rJ-E1tC6h5Y4kLzXmB7a' }).then((currentToken) => {
+                                        if (currentToken) {
+                                            console.log('New FCM registration token:', currentToken);
+                                            fetch('/.netlify/functions/subscribe-user', {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({ token: currentToken })
+                                            }).then(response => {
+                                                console.log('Subscribed to topic successfully.');
+                                            }).catch(error => {
+                                                console.error('Error subscribing to topic:', error);
+                                            });
+                                        } else {
+                                            console.log('No registration token available.');
+                                        }
+                                    }).catch((err) => {
+                                        console.log('An error occurred while retrieving token. ', err);
+                                    });
+                                }).catch((err) => {
+                                    console.log('An error occurred while deleting old token. ', err);
+                                    // If deletion fails, still try to get a new token
+                                    getToken(messaging, { vapidKey: 'BM-2QcW-T52JmJtGkO2I6Yf-H8YlD4dF6g8Y9oHqXpA3rJ-E1tC6h5Y4kLzXmB7a' }).then((currentToken) => {
+                                        if (currentToken) {
+                                            console.log('New FCM registration token:', currentToken);
+                                            fetch('/.netlify/functions/subscribe-user', {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({ token: currentToken })
+                                            }).then(response => {
+                                                console.log('Subscribed to topic successfully.');
+                                            }).catch(error => {
+                                                console.error('Error subscribing to topic:', error);
+                                            });
+                                        }
+                                    });
+                                });
+                            } else {
+                                console.log('Unable to get permission to notify.');
+                            }
+                        });
+                    })
+                    .catch((err) => {
+                        console.error('Service Worker registration failed:', err);
+                    });
+
+                // معالجة الإشعارات عند وصولها
+                onMessage(messaging, (payload) => {
+                    console.log('Message received. ', payload);
+                    new Notification(payload.notification.title, {
+                        body: payload.notification.body,
+                    });
+                });
+            } catch (error) {
+                console.error("Firebase initialization failed:", error);
+            }
+        }
+        // -------------------------------------------------------------------------------------------------------
+
     } catch (error) {
         console.error('Error during page load:', error);
     }
