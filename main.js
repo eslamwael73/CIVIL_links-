@@ -985,23 +985,37 @@ function closeModal() {
     }
 }
 // طلب الإذن للإشعارات
-function requestNotificationPermission() {
-  if ('Notification' in window) {
-    Notification.requestPermission().then(permission => {
+async function requestNotificationPermission() {
+  if ('Notification' in window && 'serviceWorker' in navigator) {
+    try {
+      const permission = await Notification.requestPermission();
+      console.log('Permission status:', permission);
+      
       if (permission === 'granted') {
-        console.log('Notification permission granted.');
-        // هنا هتسجل الـ token مع Firebase
+        console.log('✅ Notification permission granted');
+        // تأكد من تسجيل Service Worker الأول
+        const registration = await navigator.serviceWorker.ready;
+        console.log('✅ Service Worker ready:', registration);
+        return true;
+      } else {
+        console.log('❌ Notification permission denied');
+        return false;
       }
-    });
+    } catch (error) {
+      console.error('Error requesting permission:', error);
+      return false;
+    }
+  } else {
+    console.log('❌ Notifications not supported');
+    return false;
   }
 }
-
-// نادي عليها لما يتحمل الـ DOM
-document.addEventListener("DOMContentLoaded", function() {
-  requestNotificationPermission();
-});
 // تهيئة الصفحة عند التحميل
 document.addEventListener("DOMContentLoaded", async function () {
+    // ضيف السطرين دول في الأول
+    const permissionGranted = await requestNotificationPermission();
+    console.log('Permission granted:', permissionGranted);
+    
     try {
         document.documentElement.lang = currentLang;
         document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
