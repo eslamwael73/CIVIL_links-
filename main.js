@@ -984,7 +984,22 @@ function closeModal() {
         }, 300);
     }
 }
+// طلب الإذن للإشعارات
+function requestNotificationPermission() {
+  if ('Notification' in window) {
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        console.log('Notification permission granted.');
+        // هنا هتسجل الـ token مع Firebase
+      }
+    });
+  }
+}
 
+// نادي عليها لما يتحمل الـ DOM
+document.addEventListener("DOMContentLoaded", function() {
+  requestNotificationPermission();
+});
 // تهيئة الصفحة عند التحميل
 document.addEventListener("DOMContentLoaded", async function () {
     try {
