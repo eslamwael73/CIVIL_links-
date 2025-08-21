@@ -10,16 +10,6 @@ if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
     console.log('✅ تم تحميل service account من JSON string');
   } catch (parseError) {
     console.error('❌ فشل في تحليل JSON:', parseError.message);
-    try {
-      const fixedJson = process.env.FIREBASE_SERVICE_ACCOUNT_KEY
-        .replace(/'/g, '"')
-        .replace(/\\"/g, '"')
-        .replace(/(\w+:)|(\w+ :)/g, (matched) => `"${matched.replace(':', '')}":`);
-      serviceAccount = JSON.parse(fixedJson);
-      console.log('✅ تم تحميل service account من JSON معدل');
-    } catch (fixError) {
-      console.error('❌ فشل في التحليل بعد الإصلاح:', fixError.message);
-    }
   }
 }
 
@@ -32,12 +22,9 @@ if (!serviceAccount) {
   }
 }
 
-if (!serviceAccount) {
-  console.error('❌ لم يتم العثور على مفتاح service account صالح');
-}
-
 exports.handler = async (event) => {
   if (!serviceAccount) {
+    console.error('❌ لم يتم العثور على مفتاح service account صالح');
     return {
       statusCode: 500,
       body: JSON.stringify({
