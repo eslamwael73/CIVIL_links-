@@ -15,7 +15,7 @@ try {
   firebase.initializeApp(firebaseConfig);
   console.log('[firebase-messaging-sw.js] ✅ Firebase initialized successfully');
 } catch (error) {
-  console.error('[firebase-messaging-sw.js] ❌ Failed to initialize Firebase:', error);
+  console.error('[firebase-messaging-sw.js] ❌ Failed to initialize Firebase:', error.message, error);
 }
 
 const messaging = firebase.messaging();
@@ -24,9 +24,15 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] 📩 Received background message:', JSON.stringify(payload, null, 2));
 
-  const notificationTitle = payload.notification?.title || 'Civil Files';
+  // التحقق من وجود notification في الـ payload
+  if (!payload.notification) {
+    console.error('[firebase-messaging-sw.js] ❌ No notification data in payload:', payload);
+    return;
+  }
+
+  const notificationTitle = payload.notification.title || 'Civil Files';
   const notificationOptions = {
-    body: payload.notification?.body || 'إشعار جديد',
+    body: payload.notification.body || 'إشعار جديد',
     icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
     badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
     vibrate: [200, 100, 200],
@@ -43,7 +49,7 @@ messaging.onBackgroundMessage((payload) => {
     self.registration.showNotification(notificationTitle, notificationOptions);
     console.log('[firebase-messaging-sw.js] ✅ Notification displayed successfully');
   } catch (error) {
-    console.error('[firebase-messaging-sw.js] ❌ Failed to display notification:', error);
+    console.error('[firebase-messaging-sw.js] ❌ Failed to display notification:', error.message, error);
   }
 });
 
@@ -81,5 +87,13 @@ self.addEventListener('activate', (event) => {
 
 // معالجة أخطاء عامة
 self.addEventListener('error', (error) => {
-  console.error('[firebase-messaging-sw.js] ❌ Service Worker error:', error);
+  console.error('[firebase-messaging-sw.js] ❌ Service Worker error:', error.message, error);
+});
+
+// اختبار استقبال الإشعارات
+self.addEventListener('push', (event) => {
+  console.log('[firebase-messaging-sw.js] 📬 Push event received:', event);
+  if (event.data) {
+    console.log('[firebase-messaging-sw.js] 📬 Push data:', event.data.json());
+  }
 });
