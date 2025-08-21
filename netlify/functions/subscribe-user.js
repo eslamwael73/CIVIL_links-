@@ -81,7 +81,8 @@ exports.handler = async (event) => {
       statusCode: 200,
       body: JSON.stringify({
         message: 'Subscription successful!',
-        token
+        token,
+        result
       })
     };
   } catch (error) {
