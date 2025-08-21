@@ -1,7 +1,12 @@
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getMessaging } = require('firebase-admin/messaging');
 
-// معالجة مفتاح Firebase Service Account
+const headers = {
+  'Access-Control-Allow-Origin': 'https://eslamwael73.github.io',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS'
+};
+
 let serviceAccount = null;
 
 if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
@@ -9,28 +14,11 @@ if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
     serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
     console.log('✅ تم تحميل service account من JSON string');
   } catch (parseError) {
-    console.error('❌ فشل في تحليل JSON:', parseError.message);
-  }
-}
-
-if (!serviceAccount) {
-  try {
-    serviceAccount = require('./eslam-website-firebase-adminsdk.json');
-    console.log('✅ تم تحميل service account من ملف محلي');
-  } catch (fileError) {
-    console.error('❌ فشل في تحميل الملف المحلي:', fileError.message);
+    console.error('❌ فشل في تحليل JSON لـ FIREBASE_SERVICE_ACCOUNT_KEY:', parseError.message);
   }
 }
 
 exports.handler = async (event) => {
-  // إضافة headers للـ CORS هنا
-  const headers = {
-    'Access-Control-Allow-Origin': 'https://eslamwael73.github.io',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS'
-  };
-  
-  // معالجة طلبات OPTIONS للـ CORS
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
@@ -46,7 +34,7 @@ exports.handler = async (event) => {
       headers,
       body: JSON.stringify({
         error: 'FIREBASE_SERVICE_ACCOUNT_KEY is missing or invalid.',
-        details: 'Check environment variables in Netlify or provide a valid service account file.'
+        details: 'Check environment variables in Netlify.'
       })
     };
   }
@@ -93,7 +81,7 @@ exports.handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('❌ Error subscribing to topic:', error.message, error);
+    console.error('❌ خطأ في تسجيل الـ token في topic:', error.message, error);
     return {
       statusCode: 500,
       headers,
