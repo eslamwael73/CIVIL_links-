@@ -104,59 +104,39 @@
   </div>
   <script src="main.js"></script>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging.js";
+<script type="module">
+  // استيراد مكتبات Firebase بشكل ديناميكي
+  const { initializeApp } = await import("https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js");
+  const { getMessaging, getToken, onMessage, deleteToken } = await import("https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging.js");
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAADlFaE-Qmp19P2wIsnZdjWhDmkjEJm8A",
-      authDomain: "eslam-api-5a47a.firebaseapp.com",
-      projectId: "eslam-api-5a47a",
-      storageBucket: "eslam-api-5a47a.firebasestorage.app",
-      messagingSenderId: "1001488651880",
-      appId: "1:1001488651880:web:2ca301f5ea7e23e0c38ddd",
-      measurementId: "G-4TMM1SBG3B"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyCXX_kt4-3J_ocNKYAegNTar4Bd9OIgA2k",
+    authDomain: "eslam-website.firebaseapp.com",
+    projectId: "eslam-website",
+    storageBucket: "eslam-website.firebasestorage.app",
+    messagingSenderId: "626111073932",
+    appId: "1:626111073932:web:f7137bc90e139e822675a9"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
+  const app = initializeApp(firebaseConfig);
+  const messaging = getMessaging(app);
 
-    function requestPermission() {
-      Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-          console.log('Notification permission granted.');
-          getToken(messaging, { vapidKey: 'BHhUWghDf41__sveHRV2PBEAQi-J2SfYo0emn-3Ma1Ev7yEpE47_iL4_v-oWwEIJ6AKyzCOpFC8_JdLy55Y7kno' }).then((currentToken) => {
-            if (currentToken) {
-              console.log('FCM registration token:', currentToken);
-              fetch('/.netlify/functions/subscribe-user', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: currentToken })
-              }).then(response => {
-                console.log('Subscribed to topic successfully.');
-              }).catch(error => {
-                console.error('Error subscribing to topic:', error);
-              });
-            } else {
-              console.log('No registration token available.');
-            }
-          }).catch((err) => {
-            console.log('An error occurred while retrieving token. ', err);
+  async function getFCMToken() {
+      try {
+          const currentToken = await getToken(messaging, {
+              vapidKey: 'BK_87m-1h-nUholGBr0inWJM2F-b0_lc9kMjHk3c__9htYJo_tcvXy4HPb_dYF-zHsvbqq8qiyrZ63TnEGF7QeU'
           });
-        } else {
-          console.log('Unable to get permission to notify.');
-        }
-      });
-    }
+          if (currentToken) {
+              console.log('FCM token:', currentToken);
+          } else {
+              console.log('No registration token available. Request permission to generate one.');
+          }
+      } catch (err) {
+          console.error('An error occurred while retrieving token. ', err);
+      }
+  }
 
-    requestPermission();
-
-    onMessage(messaging, (payload) => {
-      console.log('Message received. ', payload);
-      new Notification(payload.notification.title, {
-        body: payload.notification.body,
-      });
-    });
-  </script>
+  getFCMToken();
+</script>
 </body>
 </html>

@@ -1,21 +1,20 @@
 // Filename: firebase-messaging-sw.js
-importScripts('https://www.gstatic.com/firebasejs/12.1.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging.js');
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAADlFaE-Qmp19P2wIsnZdjWhDmkjEJm8A",
-  authDomain: "eslam-api-5a47a.firebaseapp.com",
-  projectId: "eslam-api-5a47a",
-  storageBucket: "eslam-api-5a47a.firebasestorage.app",
-  messagingSenderId: "1001488651880",
-  appId: "1:1001488651880:web:2ca301f5ea7e23e0c38ddd"
+  apiKey: "AIzaSyCXX_kt4-3J_ocNKYAegNTar4Bd9OIgA2k",
+  authDomain: "eslam-website.firebaseapp.com",
+  projectId: "eslam-website",
+  storageBucket: "eslam-website.firebasestorage.app",
+  messagingSenderId: "626111073932",
+  appId: "1:626111073932:web:f7137bc90e139e822675a9"
 };
 
 const app = firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging(app);
 
-// This is the VAPID key that your site uses to subscribe to notifications.
-messaging.usePublicVapidKey("BHhUWghDf41__sveHRV2PBEAQi-J2SfYo0emn-3Ma1Ev7yEpE47_iL4_v-oWwEIJ6AKyzCOpFC8_JdLy55Y7kno");
+messaging.usePublicVapidKey("BK_87m-1h-nUholGBr0inWJM2F-b0_lc9kMjHk3c__9htYJo_tcvXy4HPb_dYF-zHsvbqq8qiyrZ63TnEGF7QeU");
 
 messaging.onBackgroundMessage((payload) => {
   console.log('Background message:', payload);
