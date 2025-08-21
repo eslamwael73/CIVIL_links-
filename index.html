@@ -109,7 +109,7 @@
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', async function() {
         try {
-          const registration = await navigator.serviceWorker.register('/CIVIL_links-/firebase-messaging-sw.js', { scope: '/CIVIL_links-/' });
+          const registration = await navigator.serviceWorker.register('/CIVIL_links-/firebase-messaging-sw.js');
           console.log('✅ Service Worker registered:', registration);
           await requestPermission();
           setTimeout(debugNotifications, 1000);
