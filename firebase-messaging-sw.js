@@ -10,12 +10,19 @@ const firebaseConfig = {
   appId: "1:626111073932:web:f7137bc90e139e822675a9"
 };
 
-firebase.initializeApp(firebaseConfig);
+// تهيئة Firebase
+try {
+  firebase.initializeApp(firebaseConfig);
+  console.log('[firebase-messaging-sw.js] ✅ Firebase initialized successfully');
+} catch (error) {
+  console.error('[firebase-messaging-sw.js] ❌ Failed to initialize Firebase:', error);
+}
+
 const messaging = firebase.messaging();
 
 // معالجة الإشعارات في الخلفية
 messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message:', payload);
+  console.log('[firebase-messaging-sw.js] 📩 Received background message:', JSON.stringify(payload, null, 2));
 
   const notificationTitle = payload.notification?.title || 'Civil Files';
   const notificationOptions = {
@@ -32,29 +39,47 @@ messaging.onBackgroundMessage((payload) => {
     data: payload.data || {}
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  try {
+    self.registration.showNotification(notificationTitle, notificationOptions);
+    console.log('[firebase-messaging-sw.js] ✅ Notification displayed successfully');
+  } catch (error) {
+    console.error('[firebase-messaging-sw.js] ❌ Failed to display notification:', error);
+  }
 });
 
 // معالجة النقر على الإشعار
 self.addEventListener('notificationclick', (event) => {
-  console.log('[firebase-messaging-sw.js] Notification clicked:', event);
+  console.log('[firebase-messaging-sw.js] 🖱️ Notification clicked:', event);
   event.notification.close();
 
   const urlToOpen = 'https://eslamwael73.github.io/CIVIL_links-/';
-  if (event.action === 'open_site') {
-    event.waitUntil(clients.openWindow(urlToOpen));
-  } else {
-    event.waitUntil(
-      clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
-        for (let client of windowClients) {
-          if (client.url === urlToOpen && 'focus' in client) {
-            return client.focus();
-          }
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      for (let client of windowClients) {
+        if (client.url === urlToOpen && 'focus' in client) {
+          return client.focus();
         }
-        if (clients.openWindow) {
-          return clients.openWindow(urlToOpen);
-        }
-      })
-    );
-  }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(urlToOpen);
+      }
+    })
+  );
+});
+
+// معالجة تثبيت الـ Service Worker
+self.addEventListener('install', (event) => {
+  console.log('[firebase-messaging-sw.js] 🚀 Service Worker installed');
+  self.skipWaiting();
+});
+
+// معالجة تفعيل الـ Service Worker
+self.addEventListener('activate', (event) => {
+  console.log('[firebase-messaging-sw.js] 🚀 Service Worker activated');
+  event.waitUntil(self.clients.claim());
+});
+
+// معالجة أخطاء عامة
+self.addEventListener('error', (error) => {
+  console.error('[firebase-messaging-sw.js] ❌ Service Worker error:', error);
 });
