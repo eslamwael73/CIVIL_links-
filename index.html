@@ -133,7 +133,7 @@
           console.log('✅ جاري إرسال إشعار تجريبي...');
           const registration = await navigator.serviceWorker.ready;
           await registration.showNotification('Civil Files - اختبار', {
-            body: currentLang === 'ar' ? 'هل الإشعارات تعمل؟' : 'Are notifications working?',
+            body: window.currentLang === 'ar' ? 'هل الإشعارات تعمل؟' : 'Are notifications working?',
             icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png'
           });
           console.log('✅ تم إرسال إشعار تجريبي');
@@ -153,11 +153,19 @@
             await getFCMToken();
           } else {
             console.log('❌ Notification permission denied');
-            showToast(currentLang === 'ar' ? 'تم رفض إذن الإشعارات' : 'Notification permission denied');
+            if (typeof showToast === 'function') {
+              showToast(window.currentLang === 'ar' ? 'تم رفض إذن الإشعارات' : 'Notification permission denied');
+            } else {
+              console.log('⚠️ showToast غير متاح');
+            }
           }
         } catch (err) {
           console.error('❌ Error requesting permission:', err);
-          showToast(currentLang === 'ar' ? 'خطأ في طلب إذن الإشعارات: ' + err.message : 'Error requesting notification permission: ' + err.message);
+          if (typeof showToast === 'function') {
+            showToast(window.currentLang === 'ar' ? 'خطأ في طلب إذن الإشعارات: ' + err.message : 'Error requesting notification permission: ' + err.message);
+          } else {
+            console.log('⚠️ showToast غير متاح:', err.message);
+          }
         }
       } else {
         console.log('❌ Notifications not supported');
@@ -196,11 +204,15 @@
           await subscribeTokenToAPI(currentToken);
         } else {
           console.log('❌ لم يتم الحصول على FCM token');
-          showToast(currentLang === 'ar' ? 'فشل في الحصول على رمز الإشعارات' : 'Failed to get notification token');
+          if (typeof showToast === 'function') {
+            showToast(window.currentLang === 'ar' ? 'فشل في الحصول على رمز الإشعارات' : 'Failed to get notification token');
+          }
         }
       } catch (err) {
-        console.error('❌ خطأ في الحصول على FCM token:', err);
-        showToast(currentLang === 'ar' ? 'خطأ في الحصول على رمز الإشعارات: ' + err.message : 'Error getting FCM token: ' + err.message);
+        console.error('❌ خطأ في الحصول على FCM token:', err.message);
+        if (typeof showToast === 'function') {
+          showToast(window.currentLang === 'ar' ? 'خطأ في الحصول على رمز الإشعارات: ' + err.message : 'Error getting FCM token: ' + err.message);
+        }
       }
     }
 
@@ -215,25 +227,32 @@
         const result = await response.json();
         if (response.ok) {
           console.log('✅ تم تسجيل الـ token:', result);
-          showToast(currentLang === 'ar' ? 'تم تفعيل الإشعارات بنجاح' : 'Notifications enabled successfully');
+          if (typeof showToast === 'function') {
+            showToast(window.currentLang === 'ar' ? 'تم تفعيل الإشعارات بنجاح' : 'Notifications enabled successfully');
+          }
         } else {
           throw new Error(result.error || 'Failed to subscribe');
         }
       } catch (err) {
         console.error('❌ خطأ في تسجيل الـ token:', err.message);
-        showToast(currentLang === 'ar' ? 'فشل في تفعيل الإشعارات: ' + err.message : 'Failed to enable notifications: ' + err.message);
+        if (typeof showToast === 'function') {
+          showToast(window.currentLang === 'ar' ? 'فشل في تفعيل الإشعارات: ' + err.message : 'Failed to enable notifications: ' + err.message);
+        }
       }
     }
 
     onMessage(messaging, (payload) => {
       console.log('📩 Received foreground message:', payload);
-      const notificationTitle = payload.notification?.title || 'Civil Files';
-      const notificationOptions = {
-        body: payload.notification?.body || 'New notification',
-        icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-        data: payload.data || {}
-      };
-      self.registration.showNotification(notificationTitle, notificationOptions);
+      navigator.serviceWorker.ready.then(registration => {
+        registration.showNotification(
+          payload.notification?.title || 'Civil Files',
+          {
+            body: payload.notification?.body || 'New notification',
+            icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
+            data: payload.data || {}
+          }
+        );
+      });
     });
 
     setTimeout(() => {
