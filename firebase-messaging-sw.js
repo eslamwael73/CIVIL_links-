@@ -1,5 +1,11 @@
-importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js');
+// تحميل Firebase scripts مع معالجة الأخطاء
+try {
+  importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+  importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js');
+  console.log('[SW] ✅ Firebase scripts loaded successfully');
+} catch (error) {
+  console.error('[SW] ❌ Failed to load Firebase scripts:', error);
+}
 
 const firebaseConfig = {
   apiKey: "AIzaSyCXX_kt4-3J_ocNKYAegNTar4Bd9OIgA2k",
@@ -10,55 +16,69 @@ const firebaseConfig = {
   appId: "1:626111073932:web:f7137bc90e139e822675a9"
 };
 
-// تهيئة Firebase
-try {
-  firebase.initializeApp(firebaseConfig);
-  console.log('[firebase-messaging-sw.js] ✅ Firebase initialized successfully');
-} catch (error) {
-  console.error('[firebase-messaging-sw.js] ❌ Failed to initialize Firebase:', error.message, error);
+// التحقق من وجود Firebase قبل التهيئة
+if (typeof firebase === 'undefined') {
+  console.error('[SW] ❌ Firebase not available');
+} else {
+  // تهيئة Firebase
+  try {
+    firebase.initializeApp(firebaseConfig);
+    console.log('[firebase-messaging-sw.js] ✅ Firebase initialized successfully');
+  } catch (error) {
+    console.error('[firebase-messaging-sw.js] ❌ Failed to initialize Firebase:', error.message, error);
+  }
 }
 
-const messaging = firebase.messaging();
+// التحقق من وجود messaging قبل الاستخدام
+let messaging;
+try {
+  if (typeof firebase !== 'undefined' && firebase.messaging) {
+    messaging = firebase.messaging();
+    console.log('[SW] ✅ Firebase messaging initialized');
+    
+    // معالجة الإشعارات في الخلفية
+    messaging.onBackgroundMessage((payload) => {
+      console.log('[firebase-messaging-sw.js] 📩 Received background message:', JSON.stringify(payload, null, 2));
 
-// معالجة الإشعارات في الخلفية
-messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] 📩 Received background message:', JSON.stringify(payload, null, 2));
-
-  // التحقق من وجود notification في الـ payload
-  if (!payload.notification) {
-    console.error('[firebase-messaging-sw.js] ❌ No notification data in payload:', payload);
-    return;
-  }
-
-  const notificationTitle = payload.notification.title || 'Civil Files';
-  const notificationOptions = {
-    body: payload.notification.body || 'إشعار جديد',
-    icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-    badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-    vibrate: [200, 100, 200],
-    tag: 'civil-files-notification',
-    renotify: true,
-    requireInteraction: false,
-    silent: false,
-    actions: [
-      {
-        action: 'open_site',
-        title: 'فتح الموقع'
-      },
-      {
-        action: 'dismiss',
-        title: 'تجاهل'
+      // التحقق من وجود notification في الـ payload
+      if (!payload.notification) {
+        console.error('[firebase-messaging-sw.js] ❌ No notification data in payload:', payload);
+        return;
       }
-    ],
-    data: payload.data || {}
-  };
 
-  try {
-    return self.registration.showNotification(notificationTitle, notificationOptions);
-  } catch (error) {
-    console.error('[firebase-messaging-sw.js] ❌ Failed to display notification:', error.message, error);
+      const notificationTitle = payload.notification.title || 'Civil Files';
+      const notificationOptions = {
+        body: payload.notification.body || 'إشعار جديد',
+        icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
+        badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
+        vibrate: [200, 100, 200],
+        tag: 'civil-files-notification',
+        renotify: true,
+        requireInteraction: false,
+        silent: false,
+        actions: [
+          {
+            action: 'open_site',
+            title: 'فتح الموقع'
+          },
+          {
+            action: 'dismiss',
+            title: 'تجاهل'
+          }
+        ],
+        data: payload.data || {}
+      };
+
+      try {
+        return self.registration.showNotification(notificationTitle, notificationOptions);
+      } catch (error) {
+        console.error('[firebase-messaging-sw.js] ❌ Failed to display notification:', error.message, error);
+      }
+    });
   }
-});
+} catch (error) {
+  console.error('[SW] ❌ Error initializing messaging:', error);
+}
 
 // معالجة النقر على الإشعار
 self.addEventListener('notificationclick', (event) => {
