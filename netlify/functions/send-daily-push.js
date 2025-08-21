@@ -60,12 +60,22 @@ exports.handler = async (event) => {
     const notificationPayload = {
       notification: {
         title: 'Civil Files',
-        body: dailyMessage,
-        icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png', // استخدام نفس الأيقونة المستخدمة في index.html
+        body: dailyMessage
       },
       webpush: {
+        notification: {
+          icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
+          badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png', // اختياري: أيقونة صغيرة
+          vibrate: [200, 100, 200], // اختياري: اهتزاز
+          actions: [
+            {
+              action: 'open_site',
+              title: 'فتح الموقع'
+            }
+          ]
+        },
         fcm_options: {
-          link: 'https://eslamwael73.github.io/CIVIL_links-/' // رابط يفتح الموقع عند النقر
+          link: 'https://eslamwael73.github.io/CIVIL_links-/'
         }
       },
       topic: 'all_users'
