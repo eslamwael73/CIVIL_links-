@@ -133,7 +133,7 @@
           console.log('✅ جاري إرسال إشعار تجريبي...');
           const registration = await navigator.serviceWorker.ready;
           await registration.showNotification('Civil Files - اختبار', {
-            body: window.currentLang === 'ar' ? 'هل الإشعارات تعمل؟' : 'Are notifications working?',
+            body: 'هل الإشعارات تعمل؟',
             icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png'
           });
           console.log('✅ تم إرسال إشعار تجريبي');
@@ -153,19 +153,9 @@
             await getFCMToken();
           } else {
             console.log('❌ Notification permission denied');
-            if (typeof showToast === 'function') {
-              showToast(window.currentLang === 'ar' ? 'تم رفض إذن الإشعارات' : 'Notification permission denied');
-            } else {
-              console.log('⚠️ showToast غير متاح');
-            }
           }
         } catch (err) {
           console.error('❌ Error requesting permission:', err);
-          if (typeof showToast === 'function') {
-            showToast(window.currentLang === 'ar' ? 'خطأ في طلب إذن الإشعارات: ' + err.message : 'Error requesting notification permission: ' + err.message);
-          } else {
-            console.log('⚠️ showToast غير متاح:', err.message);
-          }
         }
       } else {
         console.log('❌ Notifications not supported');
@@ -204,15 +194,9 @@
           await subscribeTokenToAPI(currentToken);
         } else {
           console.log('❌ لم يتم الحصول على FCM token');
-          if (typeof showToast === 'function') {
-            showToast(window.currentLang === 'ar' ? 'فشل في الحصول على رمز الإشعارات' : 'Failed to get notification token');
-          }
         }
       } catch (err) {
         console.error('❌ خطأ في الحصول على FCM token:', err.message);
-        if (typeof showToast === 'function') {
-          showToast(window.currentLang === 'ar' ? 'خطأ في الحصول على رمز الإشعارات: ' + err.message : 'Error getting FCM token: ' + err.message);
-        }
       }
     }
 
@@ -227,17 +211,11 @@
         const result = await response.json();
         if (response.ok) {
           console.log('✅ تم تسجيل الـ token:', result);
-          if (typeof showToast === 'function') {
-            showToast(window.currentLang === 'ar' ? 'تم تفعيل الإشعارات بنجاح' : 'Notifications enabled successfully');
-          }
         } else {
           throw new Error(result.error || 'Failed to subscribe');
         }
       } catch (err) {
         console.error('❌ خطأ في تسجيل الـ token:', err.message);
-        if (typeof showToast === 'function') {
-          showToast(window.currentLang === 'ar' ? 'فشل في تفعيل الإشعارات: ' + err.message : 'Failed to enable notifications: ' + err.message);
-        }
       }
     }
 
