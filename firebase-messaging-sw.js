@@ -1,6 +1,13 @@
-importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js');
+// استيراد مكتبات Firebase
+try {
+  importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+  importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js');
+  console.log('[firebase-messaging-sw.js] ✅ Firebase scripts imported successfully at', new Date().toISOString());
+} catch (error) {
+  console.error('[firebase-messaging-sw.js] ❌ Failed to import Firebase scripts:', error.message, error);
+}
 
+// إعدادات Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCXX_kt4-3J_ocNKYAegNTar4Bd9OIgA2k",
   authDomain: "eslam-website.firebaseapp.com",
@@ -11,14 +18,14 @@ const firebaseConfig = {
 };
 
 // تهيئة Firebase
+let messaging;
 try {
   firebase.initializeApp(firebaseConfig);
-  console.log('[firebase-messaging-sw.js] ✅ Firebase initialized at', new Date().toISOString());
+  messaging = firebase.messaging();
+  console.log('[firebase-messaging-sw.js] ✅ Firebase initialized successfully at', new Date().toISOString());
 } catch (error) {
   console.error('[firebase-messaging-sw.js] ❌ Failed to initialize Firebase:', error.message, error);
 }
-
-const messaging = firebase.messaging();
 
 // معالجة تثبيت الـ Service Worker
 self.addEventListener('install', (event) => {
@@ -33,34 +40,38 @@ self.addEventListener('activate', (event) => {
 });
 
 // معالجة الإشعارات في الخلفية
-messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] 📩 Received background message at', new Date().toISOString(), JSON.stringify(payload, null, 2));
+if (messaging) {
+  messaging.onBackgroundMessage((payload) => {
+    console.log('[firebase-messaging-sw.js] 📩 Received background message at', new Date().toISOString(), JSON.stringify(payload, null, 2));
 
-  // التحقق من وجود notification أو data
-  const notificationTitle = payload.notification?.title || payload.data?.title || 'Civil Files';
-  const notificationOptions = {
-    body: payload.notification?.body || payload.data?.body || 'إشعار جديد',
-    icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-    badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-    vibrate: [200, 100, 200],
-    tag: 'civil-files-notification',
-    renotify: true,
-    requireInteraction: false,
-    silent: false,
-    actions: [
-      { action: 'open_site', title: 'فتح الموقع' },
-      { action: 'dismiss', title: 'تجاهل' }
-    ],
-    data: payload.data || {}
-  };
+    // التحقق من وجود notification أو data
+    const notificationTitle = payload.notification?.title || payload.data?.title || 'Civil Files';
+    const notificationOptions = {
+      body: payload.notification?.body || payload.data?.body || 'إشعار جديد',
+      icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
+      badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
+      vibrate: [200, 100, 200],
+      tag: 'civil-files-notification',
+      renotify: true,
+      requireInteraction: false,
+      silent: false,
+      actions: [
+        { action: 'open_site', title: 'فتح الموقع' },
+        { action: 'dismiss', title: 'تجاهل' }
+      ],
+      data: payload.data || {}
+    };
 
-  try {
-    self.registration.showNotification(notificationTitle, notificationOptions);
-    console.log('[firebase-messaging-sw.js] ✅ Notification displayed at', new Date().toISOString());
-  } catch (error) {
-    console.error('[firebase-messaging-sw.js] ❌ Failed to display notification:', error.message, error);
-  }
-});
+    try {
+      self.registration.showNotification(notificationTitle, notificationOptions);
+      console.log('[firebase-messaging-sw.js] ✅ Notification displayed at', new Date().toISOString());
+    } catch (error) {
+      console.error('[firebase-messaging-sw.js] ❌ Failed to display notification:', error.message, error);
+    }
+  });
+} else {
+  console.error('[firebase-messaging-sw.js] ❌ Messaging not initialized');
+}
 
 // معالجة النقر على الإشعار
 self.addEventListener('notificationclick', (event) => {
