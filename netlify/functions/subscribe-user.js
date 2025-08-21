@@ -1,3 +1,4 @@
+// Filename: subscribe-user.js
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getMessaging } = require('firebase-admin/messaging');
 
@@ -10,8 +11,7 @@ try {
 
 if (serviceAccount) {
   initializeApp({
-    credential: cert(serviceAccount),
-    databaseURL: 'https://eslam-api-5a47a.firebaseio.com'
+    credential: cert(serviceAccount)
   });
 }
 
@@ -24,13 +24,11 @@ exports.handler = async (event, context) => {
   }
   
   try {
-    // التحقق مما إذا كان event.body موجودًا وقوم بفك تشفيره إذا كان base64
     let body = event.body;
     if (event.isBase64Encoded) {
         body = Buffer.from(body, 'base64').toString('utf-8');
     }
 
-    // التحقق من وجود البيانات قبل محاولة تحليلها
     if (!body) {
       return {
         statusCode: 400,

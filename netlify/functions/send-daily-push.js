@@ -12,8 +12,7 @@ try {
 
 if (serviceAccount) {
   initializeApp({
-    credential: cert(serviceAccount),
-    databaseURL: 'https://eslam-api-5a47a.firebaseio.com'
+    credential: cert(serviceAccount)
   });
 }
 
@@ -38,7 +37,6 @@ exports.handler = async (event, context) => {
       webpush: {
         notification: {
           icon: "https://eslamwael-api-arbic.netlify.app/icon.png",
-          // تمت إزالة سطر badge.png
         }
       },
       topic: 'all_users'
