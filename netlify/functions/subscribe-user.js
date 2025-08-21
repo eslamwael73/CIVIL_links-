@@ -23,10 +23,27 @@ if (!serviceAccount) {
 }
 
 exports.handler = async (event) => {
+  // إضافة headers للـ CORS هنا
+  const headers = {
+    'Access-Control-Allow-Origin': 'https://eslamwael73.github.io',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS'
+  };
+  
+  // معالجة طلبات OPTIONS للـ CORS
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers,
+      body: ''
+    };
+  }
+
   if (!serviceAccount) {
     console.error('❌ لم يتم العثور على مفتاح service account صالح');
     return {
       statusCode: 500,
+      headers,
       body: JSON.stringify({
         error: 'FIREBASE_SERVICE_ACCOUNT_KEY is missing or invalid.',
         details: 'Check environment variables in Netlify or provide a valid service account file.'
@@ -47,6 +64,7 @@ exports.handler = async (event) => {
     if (!body) {
       return {
         statusCode: 400,
+        headers,
         body: JSON.stringify({ error: 'Request body is empty.' })
       };
     }
@@ -57,6 +75,7 @@ exports.handler = async (event) => {
     if (!token) {
       return {
         statusCode: 400,
+        headers,
         body: JSON.stringify({ error: 'Token is missing in the request body.' })
       };
     }
@@ -66,6 +85,7 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
+      headers,
       body: JSON.stringify({
         message: 'Subscription successful!',
         token,
@@ -76,6 +96,7 @@ exports.handler = async (event) => {
     console.error('❌ Error subscribing to topic:', error.message, error);
     return {
       statusCode: 500,
+      headers,
       body: JSON.stringify({
         error: 'Failed to subscribe to topic',
         details: error.message
