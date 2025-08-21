@@ -1,4 +1,4 @@
-const { initializeApp, cert } = require('firebase-admin/app');
+const { initializeApp, cert, getApps } = require('firebase-admin/app');
 const { getMessaging } = require('firebase-admin/messaging');
 
 const headers = {
@@ -40,9 +40,17 @@ exports.handler = async (event) => {
   }
 
   try {
-    const app = initializeApp({ credential: cert(serviceAccount) }, 'subscribe-user');
+    // التحقق إذا كان التطبيق مهيأ بالفعل
+    let app;
+    if (!getApps().some((app) => app.name === 'subscribe-user')) {
+      app = initializeApp({ credential: cert(serviceAccount) }, 'subscribe-user');
+      console.log('✅ تم تهيئة Firebase Admin بنجاح');
+    } else {
+      app = getApps().find((app) => app.name === 'subscribe-user');
+      console.log('✅ استخدام تطبيق Firebase موجود');
+    }
+
     const messaging = getMessaging(app);
-    console.log('✅ تم تهيئة Firebase Admin بنجاح');
 
     let body = event.body;
     if (event.isBase64Encoded) {

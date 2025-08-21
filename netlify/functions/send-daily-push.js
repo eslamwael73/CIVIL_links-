@@ -1,4 +1,4 @@
-const { initializeApp, cert } = require('firebase-admin/app');
+const { initializeApp, cert, getApps } = require('firebase-admin/app');
 const { getMessaging } = require('firebase-admin/messaging');
 const fetch = require('node-fetch');
 
@@ -43,10 +43,17 @@ exports.handler = async (event) => {
   }
 
   try {
-    // تهيئة Firebase
-    const app = initializeApp({ credential: cert(serviceAccount) }, 'send-daily-push');
+    // التحقق إذا كان التطبيق مهيأ بالفعل
+    let app;
+    if (!getApps().some((app) => app.name === 'send-daily-push')) {
+      app = initializeApp({ credential: cert(serviceAccount) }, 'send-daily-push');
+      console.log('✅ تم تهيئة Firebase Admin بنجاح');
+    } else {
+      app = getApps().find((app) => app.name === 'send-daily-push');
+      console.log('✅ استخدام تطبيق Firebase موجود');
+    }
+
     const messaging = getMessaging(app);
-    console.log('✅ تم تهيئة Firebase Admin بنجاح');
 
     // جلب الجملة العشوائية
     const messageResponse = await fetch('https://eslamwael-api-arbic.netlify.app/.netlify/functions/random-message');
@@ -65,8 +72,8 @@ exports.handler = async (event) => {
       webpush: {
         notification: {
           icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-          badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png', // اختياري: أيقونة صغيرة
-          vibrate: [200, 100, 200], // اختياري: اهتزاز
+          badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
+          vibrate: [200, 100, 200],
           actions: [
             {
               action: 'open_site',
