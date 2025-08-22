@@ -102,6 +102,14 @@
     </div>
   </div>
 
+  <!-- دالة closeModal -->
+  <script>
+    function closeModal() {
+      console.log('🔒 Closing welcome modal');
+      document.getElementById('welcomeModal').style.display = 'none';
+    }
+  </script>
+
   <!-- تسجيل Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
