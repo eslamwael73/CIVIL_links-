@@ -69,19 +69,16 @@ exports.handler = async (event) => {
         title: 'Civil Files',
         body: dailyMessage
       },
-      data: {
-        title: 'Civil Files',
-        body: dailyMessage,
-        click_action: 'https://eslamwael73.github.io/CIVIL_links-/'
-      },
       webpush: {
         notification: {
           icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
           badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
           vibrate: [200, 100, 200],
           actions: [
-            { action: 'open_site', title: 'فتح الموقع' },
-            { action: 'dismiss', title: 'تجاهل' }
+            {
+              action: 'open_site',
+              title: 'فتح الموقع'
+            }
           ]
         },
         fcm_options: {
@@ -93,7 +90,7 @@ exports.handler = async (event) => {
 
     // إرسال الإشعار
     const response = await messaging.send(notificationPayload);
-    console.log('✅ تم إرسال الإشعار بنجاح:', response, 'Payload:', JSON.stringify(notificationPayload, null, 2));
+    console.log('✅ تم إرسال الإشعار بنجاح:', response);
 
     return {
       statusCode: 200,
@@ -101,8 +98,7 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         message: 'Notification sent successfully',
         response,
-        dailyMessage,
-        payload: notificationPayload
+        dailyMessage
       })
     };
   } catch (error) {
