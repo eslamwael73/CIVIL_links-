@@ -27,9 +27,16 @@ try {
   // معالجة الإشعارات في الخلفية
   messaging.onBackgroundMessage((payload) => {
     console.log('[firebase-messaging-sw.js] 📩 Received background message:', JSON.stringify(payload, null, 2));
-    const notificationTitle = payload.notification?.title || 'Civil Files';
+    // التحقق من تنسيق الـ payload
+    if (!payload) {
+      console.error('[firebase-messaging-sw.js] ❌ Payload is null or undefined');
+      return;
+    }
+    // دعم صيغ متعددة: notification أو data
+    const notificationTitle = payload.notification?.title || payload.data?.title || payload.data?.dailyMessage?.title || 'Civil Files';
+    const notificationBody = payload.notification?.body || payload.data?.dailyMessage || payload.data?.body || 'إشعار جديد';
     const notificationOptions = {
-      body: payload.notification?.body || 'إشعار جديد',
+      body: notificationBody,
       icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
       badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
       vibrate: [200, 100, 200],
@@ -38,7 +45,7 @@ try {
     };
     try {
       self.registration.showNotification(notificationTitle, notificationOptions);
-      console.log('[firebase-messaging-sw.js] ✅ Background notification displayed');
+      console.log('[firebase-messaging-sw.js] ✅ Background notification displayed:', notificationBody);
     } catch (error) {
       console.error('[firebase-messaging-sw.js] ❌ Error displaying background notification:', error);
     }
