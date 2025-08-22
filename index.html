@@ -233,23 +233,23 @@
             return;
           }
 
-          // محاولة جلب الجملة العشوائية
+          // محاولة جلب الجملة العشوائية من send-daily-push
           let randomMessage = 'جملة تجريبية افتراضية';
           try {
-            const messageResponse = await fetch('https://eslamwael-api-arbic.netlify.app/.netlify/functions/random-message', {
+            const messageResponse = await fetch('https://eslamwael-api-arbic.netlify.app/.netlify/functions/send-daily-push', {
               method: 'GET',
               headers: { 'Content-Type': 'application/json' }
             });
-            console.log('ℹ️ Random message API response status:', messageResponse.status);
+            console.log('ℹ️ Send-daily-push API response status:', messageResponse.status);
             if (!messageResponse.ok) {
-              console.error('❌ Random message API failed with status:', messageResponse.status);
-              throw new Error(`Failed to fetch random message: ${messageResponse.status}`);
+              console.error('❌ Send-daily-push API failed with status:', messageResponse.status);
+              throw new Error(`Failed to fetch daily message: ${messageResponse.status}`);
             }
             const messageData = await messageResponse.json();
-            console.log('ℹ️ Random message API response:', JSON.stringify(messageData, null, 2));
-            randomMessage = messageData.text || randomMessage;
+            console.log('ℹ️ Send-daily-push API response:', JSON.stringify(messageData, null, 2));
+            randomMessage = messageData.dailyMessage || randomMessage;
           } catch (apiError) {
-            console.error('❌ Error fetching random message, using fallback:', apiError);
+            console.error('❌ Error fetching daily message, using fallback:', apiError);
           }
 
           // عرض الإشعار
@@ -284,7 +284,7 @@
     }
   </script>
 
-  <!-- تحميل main.js بشكل غير متزامن لتجنب الواجهة البيضاء -->
+  <!-- تحميل main.js بشكل غير متزامن -->
   <script defer src="/CIVIL_links-/main.js" onerror="console.error('❌ Failed to load main.js:', this.src)"></script>
 </body>
 </html>
