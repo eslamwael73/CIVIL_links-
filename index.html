@@ -160,6 +160,7 @@
     async function getFCMToken() {
       try {
         const registration = await navigator.serviceWorker.ready;
+        console.log('✅ Service Worker ready:', registration);
         const token = await getToken(messaging, {
           vapidKey: 'BK_87m-1h-nUholGBr0inWJM2F-b0_lc9kMjHk3c__9htYJo_tcvXy4HPb_dYF-zHsvbqq8qiyrZ63TnEGF7QeU',
           serviceWorkerRegistration: registration
@@ -183,6 +184,9 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token })
         });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const result = await response.json();
         console.log('✅ Token subscribed:', result);
       } catch (error) {
@@ -205,20 +209,31 @@
             data: { url: 'https://eslamwael73.github.io/CIVIL_links-/' }
           }
         );
+      }).catch((error) => {
+        console.error('❌ Error displaying foreground notification:', error);
       });
     });
 
     // إرسال إشعار تجريبي بجملة عشوائية
     async function sendTestNotification() {
       try {
+        console.log('🔍 Starting test notification...');
+        // التأكد من أن Service Worker جاهز
+        const registration = await navigator.serviceWorker.ready;
+        console.log('✅ Service Worker ready for test notification:', registration);
+
+        // جلب الجملة العشوائية
         const messageResponse = await fetch('https://eslamwael-api-arbic.netlify.app/.netlify/functions/random-message');
+        console.log('ℹ️ Random message API response status:', messageResponse.status);
         if (!messageResponse.ok) {
-          throw new Error('Failed to fetch random message');
+          throw new Error(`Failed to fetch random message: ${messageResponse.status}`);
         }
         const messageData = await messageResponse.json();
-        const randomMessage = messageData.text;
-        const registration = await navigator.serviceWorker.ready;
-        registration.showNotification('Civil Files - اختبار', {
+        console.log('ℹ️ Random message API response:', JSON.stringify(messageData, null, 2));
+        const randomMessage = messageData.text || 'جملة تجريبية افتراضية';
+
+        // عرض الإشعار
+        await registration.showNotification('Civil Files - اختبار', {
           body: randomMessage,
           icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
           badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
@@ -228,7 +243,7 @@
         });
         console.log('✅ Test notification sent:', randomMessage);
       } catch (error) {
-        console.error('❌ Error sending test notification:', error);
+        console.error('❌ Error sending test notification:', error.message, error);
       }
     }
 
