@@ -227,21 +227,29 @@
           const registration = await navigator.serviceWorker.ready;
           console.log('✅ Service Worker ready for test notification:', registration);
 
-          // جلب الجملة العشوائية
-          const messageResponse = await fetch('https://eslamwael-api-arbic.netlify.app/.netlify/functions/random-message');
-          console.log('ℹ️ Random message API response status:', messageResponse.status);
-          if (!messageResponse.ok) {
-            console.error('❌ Random message API failed with status:', messageResponse.status);
-            throw new Error(`Failed to fetch random message: ${messageResponse.status}`);
-          }
-          const messageData = await messageResponse.json();
-          console.log('ℹ️ Random message API response:', JSON.stringify(messageData, null, 2));
-          const randomMessage = messageData.text || 'جملة تجريبية افتراضية';
-
           // التحقق من إذن الإشعارات
           if (Notification.permission !== 'granted') {
             console.log('❌ Notification permission not granted');
             return;
+          }
+
+          // محاولة جلب الجملة العشوائية
+          let randomMessage = 'جملة تجريبية افتراضية';
+          try {
+            const messageResponse = await fetch('https://eslamwael-api-arbic.netlify.app/.netlify/functions/random-message', {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json' }
+            });
+            console.log('ℹ️ Random message API response status:', messageResponse.status);
+            if (!messageResponse.ok) {
+              console.error('❌ Random message API failed with status:', messageResponse.status);
+              throw new Error(`Failed to fetch random message: ${messageResponse.status}`);
+            }
+            const messageData = await messageResponse.json();
+            console.log('ℹ️ Random message API response:', JSON.stringify(messageData, null, 2));
+            randomMessage = messageData.text || randomMessage;
+          } catch (apiError) {
+            console.error('❌ Error fetching random message, using fallback:', apiError);
           }
 
           // عرض الإشعار
@@ -275,5 +283,8 @@
       console.error('❌ Error initializing Firebase:', error);
     }
   </script>
+
+  <!-- تحميل main.js بشكل غير متزامن لتجنب الواجهة البيضاء -->
+  <script defer src="/CIVIL_links-/main.js" onerror="console.error('❌ Failed to load main.js:', this.src)"></script>
 </body>
 </html>

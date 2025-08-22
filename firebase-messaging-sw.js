@@ -36,8 +36,12 @@ try {
       actions: [{ action: 'open_site', title: 'فتح الموقع' }],
       data: { url: 'https://eslamwael73.github.io/CIVIL_links-/' }
     };
-    self.registration.showNotification(notificationTitle, notificationOptions);
-    console.log('[firebase-messaging-sw.js] ✅ Notification displayed');
+    try {
+      self.registration.showNotification(notificationTitle, notificationOptions);
+      console.log('[firebase-messaging-sw.js] ✅ Background notification displayed');
+    } catch (error) {
+      console.error('[firebase-messaging-sw.js] ❌ Error displaying background notification:', error);
+    }
   });
 
   // معالجة النقر على الإشعار
