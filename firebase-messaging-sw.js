@@ -138,3 +138,17 @@ try {
 } catch (error) {
   console.error('[firebase-messaging-sw.js] ❌ Failed to initialize Firebase:', error);
 }
+// معالجة الرسائل من index.html
+self.addEventListener('message', (event) => {
+  console.log('[firebase-messaging-sw.js] 📨 Message received from index.html:', event.data);
+  if (event.data?.type === 'CHECK_BACKGROUND_NOTIFICATIONS') {
+    console.log('[firebase-messaging-sw.js] ✅ Checking background notifications for topic:', event.data.data.topic);
+    event.source.postMessage({
+      type: 'BACKGROUND_NOTIFICATION_STATUS',
+      status: 'Service Worker is ready for background notifications'
+    });
+  }
+  if (event.data?.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
