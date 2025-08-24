@@ -27,12 +27,11 @@ try {
   // معالجة الإشعارات في الخلفية
   messaging.onBackgroundMessage((payload) => {
     console.log('[firebase-messaging-sw.js] 📩 Received background message:', JSON.stringify(payload, null, 2));
-    // التحقق من الـ payload
     if (!payload) {
       console.error('[firebase-messaging-sw.js] ❌ Payload is null or undefined');
       return;
     }
-    // دعم صيغ متعددة: notification أو data من send-daily-push
+    // تنفيذ فكرتك: معالجة الإشعار بنفس طريقة الـ foreground
     const notificationTitle = payload.notification?.title || payload.data?.title || 'Civil Files';
     const notificationBody = payload.notification?.body || payload.data?.dailyMessage || 'إشعار جديد';
     const notificationOptions = {
@@ -56,6 +55,7 @@ try {
       }
     };
     try {
+      // عرض الإشعار في الخلفية بنفس طريقة الـ foreground
       self.registration.showNotification(notificationTitle, notificationOptions);
       console.log('[firebase-messaging-sw.js] ✅ Background notification displayed:', notificationBody);
     } catch (error) {
@@ -65,21 +65,30 @@ try {
 
   // معالجة النقر على الإشعار
   self.addEventListener('notificationclick', (event) => {
-    console.log('[firebase-messaging-sw.js] 🖱️ Notification clicked:', event.action, JSON.stringify(event.notification.data, null, 2));
+    console.log('[firebase-messaging-sw.js] 🖱️ Notification clicked:', event.action);
     event.notification.close();
     const notificationData = event.notification.data || {};
     if (event.action === 'close') {
-      console.log('[firebase-messaging-sw.js] ❌ Notification dismissed by user');
+      console.log('[firebase-messaging-sw.js] ❌ Notification dismissed');
       return;
     } else if (event.action === 'later') {
-      console.log('[firebase-messaging-sw.js] ⏰ Scheduling reminder notification');
-      scheduleReminderNotification(notificationData);
+      console.log('[firebase-messaging-sw.js] ⏰ Scheduling reminder');
+      setTimeout(() => {
+        self.registration.showNotification('Civil Files - تذكير', {
+          body: notificationData.message || 'لا تنس مراجعة الرسالة اليومية!',
+          icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
+          badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
+          tag: 'civil-files-reminder',
+          vibrate: [200, 100, 200],
+          data: { ...notificationData, isReminder: true }
+        });
+        console.log('[firebase-messaging-sw.js] ✅ Reminder notification shown');
+      }, 60 * 60 * 1000); // ساعة واحدة
       return;
     }
     const urlToOpen = notificationData.url || 'https://eslamwael73.github.io/CIVIL_links-/';
     event.waitUntil(
       clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
-        console.log(`[firebase-messaging-sw.js] 🔍 Found ${windowClients.length} window clients`);
         for (const client of windowClients) {
           if (client.url.includes('eslamwael73.github.io/CIVIL_links-/') && 'focus' in client) {
             console.log('[firebase-messaging-sw.js] ✅ Focusing existing window:', client.url);
@@ -95,45 +104,13 @@ try {
             return client.focus();
           }
         }
-        console.log('[firebase-messaging-sw.js] 🆕 Opening new window:', urlToOpen);
         if (clients.openWindow) {
-          return clients.openWindow(urlToOpen).then((windowClient) => {
-            if (windowClient) {
-              setTimeout(() => {
-                windowClient.postMessage({
-                  type: 'CIVIL_FILES_NOTIFICATION',
-                  data: {
-                    message: notificationData.message,
-                    title: notificationData.title,
-                    timestamp: notificationData.timestamp,
-                    source: 'notification_click'
-                  }
-                });
-                console.log('[firebase-messaging-sw.js] 📨 Message sent to new window');
-              }, 2000);
-            }
-            return windowClient;
-          });
+          console.log('[firebase-messaging-sw.js] 🆕 Opening new window:', urlToOpen);
+          return clients.openWindow(urlToOpen);
         }
       })
     );
   });
-
-  // دالة جدولة التذكير
-  function scheduleReminderNotification(data) {
-    console.log('[firebase-messaging-sw.js] ⏰ Scheduling reminder for 1 hour later');
-    setTimeout(() => {
-      self.registration.showNotification('Civil Files - تذكير', {
-        body: data.message || 'لا تنس مراجعة الرسالة اليومية!',
-        icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-        badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-        tag: 'civil-files-reminder',
-        vibrate: [200, 100, 200],
-        data: { ...data, isReminder: true }
-      });
-      console.log('[firebase-messaging-sw.js]bas: '✅ Reminder notification shown');
-    }, 60 * 60 * 1000); // ساعة واحدة
-  }
 
   // معالجة إغلاق الإشعار
   self.addEventListener('notificationclose', (event) => {
@@ -154,7 +131,7 @@ try {
   // معالجة الرسائل من الصفحة الرئيسية
   self.addEventListener('message', (event) => {
     console.log('[firebase-messaging-sw.js] 📨 Message received:', event.data);
-    if (event.data && event.data.type === 'SKIP_WAITING') {
+    if (event.data?.type === 'SKIP_WAITING') {
       self.skipWaiting();
     }
   });
