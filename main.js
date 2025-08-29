@@ -539,7 +539,7 @@ function toggleDarkMode() {
 
         localStorage.setItem('darkMode', isDarkMode);
 
-        const customColor = localStorage.getItem('customColor') || '#1C6AE3';
+        const customColor = localStorage.getItem('customColor') || '#8B0000';
         const appliedColor = isDarkMode ? lightenColor(customColor, 0.2) : customColor;
         document.body.style.setProperty('--primary-color', appliedColor);
 
@@ -814,7 +814,7 @@ function openColorPicker() {
 
         const input = document.createElement('input');
         input.type = 'color';
-        input.value = localStorage.getItem('customColor') || '#1C6AE3';
+        input.value = localStorage.getItem('customColor') || '#8B0000';
         input.style.position = 'absolute';
         input.style.opacity = '0';
         input.style.width = '0';
@@ -860,7 +860,7 @@ function resetSettings() {
     try {
         document.body.classList.remove('dark-mode', 'custom-theme', 'custom-background');
         document.body.classList.add('custom-theme');
-        const defaultColor = '#1C6AE3';
+        const defaultColor = '#8B0000';
         document.body.style.setProperty('--custom-color', defaultColor);
         document.body.style.setProperty('--custom-hover', darkenColor(defaultColor, 0.8));
         document.body.style.setProperty('--primary-color', defaultColor);
@@ -1021,7 +1021,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
 
         const savedTheme = localStorage.getItem('theme') || 'custom';
-        const customColor = localStorage.getItem('customColor') || '#1C6AE3';
+        const customColor = localStorage.getItem('customColor') || '#8B0000';
         document.body.classList.add('custom-theme');
         document.body.style.setProperty('--custom-color', customColor);
         document.body.style.setProperty('--custom-hover', darkenColor(customColor, 0.8));
