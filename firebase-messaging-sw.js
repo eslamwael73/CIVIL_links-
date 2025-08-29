@@ -24,6 +24,10 @@ try {
   const messaging = firebase.messaging();
   console.log('[firebase-messaging-sw.js] ✅ Firebase initialized successfully');
 
+  // متغير للتحكم في تكرار الإشعارات
+  let lastNotificationId = null;
+  let lastNotificationTime = 0;
+
   // معالجة الإشعارات في الخلفية
   messaging.onBackgroundMessage((payload) => {
     console.log('[firebase-messaging-sw.js] 📩 Received background message:', JSON.stringify(payload, null, 2));
@@ -31,9 +35,23 @@ try {
       console.error('[firebase-messaging-sw.js] ❌ Payload is null or undefined');
       return;
     }
-    // تنفيذ فكرتك: معالجة الإشعار بنفس طريقة الـ foreground
+
+    // إنشاء ID للإشعار لمنع التكرار
     const notificationTitle = payload.notification?.title || payload.data?.title || 'Civil Files';
     const notificationBody = payload.notification?.body || payload.data?.dailyMessage || 'إشعار جديد';
+    const notificationId = `${notificationTitle}-${notificationBody}`;
+    const currentTime = Date.now();
+    
+    // تحقق من عدم تكرار نفس الإشعار في آخر 5 ثواني
+    if (notificationId === lastNotificationId && (currentTime - lastNotificationTime) < 5000) {
+      console.log('[firebase-messaging-sw.js] ⚠️ Duplicate notification blocked');
+      return;
+    }
+    
+    lastNotificationId = notificationId;
+    lastNotificationTime = currentTime;
+
+    // تنفيذ فكرتك: معالجة الإشعار بنفس طريقة الـ foreground
     const notificationOptions = {
       body: notificationBody,
       icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
