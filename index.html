@@ -209,12 +209,7 @@
       subscribeTokenToTopic(storedToken, 'all_users');
     }
 
-    // معالجة الإشعارات في الأمامية (تم حذفها لتجنب التكرار مع Service Worker)
-    // Service Worker هيتولى عرض جميع الإشعارات
-    onMessage(messaging, (payload) => {
-      console.log('📩 Received foreground message (handled by Service Worker):', JSON.stringify(payload, null, 2));
-      // لا نعرض إشعار هنا لأن Service Worker بيتولى الموضوع
-    });
+    // تم حذف onMessage نهائياً - Service Worker يتولى جميع الإشعارات
 
     // دالة للتحكم في الإشعارات في الخلفية
     async function ensureBackgroundNotifications() {
