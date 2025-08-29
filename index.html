@@ -209,34 +209,11 @@
       subscribeTokenToTopic(storedToken, 'all_users');
     }
 
-    // معالجة الإشعارات في الأمامية
+    // معالجة الإشعارات في الأمامية (تم حذفها لتجنب التكرار مع Service Worker)
+    // Service Worker هيتولى عرض جميع الإشعارات
     onMessage(messaging, (payload) => {
-      console.log('📩 Received foreground message:', JSON.stringify(payload, null, 2));
-      navigator.serviceWorker.ready.then(registration => {
-        registration.showNotification(
-          payload.notification?.title || 'Civil Files',
-          {
-            body: payload.notification?.body || payload.data?.dailyMessage || 'إشعار جديد',
-            icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-            badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-            tag: 'civil-files-notification',
-            requireInteraction: true,
-            vibrate: [200, 100, 200],
-            actions: [
-              { action: 'open_site', title: 'فتح الموقع' },
-              { action: 'later', title: 'تذكيرني لاحقًا' },
-              { action: 'close', title: 'إغلاق' }
-            ],
-            data: {
-              url: payload.webpush?.fcm_options?.link || payload.data?.url || 'https://eslamwael73.github.io/CIVIL_links-/',
-              message: payload.notification?.body || payload.data?.dailyMessage || 'إشعار جديد',
-              title: payload.notification?.title || 'Civil Files',
-              timestamp: Date.now(),
-              ...payload.data
-            }
-          }
-        );
-      });
+      console.log('📩 Received foreground message (handled by Service Worker):', JSON.stringify(payload, null, 2));
+      // لا نعرض إشعار هنا لأن Service Worker بيتولى الموضوع
     });
 
     // دالة للتحكم في الإشعارات في الخلفية
