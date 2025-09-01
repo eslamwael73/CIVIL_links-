@@ -24,10 +24,6 @@ try {
   const messaging = firebase.messaging();
   console.log('[firebase-messaging-sw.js] ✅ Firebase initialized successfully');
 
-  // متغير للتحكم في تكرار الإشعارات
-  let lastNotificationId = null;
-  let lastNotificationTime = 0;
-
   // معالجة الإشعارات في الخلفية
   messaging.onBackgroundMessage((payload) => {
     console.log('[firebase-messaging-sw.js] 📩 Received background message:', JSON.stringify(payload, null, 2));
@@ -35,29 +31,14 @@ try {
       console.error('[firebase-messaging-sw.js] ❌ Payload is null or undefined');
       return;
     }
-
-    // إنشاء ID للإشعار لمنع التكرار
+    // تنفيذ فكرتك: معالجة الإشعار بنفس طريقة الـ foreground
     const notificationTitle = payload.notification?.title || payload.data?.title || 'Civil Files';
     const notificationBody = payload.notification?.body || payload.data?.dailyMessage || 'إشعار جديد';
-    // تحسين الـ notificationId عشان يتجاهل أي اختلافات بسيطة
-    const notificationId = `${notificationTitle}-${notificationBody}`;
-    const currentTime = Date.now();
-
-    // تحقق من عدم تكرار نفس الإشعار في آخر 10 ثواني
-    if (notificationId === lastNotificationId && (currentTime - lastNotificationTime) < 10000) {
-      console.log('[firebase-messaging-sw.js] ⚠️ Duplicate notification blocked');
-      return;
-    }
-
-    lastNotificationId = notificationId;
-    lastNotificationTime = currentTime;
-
-    // تنفيذ فكرتك: معالجة الإشعار بنفس طريقة الـ foreground
     const notificationOptions = {
       body: notificationBody,
       icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
       badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-      tag: 'civil-files-notification-' + currentTime, // إضافة timestamp للتأكد من التفرد
+      tag: 'civil-files-notification',
       requireInteraction: true,
       vibrate: [200, 100, 200],
       actions: [
@@ -69,12 +50,12 @@ try {
         url: payload.webpush?.fcm_options?.link || payload.data?.url || 'https://eslamwael73.github.io/CIVIL_links-/',
         message: notificationBody,
         title: notificationTitle,
-        timestamp: currentTime,
+        timestamp: Date.now(),
         ...payload.data
       }
     };
     try {
-      // عرض الإشعار
+      // عرض الإشعار في الخلفية بنفس طريقة الـ foreground
       self.registration.showNotification(notificationTitle, notificationOptions);
       console.log('[firebase-messaging-sw.js] ✅ Background notification displayed:', notificationBody);
     } catch (error) {
@@ -97,7 +78,7 @@ try {
           body: notificationData.message || 'لا تنس مراجعة الرسالة اليومية!',
           icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
           badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-          tag: 'civil-files-reminder-' + Date.now(),
+          tag: 'civil-files-reminder',
           vibrate: [200, 100, 200],
           data: { ...notificationData, isReminder: true }
         });
