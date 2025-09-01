@@ -55,3 +55,4 @@ function showHomePage() {
     loadIcons();
     console.log('Home Page rendered successfully');
 }
+window.loadHomePage = loadHomePage;
