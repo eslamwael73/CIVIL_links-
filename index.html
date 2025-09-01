@@ -33,28 +33,28 @@
     <p>ابدأ باختيار القسم من الأسفل</p>
   </main>
 
-<nav id="nav">
-    <div class="nav-item active" onclick="showHomePage(); console.log('Clicked Home Nav')" data-page="home">
-        <i data-lucide="home"></i>
-        <div>الرئيسية</div>
+  <nav id="nav">
+    <div class="nav-item active" onclick="showPage('home')" data-page="home">
+      <i data-lucide="home"></i>
+      <div>الرئيسية</div>
     </div>
-    <div class="nav-item" onclick="showPrepPage(); console.log('Clicked Prep Nav')" data-page="prep">
-        <i data-lucide="graduation-cap"></i>
-        <div>إعدادي</div>
+    <div class="nav-item" onclick="showPage('prep')" data-page="prep">
+      <i data-lucide="graduation-cap"></i>
+      <div>إعدادي</div>
     </div>
-    <div class="nav-item" onclick="showCivilPage(); console.log('Clicked Civil Nav')" data-page="civil">
-        <i data-lucide="hammer"></i>
-        <div>مدني</div>
+    <div class="nav-item" onclick="showPage('civil')" data-page="civil">
+      <i data-lucide="hammer"></i>
+      <div>مدني</div>
     </div>
-    <div class="nav-item" onclick="updateFavoritesPage(); console.log('Clicked Favorites Nav')" data-page="favorites">
-        <i data-lucide="heart"></i>
-        <div>مفضلة</div>
+    <div class="nav-item" onclick="showPage('favorites')" data-page="favorites">
+      <i data-lucide="heart"></i>
+      <div>مفضلة</div>
     </div>
-</nav>
+  </nav>
 
   <div class="search-modal" id="searchModal">
     <button class="close-btn" onclick="toggleSearch()">✕</button>
-    <input type="text" placeholder="ابحث هنا..." id="searchInput" oninput="searchContent(this.value)">
+    <input type="text" placeholder="ابحث هنا..." id="searchInput">
     <div class="search-results" id="searchResults"></div>
   </div>
 
@@ -63,10 +63,10 @@
     <div class="sidebar-content">
       <h3>القائمة</h3>
       <ul>
-        <li onclick="showHomePage(); closeSidebar()">الرئيسية</li>
-        <li onclick="showPrepPage(); closeSidebar()">إعدادي</li>
-        <li onclick="showCivilPage(); closeSidebar()">مدني</li>
-        <li onclick="updateFavoritesPage(); closeSidebar()">مفضلة</li>
+        <li onclick="showPage('home'); closeSidebar()">الرئيسية</li>
+        <li onclick="showPage('prep'); closeSidebar()">إعدادي</li>
+        <li onclick="showPage('civil'); closeSidebar()">مدني</li>
+        <li onclick="showPage('favorites'); closeSidebar()">مفضلة</li>
         <li onclick="showSettings(); closeSidebar()">الإعدادات</li>
         <li onclick="showAbout(); closeSidebar()">حول</li>
       </ul>
@@ -97,6 +97,8 @@
       <button onclick="closeModal()">OK</button>
     </div>
   </div>
+
+  <script src="main.js"></script>
 
   <!-- تسجيل Service Worker -->
   <script>
@@ -264,25 +266,6 @@
         console.log('🔔 حالة الإشعارات في الخلفية:', event.data.status);
       }
     });
-
-    // دالة لإغلاق الـ welcomeModal
-    function closeModal() {
-      localStorage.setItem('welcomeShown', 'true');
-      document.getElementById('welcomeModal').style.display = 'none';
-      document.getElementById('main-content').style.display = 'block';
-      document.getElementById('header').style.display = 'flex';
-      document.getElementById('nav').style.display = 'flex';
-      showDailySalawatToast();
-    }
   </script>
-
-  <!-- إضافة الملفات الجديدة -->
-  <script src="home.js" defer></script>
-  <script src="civil.js" defer></script>
-  <script src="prep.js" defer></script>
-  <script src="favorites.js" defer></script>
-  <script src="settings.js" defer></script>
-  <script src="about.js" defer></script>
-  <script src="main.js" defer></script>
 </body>
 </html>
