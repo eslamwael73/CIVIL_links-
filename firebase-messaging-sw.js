@@ -39,15 +39,16 @@ try {
     // إنشاء ID للإشعار لمنع التكرار
     const notificationTitle = payload.notification?.title || payload.data?.title || 'Civil Files';
     const notificationBody = payload.notification?.body || payload.data?.dailyMessage || 'إشعار جديد';
+    // تحسين الـ notificationId عشان يتجاهل أي اختلافات بسيطة
     const notificationId = `${notificationTitle}-${notificationBody}`;
     const currentTime = Date.now();
-    
-    // تحقق من عدم تكرار نفس الإشعار في آخر 5 ثواني
-    if (notificationId === lastNotificationId && (currentTime - lastNotificationTime) < 5000) {
+
+    // تحقق من عدم تكرار نفس الإشعار في آخر 10 ثواني
+    if (notificationId === lastNotificationId && (currentTime - lastNotificationTime) < 10000) {
       console.log('[firebase-messaging-sw.js] ⚠️ Duplicate notification blocked');
       return;
     }
-    
+
     lastNotificationId = notificationId;
     lastNotificationTime = currentTime;
 
@@ -56,7 +57,7 @@ try {
       body: notificationBody,
       icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
       badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-      tag: 'civil-files-notification',
+      tag: 'civil-files-notification-' + currentTime, // إضافة timestamp للتأكد من التفرد
       requireInteraction: true,
       vibrate: [200, 100, 200],
       actions: [
@@ -68,12 +69,12 @@ try {
         url: payload.webpush?.fcm_options?.link || payload.data?.url || 'https://eslamwael73.github.io/CIVIL_links-/',
         message: notificationBody,
         title: notificationTitle,
-        timestamp: Date.now(),
+        timestamp: currentTime,
         ...payload.data
       }
     };
     try {
-      // عرض الإشعار في الخلفية بنفس طريقة الـ foreground
+      // عرض الإشعار
       self.registration.showNotification(notificationTitle, notificationOptions);
       console.log('[firebase-messaging-sw.js] ✅ Background notification displayed:', notificationBody);
     } catch (error) {
@@ -96,7 +97,7 @@ try {
           body: notificationData.message || 'لا تنس مراجعة الرسالة اليومية!',
           icon: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
           badge: 'https://i.postimg.cc/Jhr0BFT4/Picsart-25-07-20-16-04-51-889.png',
-          tag: 'civil-files-reminder',
+          tag: 'civil-files-reminder-' + Date.now(),
           vibrate: [200, 100, 200],
           data: { ...notificationData, isReminder: true }
         });
