@@ -9,7 +9,7 @@ let isLinkOpening = false;
 // بيانات صفحة مدني
 const civilData = {
     year1: {
-        term1: { link: "https://drive.google.com/drive/folders/19cPnys-MgV0ySa17j4NPE5bFBpy32hMi", name: { ar: "السنة الأولى - الترم الأول", en: "First Year - First Term" } },
+        term1: { link: "https://drive.google.com/drive/folders/19cPnys-MgV0ySa17j4NPE5bFBpy32lMi", name: { ar: "السنة الأولى - الترم الأول", en: "First Year - First Term" } },
         term2: { link: "https://drive.google.com/drive/folders/1vR6OVMnKX7r07_uLcMdKYPxDMBlZg6tM", name: { ar: "السنة الأولى - الترم الثاني", en: "First Year - Second Term" } },
         all: { name: { ar: "السنة الأولى", en: "First Year" } }
     },
