@@ -680,7 +680,7 @@ function showDownloadModal() {
     modal.innerHTML = `
       <button class="close-modal" onclick="this.parentElement.remove()">✕</button>
       <h3>${currentLang === 'ar' ? 'تنزيل التطبيق' : 'Download App'}</h3>
-      <div class="term-box" onclick="openLink('https://www.mediafire.com/file/mj7mhfv64w2a4ge/CIVIL_Files_1.0.apk/file', event)">
+      <div class="term-box" onclick="openLink('https://www.mediafire.com/file/9kjpbydkm1vgwvy/CIVIL_Files_1.0.apk/file', event)">
         <span>Android</span>
       </div>
       <div class="term-box" onclick="showToast('${currentLang === 'ar' ? 'قريبًا...' : 'Coming soon...'}')">
