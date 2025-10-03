@@ -78,38 +78,29 @@ function openDriveLink(url, event) {
     event.stopPropagation();
 
     const now = Date.now();
-    if (now - lastClickTime < 500) return;
+    if (now - lastClickTime < 500) {
+        console.log("Click ignored: too fast");
+        return;
+    }
     lastClickTime = now;
 
-    if (isLinkOpening) return;
+    if (isLinkOpening) {
+        console.log("Click ignored: link is already opening");
+        return;
+    }
     isLinkOpening = true;
 
     const clickedElement = event.currentTarget;
     clickedElement.style.transform = 'scale(0.95)';
 
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = `intent://drive.google.com${new URL(url).pathname}#Intent;scheme=https;package=com.google.android.apps.docs;end`;
-    document.body.appendChild(iframe);
+    // افتح الرابط مباشرة لكل الأجهزة
+    console.log("Opening link:", url);
+    window.open(url, '_blank');
 
     setTimeout(() => {
         clickedElement.style.transform = '';
+        isLinkOpening = false;
     }, 200);
-
-    const blurHandler = () => {
-        hasOpenedApp = true;
-        isLinkOpening = false;
-        window.removeEventListener('blur', blurHandler);
-    };
-    window.addEventListener('blur', blurHandler);
-
-    setTimeout(() => {
-        if (!hasOpenedApp) {
-            window.open(url, '_blank');
-        }
-        document.body.removeChild(iframe);
-        isLinkOpening = false;
-    }, 1000);
 }
 
 function toggleFavorite(section, item) {
