@@ -9,24 +9,24 @@ let isLinkOpening = false;
 // بيانات صفحة مدني
 const civilData = {
     year1: {
-        term1: { link: "https://drive.google.com/drive/folders/19cPnys-MgV0ySa17j4NPE5bFBpy32lMi", name: { ar: "السنة الأولى - الترم الأول", en: "First Year - First Term" } },
-        term2: { link: "https://drive.google.com/drive/folders/1vR6OVMnKX7r07_uLcMdKYPxDMBlZg6tM", name: { ar: "السنة الأولى - الترم الثاني", en: "First Year - Second Term" } },
-        all: { name: { ar: "السنة الأولى", en: "First Year" } }
+        term1: { link: "https://drive.google.com/drive/folders/19cPnys-MgV0ySa17j4NPE5bFBpy32lMi", name: { ar: "المستوى الثاني - الترم الأول", en: "Level 2 - First Term" } },
+        term2: { link: "https://drive.google.com/drive/folders/1vR6OVMnKX7r07_uLcMdKYPxDMBlZg6tM", name: { ar: "المستوى الثاني - الترم الثاني", en: "Level 2 - Second Term" } },
+        all: { name: { ar: "المستوى الثاني", en: "Level 2" } }
     },
     year2: {
-        term1: { link: "https://drive.google.com/drive/folders/11vNshzT6Uub_A7KU2MhE5WDQupPyF4b9", name: { ar: "السنة الثانية - الترم الأول", en: "Second Year - First Term" } },
-        term2: { link: "https://drive.google.com/drive/folders/16xa3FEt4xFOUQKfpDrMEnkY8EWklY78j", name: { ar: "السنة الثانية - الترم الثاني", en: "Second Year - Second Term" } },
-        all: { name: { ar: "السنة الثانية", en: "Second Year" } }
+        term1: { link: "https://drive.google.com/drive/folders/11vNshzT6Uub_A7KU2MhE5WDQupPyF4b9", name: { ar: "المستوى الثالث - الترم الأول", en: "Level 3 - First Term" } },
+        term2: { link: "https://drive.google.com/drive/folders/16xa3FEt4xFOUQKfpDrMEnkY8EWklY78j", name: { ar: "المستوى الثالث - الترم الثاني", en: "Level 3 - Second Term" } },
+        all: { name: { ar: "المستوى الثالث", en: "Level 3" } }
     },
     year3: {
-        term1: { link: "https://drive.google.com/drive/folders/1-1Z2KiGeYI74YILYXosuXLoS-aIWcHkU", name: { ar: "السنة الثالثة - الترم الأول", en: "Third Year - First Term" } },
-        term2: { link: "https://drive.google.com/drive/folders/1-5qlvYeRIMCIwwtZ2nQrAadnL0W_RN38", name: { ar: "السنة الثالثة - الترم الثاني", en: "Third Year - Second Term" } },
-        all: { name: { ar: "السنة الثالثة", en: "Third Year" } }
+        term1: { link: "https://drive.google.com/drive/folders/1-1Z2KiGeYI74YILYXosuXLoS-aIWcHkU", name: { ar: "المستوى الرابع - الترم الأول", en: "Level 4 - First Term" } },
+        term2: { link: "https://drive.google.com/drive/folders/1-5qlvYeRIMCIwwtZ2nQrAadnL0W_RN38", name: { ar: "المستوى الرابع - الترم الثاني", en: "Level 4 - Second Term" } },
+        all: { name: { ar: "المستوى الرابع", en: "Level 4" } }
     },
     year4: {
-        term1: { link: "https://drive.google.com/drive/folders/1-7LHVS1ipxjw1ale9sKD2I2WIym_jhna", name: { ar: "السنة الرابعة - الترم الأول", en: "Fourth Year - First Term" } },
-        term2: { link: "https://drive.google.com/drive/folders/1-BwXYdeTlTqklY7_zynxx2qfE7bXm6qa", name: { ar: "السنة الرابعة - الترم الثاني", en: "Fourth Year - Second Term" } },
-        all: { name: { ar: "السنة الرابعة", en: "Fourth Year" } }
+        term1: { link: "https://drive.google.com/drive/folders/1-7LHVS1ipxjw1ale9sKD2I2WIym_jhna", name: { ar: "المستوى الخامس - الترم الأول", en: "Level 5 - First Term" } },
+        term2: { link: "https://drive.google.com/drive/folders/1-BwXYdeTlTqklY7_zynxx2qfE7bXm6qa", name: { ar: "المستوى الخامس - الترم الثاني", en: "Level 5 - Second Term" } },
+        all: { name: { ar: "المستوى الخامس", en: "Level 5" } }
     }
 };
 
